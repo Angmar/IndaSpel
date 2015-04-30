@@ -1,10 +1,5 @@
-
 public interface Order {
 	
-	
-	
-	default void setOrder(String order){
-		
-	}
-	
+	public void setOrder(GameObject target);
+
 }

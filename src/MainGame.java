@@ -17,6 +17,7 @@ public class MainGame extends BasicGameState {
 	static ArrayList<GameObject> colonists;
 	static ArrayList<GameObject> selected;
 
+
 	public MainGame() {
 		// TODO Auto-generated constructor stub
 	}
