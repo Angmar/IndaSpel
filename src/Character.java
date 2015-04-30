@@ -8,7 +8,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class Character extends GameObject {
 	
 	protected double moveSpeed;
-	protected String order;
+	protected Order order;
+	
+	public Character(){
+		order = new Order();
+	}
 
 	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
@@ -27,5 +31,4 @@ public abstract class Character extends GameObject {
 		this.x += moveSpeed*Math.cos(angle);
 		this.y += moveSpeed*Math.sin(angle);
 	}
-	
 }

@@ -11,6 +11,7 @@ public class Worker extends Character {
 	
 
 	public Worker(float x, float y) throws SlickException {
+		super();
 		this.x = x;
 		this.y = y;
 		width = 60;
@@ -25,9 +26,18 @@ public class Worker extends Character {
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
-		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)){
-			moveTo(input.getMouseX(),input.getMouseY(), delta);
+		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
+			order.setMoveTarget(input.getMouseX(), input.getMouseY());
 		}
+		
+		if(order.isActive()){
+			moveTo(order.getMoveToX(),order.getMoveToY(),delta);
+			
+			
+		}
+		
+		
+		moveTo(input.getMouseX(),input.getMouseY(), delta);
 	}
 
 	@Override
