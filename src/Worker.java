@@ -32,12 +32,10 @@ public class Worker extends Character {
 		
 		if(order.isActive()){
 			moveTo(order.getMoveToX(),order.getMoveToY(),delta);
-			
-			
 		}
 		
 		
-		moveTo(input.getMouseX(),input.getMouseY(), delta);
+		moveTo(order.getMoveToX(),order.getMoveToY(), delta);
 	}
 
 	@Override
