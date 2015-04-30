@@ -1,10 +1,5 @@
-
 public interface Order {
 	
-	
-	
-	default void setOrder(String order){
-		
-	}
+	public void act(GameObject actor, GameObject target);
 	
 }

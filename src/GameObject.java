@@ -28,7 +28,7 @@ public abstract class GameObject {
 	
 	public abstract Order getOrder();
 	
-	public abstract void setOrder(GameObject target);
+	public abstract void setOrder(Order order);
 	
 	public float getX(){
 		return x;

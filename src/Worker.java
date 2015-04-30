@@ -34,21 +34,20 @@ public class Worker extends Character {
 		g.drawImage(portrait, x, y);
 	}
 	
-	private void mine() {
+	private void mine(MineralOre target) {
 		target.takeDamage(10);
 		minerals += 10;
 	}
 
 	@Override
-	public Order getOrder() {
+	public Order getOrder(Order order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setOrder(GameObject target) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	public void addMinerals(int minerals) {
