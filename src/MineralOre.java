@@ -1,16 +1,23 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 
 public class MineralOre extends Building {
-
-	public MineralOre(float x, float y) {
-		super(x, y);
-	}
 	
+	public MineralOre(float x, float y) throws SlickException {
+		super(x, y);
+		width = 60;
+		height = 60;
+		
+		portrait = new Image("mineral ore.png");
+		portrait = portrait.getScaledCopy(width, height);
+		
+	}
+
 	public int mine() {
 		takeDamage(10);
 		return 10;
@@ -33,6 +40,27 @@ public class MineralOre extends Building {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		g.drawImage(portrait, x, y);
+		
+	}
+
+	@Override
+	public Order getOrder() {
+		Order order = new Order() {
+			@Override
+			public void setOrder(GameObject target) {
+				if (target.getClass().getName().equals("Worker")) {
+					Worker w = (Worker) target;
+					w.setMinerals(mine());
+				}
+				
+			}
+		};
+		return order;
+	}
+
+	@Override
+	public void setOrder(GameObject target) {
 		// TODO Auto-generated method stub
 		
 	}
