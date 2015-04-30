@@ -7,6 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 public class Worker extends Character {
+	private int minerals;
 	
 	public Worker(float x, float y) throws SlickException {
 		this.x = x;
@@ -15,7 +16,7 @@ public class Worker extends Character {
 		height = 60;
 		moveSpeed = 1;
 		
-		portrait = new Image("worker.jpeg");
+		portrait = new Image("worker.png");
 		portrait = portrait.getScaledCopy(width, height);
 	}
 
@@ -26,7 +27,7 @@ public class Worker extends Character {
 			
 		}
 	}
-
+	
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
@@ -49,4 +50,8 @@ public class Worker extends Character {
 		
 	}
 
+	public void addMinerals(int minerals) {
+		this.minerals += minerals;
+	}
+	
 }

@@ -44,7 +44,7 @@ public class MineralOre extends Building {
 			public void setOrder(GameObject target) {
 				if (target.getClass().getName().equals("Worker")) {
 					Worker w = (Worker) target;
-					w.setMinerals(mine());
+					w.addMinerals(mine());
 				}
 				
 			}
