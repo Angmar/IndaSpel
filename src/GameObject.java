@@ -22,6 +22,9 @@ public abstract class GameObject {
 	
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
+
+	public abstract Order setOrder(GameContainer container, Graphics g)
+			throws SlickException;
 	
 	public float getX(){
 		return x;
@@ -49,5 +52,9 @@ public abstract class GameObject {
 	
 	public boolean isAlive(){
 		return alive;
+	}
+	
+	public void takeDamage(int damage) {
+		currentHealth -= damage;
 	}
 }
