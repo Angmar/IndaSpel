@@ -23,6 +23,10 @@ public abstract class GameObject {
 	
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	
 	public float getX(){
 		return x;
