@@ -14,6 +14,7 @@ public abstract class GameObject {
 	protected int width;
 	protected int maxHealth;
 	protected int currentHealth;
+	protected int damage;
 	protected boolean alive;
 	protected Image portrait;
 	
@@ -21,9 +22,6 @@ public abstract class GameObject {
 			throws SlickException;
 	
 	public abstract void render(GameContainer container, Graphics g)
-			throws SlickException;
-
-	public abstract Order setOrder(GameContainer container, Graphics g)
 			throws SlickException;
 	
 	public float getX(){

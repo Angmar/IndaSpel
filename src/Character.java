@@ -8,7 +8,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class Character extends GameObject {
 	
 	protected double moveSpeed;
-	protected int damage;
 	
 	public Character(){
 	}

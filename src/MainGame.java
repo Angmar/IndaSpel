@@ -15,6 +15,7 @@ public class MainGame extends BasicGameState {
 	boolean test;
 	static ArrayList<Character> colonists;
 	static ArrayList<Building> buildings;
+	static ArrayList<GameObject> selected;
 
 	public MainGame() {
 		// TODO Auto-generated constructor stub
@@ -28,6 +29,7 @@ public class MainGame extends BasicGameState {
 		buildings.add(new CommandCenter(400,400));
 		colonists = new ArrayList<Character>();
 		colonists.add(new Worker(300,300));
+		buildings.add(new MineralOre(400,500));
 	}
 
 	@Override
