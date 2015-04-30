@@ -45,5 +45,17 @@ public class CommandCenter extends Building {
 		g.drawImage(portrait, x, y);
 		
 	}
+
+	@Override
+	public Order getOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setOrder(GameObject target) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -18,12 +18,17 @@ public abstract class GameObject {
 	protected boolean alive;
 	protected Image portrait;
 	protected boolean selected;
+	protected Order currentOrder;
 	
 	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
 	
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
+	
+	public abstract Order getOrder();
+	
+	public abstract void setOrder(GameObject target);
 	
 	public float getX(){
 		return x;

@@ -36,5 +36,26 @@ public class MineralOre extends Building {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Order getOrder() {
+		Order order = new Order() {
+			@Override
+			public void setOrder(GameObject target) {
+				if (target.getClass().getName().equals("Worker")) {
+					Worker w = (Worker) target;
+					w.setMinerals(mine());
+				}
+				
+			}
+		};
+		return order;
+	}
+
+	@Override
+	public void setOrder(GameObject target) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

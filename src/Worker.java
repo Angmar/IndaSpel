@@ -37,4 +37,16 @@ public class Worker extends Character {
 
 	}
 
+	@Override
+	public Order getOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setOrder(GameObject target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
