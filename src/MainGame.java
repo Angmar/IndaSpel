@@ -13,7 +13,8 @@ public class MainGame extends BasicGameState {
 	
 	Image testImage;
 	boolean test;
-	ArrayList<Character> colonists;
+	static ArrayList<Character> colonists;
+	static ArrayList<Building> buildings;
 
 	public MainGame() {
 		// TODO Auto-generated constructor stub
@@ -23,8 +24,8 @@ public class MainGame extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		testImage = new Image("commandcenter.png");
-		test = false;
+		buildings =  new ArrayList<Building>();
+		buildings.add(new CommandCenter(400,400));
 		colonists = new ArrayList<Character>();
 		colonists.add(new Worker(300,300));
 	}
@@ -37,12 +38,20 @@ public class MainGame extends BasicGameState {
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			game.enterState(0);
 		}
-		
+
 		if(!colonists.isEmpty()){
 			for(Character ch : colonists){
 				ch.update(container, input, delta);
 			}
 		}
+		
+
+		if(!buildings.isEmpty()){
+			for(Building b : buildings){
+				b.update(container, input, delta);
+			}
+		}
+		
 		
 	}
 	
@@ -50,12 +59,19 @@ public class MainGame extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		g.drawString("Press SPACE to go to main menu", 400, 200);
-		
+
 		if(!colonists.isEmpty()){
 			for(Character ch : colonists){
 				ch.render(container, g);
 			}
 		}
+		
+		if(!buildings.isEmpty()){
+			for(Building b : buildings){
+				b.render(container, g);
+			}
+		}
+
 	}
 
 	@Override
