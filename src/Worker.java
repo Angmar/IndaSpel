@@ -23,9 +23,6 @@ public class Worker extends Character {
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
-		if(selected){
-			
-		}
 	}
 	
 	@Override
@@ -35,7 +32,11 @@ public class Worker extends Character {
 			g.drawString("V", x-10+width/2, y-20);
 		}
 		g.drawImage(portrait, x, y);
-
+	}
+	
+	private void mine() {
+		target.takeDamage(10);
+		minerals += 10;
 	}
 
 	@Override
@@ -52,6 +53,11 @@ public class Worker extends Character {
 
 	public void addMinerals(int minerals) {
 		this.minerals += minerals;
+	}
+	
+	private void depositMinerals(){
+		MainGame.minerals += minerals;
+		minerals = 0;
 	}
 	
 }

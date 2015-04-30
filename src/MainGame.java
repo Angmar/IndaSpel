@@ -13,7 +13,7 @@ public class MainGame extends BasicGameState {
 	
 	Image testImage;
 	boolean test;
-	int minerals;
+	static int minerals;
 	static ArrayList<GameObject> colonists;
 	static ArrayList<GameObject> selected;
 
@@ -54,7 +54,7 @@ public class MainGame extends BasicGameState {
 					gob.deselect();
 				}
 			}
-		}	
+		}
 
 		if(!colonists.isEmpty()){
 			for(GameObject gob : colonists){

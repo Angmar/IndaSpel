@@ -11,11 +11,6 @@ public class MineralOre extends Building {
 		super(x, y);
 	}
 	
-	public int mine() {
-		takeDamage(10);
-		return 10;
-	}
-	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
