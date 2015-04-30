@@ -17,16 +17,13 @@ public abstract class GameObject {
 	protected int damage;
 	protected boolean alive;
 	protected Image portrait;
+	protected boolean selected;
 	
 	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
 	
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 	
 	public float getX(){
 		return x;
@@ -58,5 +55,13 @@ public abstract class GameObject {
 	
 	public void takeDamage(int damage) {
 		currentHealth -= damage;
+	}
+	
+	public void select(){ 
+		selected = true;
+	}
+	
+	public void deselect(){
+		selected = false;
 	}
 }

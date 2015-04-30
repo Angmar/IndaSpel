@@ -30,7 +30,10 @@ public class MainGame extends BasicGameState {
 		colonists = new ArrayList<Character>();
 		colonists.add(new Worker(300,300));
 		buildings.add(new MineralOre(400,500));
+		
+		selected = new ArrayList<GameObject>();
 	}
+	
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
@@ -40,13 +43,23 @@ public class MainGame extends BasicGameState {
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			game.enterState(0);
 		}
+		else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+			for(Character ch : colonists){
+				if(isPointingAt(ch, input.getMouseX(), input.getMouseY())){
+					ch.select();
+				}
+				else{
+					ch.deselect();
+				}
+			}
+		}
+			
 
 		if(!colonists.isEmpty()){
 			for(Character ch : colonists){
 				ch.update(container, input, delta);
 			}
 		}
-		
 
 		if(!buildings.isEmpty()){
 			for(Building b : buildings){
@@ -73,7 +86,17 @@ public class MainGame extends BasicGameState {
 				b.render(container, g);
 			}
 		}
-
+	}
+	
+	private boolean isPointingAt(GameObject gob, float mouseX, float mouseY){
+		
+		
+		if(mouseX > gob.getX() && mouseX < gob.getX()+gob.getWidth() &&
+				mouseY > gob.getY() && mouseY < gob.getY()+gob.getHeight()){
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
