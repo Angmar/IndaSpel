@@ -1,3 +1,4 @@
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -21,7 +22,7 @@ public abstract class GameObject {
 	
 	//To be changed
 	protected boolean selected;
-	protected String order;
+	protected Vector2f movePoint;
 	protected GameObject target;
 	
 	public abstract void update(GameContainer container, Input input, int delta)
@@ -30,12 +31,19 @@ public abstract class GameObject {
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
 	
+	public abstract void setTarget(Vector2f newMovePoint);
+	
+	public void setTarget(GameObject newTarget){
+		target = newTarget;
+		movePoint = null;
+	}
+	
 	protected void createPortrait(String image) throws SlickException{
 		portrait = new Image(image);
 		portrait = portrait.getScaledCopy(width, height);
 	}
 	
-	protected boolean inRange(){
+	protected boolean targetInRange(){
 		if(targetDistance() < range){
 			return true;
 		}
@@ -43,11 +51,7 @@ public abstract class GameObject {
 	}
 	
 	protected double targetDistance(){
-		return Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getX()-x, 2));
-	}
-	
-	public void setTarget(GameObject newTarget){
-		target = newTarget;
+		return Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getY()-x, 2));
 	}
 	
 	public GameObject getTarget(){

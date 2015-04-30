@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -58,7 +59,7 @@ public class MainGame extends BasicGameState {
 		}
 		else if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				sel.setTarget(new MovePoint(input.getMouseX(), input.getMouseY()));
+				sel.setTarget(new Vector2f(input.getMouseX(), input.getMouseY()));
 			}
 		}
 

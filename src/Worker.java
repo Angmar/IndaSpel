@@ -23,11 +23,8 @@ public class Worker extends Character {
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
-		if(target != null){
-			moveTo(delta);
-			if(inRange()){
-				target = null;
-			}
+		if(movePoint != null){
+			moveToPoint(delta);
 		}
 	}
 	
