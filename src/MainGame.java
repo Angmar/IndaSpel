@@ -13,8 +13,8 @@ public class MainGame extends BasicGameState {
 	
 	Image testImage;
 	boolean test;
-	static ArrayList<Character> colonists;
-	static ArrayList<Building> buildings;
+	int minerals;
+	static ArrayList<GameObject> colonists;
 	static ArrayList<GameObject> selected;
 
 	public MainGame() {
@@ -24,14 +24,16 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		buildings =  new ArrayList<Building>();
-		buildings.add(new CommandCenter(400,400));
-		colonists = new ArrayList<Character>();
-		colonists.add(new Worker(300,300));
-		buildings.add(new MineralOre(400,500));
 		
+		minerals = 0;
+		colonists = new ArrayList<GameObject>();
 		selected = new ArrayList<GameObject>();
+		
+		colonists.add(new CommandCenter(400,400));
+		colonists.add(new Worker(300,300));
+		colonists.add(new MineralOre(700,400));
+		
+		
 	}
 	
 
@@ -44,30 +46,21 @@ public class MainGame extends BasicGameState {
 			game.enterState(0);
 		}
 		else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			for(Character ch : colonists){
-				if(isPointingAt(ch, input.getMouseX(), input.getMouseY())){
-					ch.select();
+			for(GameObject gob : colonists){
+				if(isPointingAt(gob, input.getMouseX(), input.getMouseY())){
+					gob.select();
 				}
 				else{
-					ch.deselect();
+					gob.deselect();
 				}
 			}
-		}
-			
+		}	
 
 		if(!colonists.isEmpty()){
-			for(Character ch : colonists){
-				ch.update(container, input, delta);
+			for(GameObject gob : colonists){
+				gob.update(container, input, delta);
 			}
 		}
-
-		if(!buildings.isEmpty()){
-			for(Building b : buildings){
-				b.update(container, input, delta);
-			}
-		}
-		
-		
 	}
 	
 	@Override
@@ -76,14 +69,8 @@ public class MainGame extends BasicGameState {
 		g.drawString("Press SPACE to go to main menu", 400, 200);
 
 		if(!colonists.isEmpty()){
-			for(Character ch : colonists){
-				ch.render(container, g);
-			}
-		}
-		
-		if(!buildings.isEmpty()){
-			for(Building b : buildings){
-				b.render(container, g);
+			for(GameObject gob : colonists){
+				gob.render(container, g);
 			}
 		}
 	}
