@@ -1,6 +1,7 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,10 +17,10 @@ public abstract class GameObject {
 	protected boolean alive;
 	protected Image portrait;
 	
-	public abstract void update(GameContainer container, StateBasedGame game, int delta)
+	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
 	
-	public abstract void render(GameContainer container, StateBasedGame game, Graphics g)
+	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
 	
 	public float getX(){

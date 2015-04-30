@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -11,6 +13,7 @@ public class MainGame extends BasicGameState {
 	
 	Image testImage;
 	boolean test;
+	ArrayList<Character> colonists;
 
 	public MainGame() {
 		// TODO Auto-generated constructor stub
@@ -22,6 +25,8 @@ public class MainGame extends BasicGameState {
 		// TODO Auto-generated method stub
 		testImage = new Image("commandcenter.png");
 		test = false;
+		colonists = new ArrayList<Character>();
+		colonists.add(new Worker(300,300));
 	}
 
 	@Override
@@ -32,8 +37,11 @@ public class MainGame extends BasicGameState {
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			game.enterState(0);
 		}
-		else if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
-			test = !test;
+		
+		if(!colonists.isEmpty()){
+			for(Character ch : colonists){
+				ch.update(container, input, delta);
+			}
 		}
 		
 	}
@@ -43,9 +51,11 @@ public class MainGame extends BasicGameState {
 			throws SlickException {
 		g.drawString("Press SPACE to go to main menu", 400, 200);
 		
-		if(test)
-			g.drawImage(testImage, 400, 300);
-
+		if(!colonists.isEmpty()){
+			for(Character ch : colonists){
+				ch.render(container, g);
+			}
+		}
 	}
 
 	@Override
