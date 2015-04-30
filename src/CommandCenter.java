@@ -42,6 +42,9 @@ public class CommandCenter extends Building {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		if(selected){
+			g.drawString("V", x-8+width/2, y-20);
+		}
 		g.drawImage(portrait, x, y);
 		
 	}

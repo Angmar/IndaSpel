@@ -65,4 +65,8 @@ public abstract class GameObject {
 		selected = false;
 	}
 	
+	public boolean isSelected(){
+		return selected;
+	}
+	
 }
