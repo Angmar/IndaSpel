@@ -31,7 +31,7 @@ public class Worker extends Character {
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		if(selected){
-			g.drawString("V", x-8+width/2, y-20);
+			g.drawString("V", x-10+width/2, y-20);
 		}
 		g.drawImage(portrait, x, y);
 
