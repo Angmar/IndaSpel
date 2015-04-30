@@ -13,21 +13,12 @@ public class CommandCenter extends Building {
 		width = 100;
 		height = 100;
 
-		portrait = new Image("commandcenter.png");
-		portrait = portrait.getScaledCopy(width, height);
-
+		createPortrait("commandcenter.png");
 	}
 	
 	public void spawnWorker() throws SlickException {
 		Worker worker = new Worker(x, y);
 		MainGame.colonists.add(worker);	
-	}
-	
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -46,16 +37,5 @@ public class CommandCenter extends Building {
 		
 	}
 
-	@Override
-	public Order getOrder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setOrder(GameObject target) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

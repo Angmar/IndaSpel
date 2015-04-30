@@ -10,23 +10,21 @@ public abstract class Character extends GameObject {
 	protected double moveSpeed;
 	
 	public Character(){
+		
 	}
-
-	public abstract void update(GameContainer container, Input input, int delta)
-			throws SlickException;
 	
-	public abstract void render(GameContainer container, Graphics g)
-			throws SlickException;
+	protected void move(){
+		
+	}
 	
-	protected void moveTo(float goX, float goY, int delta){
+	protected void moveTo(int delta){
 		
-		float xDistance = goX - x;
-		float yDistance = goY - y;
+		float xDistance = target.getX() - x;
+		float yDistance = target.getY() - y;
 		
-		double angle = Math.toDegrees(Math.atan(yDistance/xDistance));
-		portrait.setRotation((float)angle);
+		float hyp = (float) targetDistance();
 		
-		this.x += moveSpeed*Math.cos(angle);
-		this.y += moveSpeed*Math.sin(angle);
+		this.x += delta*moveSpeed*(xDistance/hyp);
+		this.y += delta*moveSpeed*(yDistance/hyp);
 	}
 }

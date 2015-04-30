@@ -14,15 +14,21 @@ public class Worker extends Character {
 		this.y = y;
 		width = 60;
 		height = 60;
-		moveSpeed = 1;
+		moveSpeed = 0.2;
+		range = 10;
 		
-		portrait = new Image("worker.png");
-		portrait = portrait.getScaledCopy(width, height);
+		createPortrait("worker.png");
 	}
 
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
+		if(target != null){
+			moveTo(delta);
+			if(inRange()){
+				target = null;
+			}
+		}
 	}
 	
 	@Override
@@ -34,20 +40,9 @@ public class Worker extends Character {
 		g.drawImage(portrait, x, y);
 	}
 	
-	private void mine(MineralOre target) {
+	private void mine() {
 		target.takeDamage(10);
 		minerals += 10;
-	}
-
-	@Override
-	public Order getOrder(Order order) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setOrder(GameObject target) {
-		// TODO Auto-generated method stub		
 	}
 
 	public void addMinerals(int minerals) {

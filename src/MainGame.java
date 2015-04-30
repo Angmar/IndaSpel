@@ -49,10 +49,16 @@ public class MainGame extends BasicGameState {
 			for(GameObject gob : colonists){
 				if(isPointingAt(gob, input.getMouseX(), input.getMouseY())){
 					gob.select();
+					selected.add(gob);
 				}
 				else{
 					gob.deselect();
 				}
+			}
+		}
+		else if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
+			for(GameObject sel : selected){
+				sel.setTarget(new MovePoint(input.getMouseX(), input.getMouseY()));
 			}
 		}
 
@@ -76,8 +82,6 @@ public class MainGame extends BasicGameState {
 	}
 	
 	private boolean isPointingAt(GameObject gob, float mouseX, float mouseY){
-		
-		
 		if(mouseX > gob.getX() && mouseX < gob.getX()+gob.getWidth() &&
 				mouseY > gob.getY() && mouseY < gob.getY()+gob.getHeight()){
 			return true;

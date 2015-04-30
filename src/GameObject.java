@@ -15,10 +15,14 @@ public abstract class GameObject {
 	protected int maxHealth;
 	protected int currentHealth;
 	protected int damage;
+	protected float range;
 	protected boolean alive;
 	protected Image portrait;
+	
+	//To be changed
 	protected boolean selected;
-	protected Order currentOrder;
+	protected String order;
+	protected GameObject target;
 	
 	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
@@ -26,9 +30,29 @@ public abstract class GameObject {
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
 	
-	public abstract Order getOrder();
+	protected void createPortrait(String image) throws SlickException{
+		portrait = new Image(image);
+		portrait = portrait.getScaledCopy(width, height);
+	}
 	
-	public abstract void setOrder(Order order);
+	protected boolean inRange(){
+		if(targetDistance() < range){
+			return true;
+		}
+		return false;
+	}
+	
+	protected double targetDistance(){
+		return Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getX()-x, 2));
+	}
+	
+	public void setTarget(GameObject newTarget){
+		target = newTarget;
+	}
+	
+	public GameObject getTarget(){
+		return target;
+	}
 	
 	public float getX(){
 		return x;
