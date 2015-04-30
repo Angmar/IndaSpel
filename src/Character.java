@@ -8,10 +8,9 @@ import org.newdawn.slick.state.StateBasedGame;
 public abstract class Character extends GameObject {
 	
 	protected double moveSpeed;
-	protected Order order;
+	protected int damage;
 	
 	public Character(){
-		order = new Order();
 	}
 
 	public abstract void update(GameContainer container, Input input, int delta)
@@ -25,7 +24,7 @@ public abstract class Character extends GameObject {
 		float xDistance = goX - x;
 		float yDistance = goY - y;
 		
-		double angle = Math.toDegrees(Math.atan2(yDistance, xDistance));
+		double angle = Math.toDegrees(Math.atan(yDistance/xDistance));
 		portrait.setRotation((float)angle);
 		
 		this.x += moveSpeed*Math.cos(angle);
