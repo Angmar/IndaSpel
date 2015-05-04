@@ -1,5 +1,9 @@
-/MineralOre$1.class
-/Attack.class
-/Mine.class
-/MovePoint.class
-/Order.class
+/Building.class
+/Character.class
+/CommandCenter.class
+/GameObject.class
+/MainGame.class
+/MainMenu.class
+/MineralOre.class
+/StartGame.class
+/Worker.class

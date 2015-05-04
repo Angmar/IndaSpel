@@ -15,6 +15,10 @@ public class MainGame extends BasicGameState {
 	Image testImage;
 	boolean test;
 	static int minerals;
+	
+	float cameraX;
+	float cameraY;
+	
 	static ArrayList<GameObject> colonists;
 	static ArrayList<GameObject> selected;
 
@@ -25,7 +29,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		
+		cameraX = 0;
+		cameraY = 0;
 		minerals = 0;
 		colonists = new ArrayList<GameObject>();
 		selected = new ArrayList<GameObject>();
@@ -43,10 +48,23 @@ public class MainGame extends BasicGameState {
 			throws SlickException {
 		Input input = container.getInput();
 		
+		if(input.isKeyDown(Input.KEY_DOWN)){
+			cameraY -= delta*0.5;
+		}
+		if(input.isKeyDown(Input.KEY_UP)){
+			cameraY += delta*0.5;
+		}
+		if(input.isKeyDown(Input.KEY_LEFT)){
+			cameraX += delta*0.5;
+		}
+		if(input.isKeyDown(Input.KEY_RIGHT)){
+			cameraX -= delta*0.5;
+		}
+		
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			game.enterState(0);
 		}
-		else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			for(GameObject gob : colonists){
 				if(isPointingAt(gob, input.getMouseX(), input.getMouseY())){
 					gob.select();
@@ -59,9 +77,10 @@ public class MainGame extends BasicGameState {
 		}
 		else if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				sel.setTarget(new Vector2f(input.getMouseX(), input.getMouseY()));
+				sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
 			}
 		}
+		
 
 		if(!colonists.isEmpty()){
 			for(GameObject gob : colonists){
@@ -73,6 +92,9 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		//Translates the coordinates of view, must be first in render
+		g.translate(cameraX, cameraY);
+		
 		g.drawString("Press SPACE to go to main menu", 400, 200);
 
 		if(!colonists.isEmpty()){
