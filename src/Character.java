@@ -28,7 +28,6 @@ public abstract class Character extends GameObject {
 	}
 	
 	protected void moveToPoint(int delta){
-		
 		float xDistance = movePoint.getX()-(width/2) - x;
 		float yDistance = movePoint.getY()-(height/2) - y;
 		

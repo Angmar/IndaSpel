@@ -14,7 +14,7 @@ public class MineralOre extends Building {
 		height = 50;
 		createPortrait("mineral ore.png");
 	}
-	
+
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
@@ -25,7 +25,9 @@ public class MineralOre extends Building {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+
 		g.drawImage(portrait, x, y);
 	}
+
 	
 }

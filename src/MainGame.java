@@ -72,6 +72,7 @@ public class MainGame extends BasicGameState {
 				}
 				else{
 					gob.deselect();
+					selected.remove(gob);
 				}
 			}
 		}

@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class Building extends GameObject {
-	
+
 	public void setTarget(Vector2f newMovePoint){
 		//Do nothing
 	}

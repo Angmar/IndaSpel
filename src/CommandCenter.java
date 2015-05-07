@@ -21,6 +21,7 @@ public class CommandCenter extends Building {
 		MainGame.colonists.add(worker);	
 	}
 
+
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
