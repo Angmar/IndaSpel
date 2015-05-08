@@ -6,18 +6,25 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
 public class MainGame extends BasicGameState {
 	
-	Image testImage;
+	Image background;
+	Rectangle selectRect;
+
 	boolean test;
 	static int minerals;
 	
 	float cameraX;
 	float cameraY;
+	
+	float mouseX;
+	float mouseY;
+	
 	
 	static ArrayList<GameObject> colonists;
 	static ArrayList<GameObject> selected;
@@ -64,19 +71,32 @@ public class MainGame extends BasicGameState {
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			game.enterState(0);
 		}
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+		
+		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
+			mouseX = input.getMouseX(); // Store mouse position when starting rectangle
+			mouseY = input.getMouseY();
+		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
+				selectRect = new Rectangle(Math.min(input.getMouseX(), mouseX), Math.min(input.getMouseY(), mouseY), Math.abs(input.getMouseX() - mouseX), Math.abs(input.getMouseY() - mouseY));
+		} else if (mouseX != -1 && mouseY != -1 && !input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			// Calculate and store higher and lower bounds of rectangle
+			float higherBoundsX = Math.max(input.getMouseX(), mouseX);
+			float lowerBoundsX = Math.min(input.getMouseX(), mouseX); 
+			float higherBoundsY = Math.max(input.getMouseY(), mouseY);
+			float lowerBoundsY = Math.min(input.getMouseY(), mouseY);
 			for(GameObject gob : colonists){
-				if(isPointingAt(gob, input.getMouseX(), input.getMouseY())){
+				gob.deselect();
+				selected.remove(gob);
+				if (gob.getX() - lowerBoundsX < higherBoundsX - lowerBoundsX && gob.getY() - lowerBoundsY < higherBoundsY - lowerBoundsY && lowerBoundsX < gob.getX() && lowerBoundsY < gob.getY()) {
 					gob.select();
 					selected.add(gob);
 				}
-				else{
-					gob.deselect();
-					selected.remove(gob);
-				}
 			}
+			selectRect = null;
+			mouseX = -1;
+			mouseY = -1;
 		}
-		else if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
+		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
 				sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
 			}
@@ -93,10 +113,12 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		if (selectRect != null)
+			g.draw(selectRect);
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
-		
-		g.drawString("Press SPACE to go to main menu", 400, 200);
+
+		//g.drawString("Press SPACE to go to main menu", 400, 200);
 
 		if(!colonists.isEmpty()){
 			for(GameObject gob : colonists){
