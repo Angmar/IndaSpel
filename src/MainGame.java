@@ -25,8 +25,9 @@ public class MainGame extends BasicGameState {
 	float mouseX;
 	float mouseY;
 	
-	
-	static ArrayList<GameObject> colonists;
+	static ArrayList<Building> buildings;
+	static ArrayList<Character> colonists;
+	static ArrayList<Character> enemies;
 	static ArrayList<GameObject> selected;
 
 	public MainGame() {
@@ -39,12 +40,14 @@ public class MainGame extends BasicGameState {
 		cameraX = 0;
 		cameraY = 0;
 		minerals = 0;
-		colonists = new ArrayList<GameObject>();
+		buildings = new ArrayList<Building>();
+		colonists = new ArrayList<Character>();
+		enemies = new ArrayList<Character>();
 		selected = new ArrayList<GameObject>();
 		
-		colonists.add(new CommandCenter(400,400));
+		buildings.add(new CommandCenter(400,400));
 		colonists.add(new Worker(300,300));
-		colonists.add(new MineralOre(700,400));
+		buildings.add(new MineralOre(700,400));
 		
 		
 	}
@@ -98,7 +101,20 @@ public class MainGame extends BasicGameState {
 		}
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
+				
+				GameObject target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
+				if(target == null){
+					target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
+					if(target == null){
+						target = mouseTarget(enemies, input.getMouseX(), input.getMouseY());
+					}
+				}
+				if(target != null){
+					sel.setTarget(target);
+				}
+				else {
+					sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
+				}
 			}
 		}
 		
@@ -113,6 +129,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawString("Minerals: "+minerals, 850, 50);
+		
 		if (selectRect != null)
 			g.draw(selectRect);
 		//Translates the coordinates of view, must be first in render
@@ -120,20 +138,53 @@ public class MainGame extends BasicGameState {
 
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
 
-		if(!colonists.isEmpty()){
-			for(GameObject gob : colonists){
-				gob.render(container, g);
+		renderList(buildings, container, g);
+		renderList(colonists, container, g);
+		renderList(enemies, container, g);
+	}
+	
+	private void renderList(ArrayList characterList, GameContainer container, Graphics g) throws SlickException{
+		if(!characterList.isEmpty()){
+			for(Object gob : characterList){
+				((GameObject) gob).render(container, g);
 			}
 		}
 	}
 	
+	private GameObject mouseTarget(ArrayList list, float mouseX, float mouseY){
+		if(!list.isEmpty()){
+			for(Object gob : list){
+				if(isPointingAt((GameObject) gob, mouseX, mouseY)){
+					return (GameObject) gob;
+				}
+			}
+		}
+		return null;
+	}
+	
 	private boolean isPointingAt(GameObject gob, float mouseX, float mouseY){
-		if(mouseX-cameraX > gob.getX() && mouseX-cameraX < gob.getX()+gob.getWidth() &&
-				mouseY-cameraY > gob.getY() && mouseY-cameraY < gob.getY()+gob.getHeight()){
+		if(mouseX-cameraX > gob.getX()-gob.getWidth()/2 && mouseX-cameraX < gob.getX()+gob.getWidth()/2 &&
+				mouseY-cameraY > gob.getY()-gob.getHeight()/2 && mouseY-cameraY < gob.getY()+gob.getHeight()/2){
 			return true;
 		}
 		
 		return false;
+	}
+	
+	public static CommandCenter nearestCommandCenter(float charX, float charY){
+		CommandCenter nearestCC = null;
+		
+		for(Building comc : buildings){
+			if(comc.getClass() == CommandCenter.class){
+				if(nearestCC == null){
+					nearestCC = (CommandCenter) comc;
+				}
+				else if(comc.targetDistance(charX, charY) < nearestCC.targetDistance(charX, charY)){
+					nearestCC = (CommandCenter) comc;
+				}
+			}
+		}
+		return nearestCC;		
 	}
 
 	@Override

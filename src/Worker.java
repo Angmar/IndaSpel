@@ -1,3 +1,4 @@
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,7 +16,7 @@ public class Worker extends Character {
 		width = 60;
 		height = 60;
 		moveSpeed = 0.2;
-		range = 10;
+		range = width;
 		
 		createPortrait("worker.png");
 	}
@@ -23,7 +24,45 @@ public class Worker extends Character {
 	@Override
 	public void update(GameContainer container, Input input, int delta)
 			throws SlickException {
-		if(movePoint != null){
+		if(target != null){
+			//Check if target is a mineral
+			if(target.getClass() == MineralOre.class){
+				//If the worker holds no minerals
+				if(minerals == 0){
+					if(targetInRange()){
+						movePoint = null;
+						mine();
+					}
+					else if(movePoint != null){
+						moveToPoint(delta);
+					}
+					else{
+						movePoint = new Vector2f(target.getX(), target.getY());
+					}
+				}
+				//Else the target holds minerals and goes to deposit
+				else{
+					if(movePoint != null){
+						moveToPoint(delta);
+						if(targetDistance(movePoint.getX(), movePoint.getY()) < 100){
+							movePoint = null;
+							depositMinerals();
+						}
+					}
+					else{
+						CommandCenter comC = MainGame.nearestCommandCenter(x, y);
+						if(comC != null){
+							movePoint = new Vector2f(comC.getX(), comC.getY());
+						}
+					}
+				}
+			}
+			else{
+				setTarget(new Vector2f(target.getX(), target.getY()));
+				target = null;
+			}
+		}
+		else if(movePoint != null){
 			moveToPoint(delta);
 		}
 	}
@@ -31,19 +70,12 @@ public class Worker extends Character {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		if(selected){
-			g.drawString("V", x-10+width/2, y-20);
-		}
-		g.drawImage(portrait, x, y);
+		renderPortrait(g);
 	}
 	
 	private void mine() {
 		target.takeDamage(10);
 		minerals += 10;
-	}
-
-	public void addMinerals(int minerals) {
-		this.minerals += minerals;
 	}
 	
 	private void depositMinerals(){

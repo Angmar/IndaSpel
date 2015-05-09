@@ -31,6 +31,14 @@ public abstract class GameObject {
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
 	
+	protected void renderPortrait(Graphics g){
+		if(selected){
+			g.drawString("V", x, y-height/2-20);
+		}
+		g.drawImage(portrait, x-width/2, y-height/2);
+		
+	}
+	
 	public abstract void setTarget(Vector2f newMovePoint);
 	
 	public void setTarget(GameObject newTarget){
@@ -44,14 +52,14 @@ public abstract class GameObject {
 	}
 	
 	protected boolean targetInRange(){
-		if(targetDistance() < range){
+		if(targetDistance(target.getX(), target.getY()) < range){
 			return true;
 		}
 		return false;
 	}
 	
-	protected double targetDistance(){
-		return Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getY()-x, 2));
+	protected double targetDistance(float targetX, float targetY){
+		return Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
 	}
 	
 	public GameObject getTarget(){
