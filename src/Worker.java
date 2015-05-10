@@ -8,17 +8,19 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 public class Worker extends Character {
+	
 	private int minerals;
 	
+	//Time it takes to mine
+	private int miningTime;
+	private int miningProgress;
+	
 	public Worker(float x, float y) throws SlickException {
-		this.x = x;
-		this.y = y;
-		width = 60;
-		height = 60;
-		moveSpeed = 0.2;
-		range = width;
+		//x, y, width, height, maxHealth, damage, range, "portrait", moveSpeed
+		super(x, y, 60, 60, 100, 20, 60, "worker.png", 0.2);
 		
-		createPortrait("worker.png");
+		miningTime = 1000;
+		miningProgress = 0;
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class Worker extends Character {
 				if(minerals == 0){
 					if(targetInRange()){
 						movePoint = null;
-						mine();
+						mine(delta);
 					}
 					else if(movePoint != null){
 						moveToPoint(delta);
@@ -59,11 +61,12 @@ public class Worker extends Character {
 			}
 			else{
 				setTarget(new Vector2f(target.getX(), target.getY()));
-				target = null;
+				miningInterrupt();
 			}
 		}
 		else if(movePoint != null){
 			moveToPoint(delta);
+			miningInterrupt();
 		}
 	}
 	
@@ -73,9 +76,21 @@ public class Worker extends Character {
 		renderPortrait(g);
 	}
 	
-	private void mine() {
-		target.takeDamage(10);
-		minerals += 10;
+	private void miningInterrupt(){
+		if(miningProgress != 0){
+			miningProgress = 0;
+		}
+	}
+	
+	private void mine(int delta) {
+		if(miningProgress >= miningTime){
+			target.takeDamage(damage);
+			minerals += damage;
+			miningProgress = 0;
+		}
+		else{
+			miningProgress += delta;
+		}
 	}
 	
 	private void depositMinerals(){

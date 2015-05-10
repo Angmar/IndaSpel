@@ -9,11 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class CommandCenter extends Building {
 
 	public CommandCenter(float x, float y) throws SlickException {
-		super(x, y);
-		width = 100;
-		height = 100;
-
-		createPortrait("commandcenter.png");
+		//x, y, width, height, maxHealth, damage, range, "portrait"
+		super(x, y, 200, 200, 1000, 10, 60, "commandcenter.png");
 	}
 	
 	public void spawnWorker() throws SlickException {

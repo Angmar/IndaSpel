@@ -25,6 +25,21 @@ public abstract class GameObject {
 	protected Vector2f movePoint;
 	protected GameObject target;
 	
+	public GameObject(float x, float y, int width, int height, 
+					int maxHealth, int damage, float range, String image) throws SlickException{
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.maxHealth = maxHealth;
+		this.currentHealth = maxHealth;
+		this.damage = damage;
+		this.range = range;
+		
+		this.portrait = new Image(image);
+		this.portrait = portrait.getScaledCopy(width, height);
+	}
+	
 	public abstract void update(GameContainer container, Input input, int delta)
 			throws SlickException;
 	
@@ -46,11 +61,6 @@ public abstract class GameObject {
 		movePoint = null;
 	}
 	
-	protected void createPortrait(String image) throws SlickException{
-		portrait = new Image(image);
-		portrait = portrait.getScaledCopy(width, height);
-	}
-	
 	protected boolean targetInRange(){
 		if(targetDistance(target.getX(), target.getY()) < range){
 			return true;
@@ -58,8 +68,8 @@ public abstract class GameObject {
 		return false;
 	}
 	
-	protected double targetDistance(float targetX, float targetY){
-		return Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
+	protected float targetDistance(float targetX, float targetY){
+		return (float) Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
 	}
 	
 	public GameObject getTarget(){

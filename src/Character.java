@@ -10,8 +10,13 @@ public abstract class Character extends GameObject {
 	
 	protected double moveSpeed;
 	
-	public Character(){
+	public Character(float x, float y, int width, int height, 
+			int maxHealth, int damage, float range, String image, double moveSpeed) throws SlickException{
 		
+		//x, y, width, height, maxHealth, damage, range, "portrait"
+		super(x, y, width, height, maxHealth, damage, range, image);
+		
+		this.moveSpeed = moveSpeed;
 	}
 	
 	protected void move(){
@@ -23,18 +28,28 @@ public abstract class Character extends GameObject {
 		target = null;
 	}
 	
-	private float movePointDistance(float xDistance, float yDistance){
-		return (float) Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+	protected void setMoveToBuildingPoint(){
+		float hyp = targetDistance(target.getX(), target.getY());
+		int targetWidth = width/2 + target.getWidth()/2;
+		int targetHeight = height/2 + target.getHeight()/2;
+		
+		float xPoint = target.getX() - ((hyp/(target.getX()-x)) * targetWidth);
+		float yPoint = target.getY() - ((hyp/(target.getY()-y)) * targetHeight);
+		
+		setTarget(new Vector2f(xPoint, yPoint));
+		
 	}
 	
 	protected void moveToPoint(int delta){
 		float xDistance = movePoint.getX() - x;
 		float yDistance = movePoint.getY() - y;
 		
-		float hyp =  movePointDistance(xDistance, yDistance);
+		double hyp =  targetDistance(movePoint.getX(), movePoint.getY());
 		
 		this.x += delta*moveSpeed*(xDistance/hyp);
 		this.y += delta*moveSpeed*(yDistance/hyp);
+		
+		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));
 		
 		if(hyp < 2){
 			movePoint = null;
