@@ -86,14 +86,13 @@ public class MainGame extends BasicGameState {
 			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
 				selectRect.setBounds(Math.min(input.getMouseX() - cameraX, mouseX), Math.min(input.getMouseY() - cameraY, mouseY), Math.abs(input.getMouseX() - cameraX - mouseX), Math.abs(input.getMouseY() - cameraY - mouseY));
 		} else if (mouseX != -1 && mouseY != -1 && !input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			for(GameObject gob : colonists){
+			for (GameObject gob : selected) {
 				gob.deselect();
-				selected.remove(gob);
-				if (selectRect.intersects(new Rectangle(gob.getX()-gob.getWidth()/2, gob.getY()-gob.getHeight()/2, gob.getWidth(), gob.getHeight()))) {
-					gob.select();
-					selected.add(gob);
-				}
 			}
+			selected.clear();
+			selectFromList(colonists); // Try to select colonists
+			if (selected.isEmpty()) // If that fails (if there aren't any colonists in the select box)
+				selectFromList(buildings); // Try to select buildings
 			selectRect = null;
 			mouseX = -1;
 			mouseY = -1;
@@ -123,6 +122,17 @@ public class MainGame extends BasicGameState {
 		updateList(enemies, container, delta);
 	}
 	
+	private void selectFromList(ArrayList<? extends GameObject> list) {
+		for(GameObject gob : list){
+			gob.deselect();
+			selected.remove(gob);
+			if (selectRect.intersects(new Rectangle(gob.getX()-gob.getWidth()/2, gob.getY()-gob.getHeight()/2, gob.getWidth(), gob.getHeight()))) {
+				gob.select();
+				selected.add(gob);
+			}
+		}
+	}
+	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
@@ -141,9 +151,9 @@ public class MainGame extends BasicGameState {
 		renderList(enemies, container, g);
 	}
 	
-	private void updateList(ArrayList gameList, GameContainer container, int delta) throws SlickException{
+	private void updateList(ArrayList<? extends GameObject> gameList, GameContainer container, int delta) throws SlickException{
 		if(!gameList.isEmpty()){
-			for(Iterator iter = gameList.iterator(); iter.hasNext(); ){
+			for(Iterator<GameObject> iter = (Iterator<GameObject>) gameList.iterator(); iter.hasNext(); ){
 				GameObject gob = (GameObject) iter.next();
 				if(gob.isAlive()){
 					gob.update(container, delta);
@@ -155,19 +165,19 @@ public class MainGame extends BasicGameState {
 		}
 	}
 	
-	private void renderList(ArrayList characterList, GameContainer container, Graphics g) throws SlickException{
+	private void renderList(ArrayList<? extends GameObject> characterList, GameContainer container, Graphics g) throws SlickException{
 		if(!characterList.isEmpty()){
-			for(Object gob : characterList){
-				((GameObject) gob).render(container, g);
+			for(GameObject gob : characterList){
+				gob.render(container, g);
 			}
 		}
 	}
 	
-	private GameObject mouseTarget(ArrayList list, float mouseX, float mouseY){
+	private GameObject mouseTarget(ArrayList<? extends GameObject> list, float mouseX, float mouseY){
 		if(!list.isEmpty()){
-			for(Object gob : list){
-				if(isPointingAt((GameObject) gob, mouseX, mouseY)){
-					return (GameObject) gob;
+			for(GameObject gob : list){
+				if(isPointingAt(gob, mouseX, mouseY)){
+					return gob;
 				}
 			}
 		}
