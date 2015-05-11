@@ -46,7 +46,9 @@ public class MainGame extends BasicGameState {
 		selected = new ArrayList<GameObject>();
 		
 		buildings.add(new CommandCenter(400,400));
+		colonists.add(new Worker(300,200));
 		colonists.add(new Worker(300,300));
+		colonists.add(new Worker(300,400));
 		buildings.add(new MineralOre(700,400));
 
 		
@@ -86,7 +88,7 @@ public class MainGame extends BasicGameState {
 			for(GameObject gob : colonists){
 				gob.deselect();
 				selected.remove(gob);
-				if (selectRect.intersects(new Rectangle(gob.getX(), gob.getY(), gob.getWidth(), gob.getHeight()))) {
+				if (selectRect.intersects(new Rectangle(gob.getX()-gob.getWidth()/2, gob.getY()-gob.getHeight()/2, gob.getWidth(), gob.getHeight()))) {
 					gob.select();
 					selected.add(gob);
 				}
