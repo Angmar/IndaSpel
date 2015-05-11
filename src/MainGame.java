@@ -6,8 +6,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -50,7 +52,11 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(300,200));
 		colonists.add(new Worker(300,300));
 		colonists.add(new Worker(300,400));
-		buildings.add(new MineralOre(700,400));
+		colonists.add(new Fighter(500,400));
+		buildings.add(new MineralOre(710,320));
+		buildings.add(new MineralOre(730,350));
+		buildings.add(new MineralOre(720,400));
+		buildings.add(new MineralOre(700,450));
 
 		
 	}
@@ -137,9 +143,9 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		g.drawString("Minerals: "+minerals, 850, 50);
-		
+				
 
+		
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
 
@@ -150,6 +156,19 @@ public class MainGame extends BasicGameState {
 		renderList(buildings, container, g);
 		renderList(colonists, container, g);
 		renderList(enemies, container, g);
+
+		//Translate back so hud will be rendered on top
+		g.translate(-cameraX,-cameraY);
+		g.drawString("Minerals: "+minerals, 850, 50);
+
+		if (!(selected.isEmpty())) {
+			g.setColor(Color.black);
+			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 300));
+			g.setColor(Color.white);
+			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 100));
+			g.drawImage(selected.get(0).portrait.getScaledCopy(100, 100), container.getWidth()-300, container.getHeight()-100);
+		}
+
 	}
 	
 	private void updateList(ArrayList<? extends GameObject> gameList, GameContainer container, int delta) throws SlickException{

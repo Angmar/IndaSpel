@@ -8,15 +8,26 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class CommandCenter extends Building {
 
+	private int buildProgress;
+	private int buildTime;
+	
 	public CommandCenter(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait"
 		super(x, y, 200, 200, 1000, 10, 60, "commandcenter.png");
+		buildProgress = 0;
+		buildTime = 5000;
 	}
 	
-	public void spawnWorker() throws SlickException {
-		Worker worker = new Worker(x, y);
-		MainGame.colonists.add(worker);	
+	public void spawnWorker(int delta) throws SlickException {
+		if (buildProgress >= buildTime) {	
+			MainGame.minerals -= 100;
+			Worker worker = new Worker(x, y);
+			MainGame.colonists.add(worker);	
+		} else {
+			buildProgress += delta;
+		}
 	}
+	
 
 
 	@Override
