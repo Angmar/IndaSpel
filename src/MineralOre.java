@@ -10,7 +10,7 @@ public class MineralOre extends Building {
 
 	public MineralOre(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, 50, 60, 1000, 10, 60, "mineral.png");
+		super(x, y, 50, 60, 100, 10, 60, "mineral.png");
 	}
 
 	@Override
