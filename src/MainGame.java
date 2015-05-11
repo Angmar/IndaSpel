@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
@@ -117,11 +118,9 @@ public class MainGame extends BasicGameState {
 		}
 		
 
-		if(!colonists.isEmpty()){
-			for(GameObject gob : colonists){
-				gob.update(container, input, delta);
-			}
-		}
+		updateList(buildings, container, delta);
+		updateList(colonists, container, delta);
+		updateList(enemies, container, delta);
 	}
 	
 	@Override
@@ -140,6 +139,20 @@ public class MainGame extends BasicGameState {
 		renderList(buildings, container, g);
 		renderList(colonists, container, g);
 		renderList(enemies, container, g);
+	}
+	
+	private void updateList(ArrayList gameList, GameContainer container, int delta) throws SlickException{
+		if(!gameList.isEmpty()){
+			for(Iterator iter = gameList.iterator(); iter.hasNext(); ){
+				GameObject gob = (GameObject) iter.next();
+				if(gob.isAlive()){
+					gob.update(container, delta);
+				}
+				else{
+					iter.remove();
+				}
+			}
+		}
 	}
 	
 	private void renderList(ArrayList characterList, GameContainer container, Graphics g) throws SlickException{

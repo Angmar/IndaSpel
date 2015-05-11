@@ -13,7 +13,7 @@ public class Pirate extends Character {
 	}
 
 	@Override
-	public void update(GameContainer container, Input input, int delta)
+	public void update(GameContainer container, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
 
