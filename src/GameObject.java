@@ -1,4 +1,5 @@
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -36,11 +37,13 @@ public abstract class GameObject {
 		this.damage = damage;
 		this.range = range;
 		
+		this.alive = true;
+		
 		this.portrait = new Image(image);
 		this.portrait = portrait.getScaledCopy(width, height);
 	}
 	
-	public abstract void update(GameContainer container, Input input, int delta)
+	public abstract void update(GameContainer container, int delta)
 			throws SlickException;
 	
 	public abstract void render(GameContainer container, Graphics g)
@@ -48,7 +51,19 @@ public abstract class GameObject {
 	
 	protected void renderPortrait(Graphics g){
 		if(selected){
-			g.drawString("V", x, y-height/2-20);
+			g.setColor(Color.green);
+			g.setLineWidth(2);
+			int lineDist = Math.max(height, width);
+			
+			g.drawLine(x-lineDist/2, y-lineDist/2, x-lineDist/2, y+lineDist/2);
+			g.drawLine(x+lineDist/2, y-lineDist/2, x+lineDist/2, y+lineDist/2);
+			
+			g.drawLine(x+lineDist/2, y-lineDist/2, x+lineDist/3, y-lineDist/2);
+			g.drawLine(x+lineDist/2, y+lineDist/2, x+lineDist/3, y+lineDist/2);
+			
+			g.drawLine(x-lineDist/2, y-lineDist/2, x-lineDist/3, y-lineDist/2);
+			g.drawLine(x-lineDist/2, y+lineDist/2, x-lineDist/3, y+lineDist/2);
+			g.setColor(Color.white);
 		}
 		g.drawImage(portrait, x-width/2, y-height/2);
 		
@@ -106,6 +121,9 @@ public abstract class GameObject {
 	
 	public void takeDamage(int damage) {
 		currentHealth -= damage;
+		if(currentHealth <= 0){
+			alive = false;
+		}
 	}
 	
 	public void select(){ 

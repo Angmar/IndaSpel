@@ -29,29 +29,28 @@ public abstract class Character extends GameObject {
 	}
 	
 	protected void setMoveToBuildingPoint(){
-		float hyp = targetDistance(target.getX(), target.getY());
-		int targetWidth = width/2 + target.getWidth()/2;
-		int targetHeight = height/2 + target.getHeight()/2;
+		float distance = targetDistance(target.getX(), target.getY());
+		float xDistance = target.getX() - x;
+		float yDistance = target.getY() - y;
 		
-		float xPoint = target.getX() - ((hyp/(target.getX()-x)) * targetWidth);
-		float yPoint = target.getY() - ((hyp/(target.getY()-y)) * targetHeight);
+		float xPoint = target.getX() - ((xDistance/distance) * (width/2 + target.getHeight()/2));
+		float yPoint = target.getY() - ((yDistance/distance) * (height/2 + target.getHeight()/2));
 		
 		setTarget(new Vector2f(xPoint, yPoint));
-		
 	}
 	
 	protected void moveToPoint(int delta){
 		float xDistance = movePoint.getX() - x;
 		float yDistance = movePoint.getY() - y;
 		
-		double hyp =  targetDistance(movePoint.getX(), movePoint.getY());
+		double distance =  targetDistance(movePoint.getX(), movePoint.getY());
 		
-		this.x += delta*moveSpeed*(xDistance/hyp);
-		this.y += delta*moveSpeed*(yDistance/hyp);
+		this.x += delta*moveSpeed*(xDistance/distance);
+		this.y += delta*moveSpeed*(yDistance/distance);
 		
 		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));
 		
-		if(hyp < 2){
+		if(distance < 2){
 			movePoint = null;
 		}
 	}

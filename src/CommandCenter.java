@@ -20,11 +20,10 @@ public class CommandCenter extends Building {
 
 
 	@Override
-	public void update(GameContainer container, Input input, int delta)
+	public void update(GameContainer container, int delta)
 			throws SlickException {
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			spawnWorker();
-		}
+		
+		portrait.rotate((float) (0.005*delta));
 		
 	}
 

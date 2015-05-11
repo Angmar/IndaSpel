@@ -10,11 +10,11 @@ public class MineralOre extends Building {
 
 	public MineralOre(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, 50, 60, 100, 10, 60, "mineral ore.png");
+		super(x, y, 50, 60, 1000, 10, 60, "mineral ore.png");
 	}
 
 	@Override
-	public void update(GameContainer container, Input input, int delta)
+	public void update(GameContainer container, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
 		

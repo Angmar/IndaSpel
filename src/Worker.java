@@ -24,43 +24,22 @@ public class Worker extends Character {
 	}
 
 	@Override
-	public void update(GameContainer container, Input input, int delta)
+	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if(target != null){
 			//Check if target is a mineral
 			if(target.getClass() == MineralOre.class){
 				//If the worker holds no minerals
 				if(minerals == 0){
-					if(targetInRange()){
-						movePoint = null;
-						mine(delta);
-					}
-					else if(movePoint != null){
-						moveToPoint(delta);
-					}
-					else{
-						movePoint = new Vector2f(target.getX(), target.getY());
-					}
+					mine(delta);
 				}
 				//Else the target holds minerals and goes to deposit
 				else{
-					if(movePoint != null){
-						moveToPoint(delta);
-						if(targetDistance(movePoint.getX(), movePoint.getY()) < 100){
-							movePoint = null;
-							depositMinerals();
-						}
-					}
-					else{
-						CommandCenter comC = MainGame.nearestCommandCenter(x, y);
-						if(comC != null){
-							movePoint = new Vector2f(comC.getX(), comC.getY());
-						}
-					}
+					deposit(delta);
 				}
 			}
 			else{
-				setTarget(new Vector2f(target.getX(), target.getY()));
+				setMoveToBuildingPoint();
 				miningInterrupt();
 			}
 		}
@@ -82,20 +61,51 @@ public class Worker extends Character {
 		}
 	}
 	
+	//Worker goes to mine the target mineral ore
 	private void mine(int delta) {
-		if(miningProgress >= miningTime){
-			target.takeDamage(damage);
-			minerals += damage;
-			miningProgress = 0;
+		if(targetInRange()){
+			movePoint = null;
+			if(miningProgress >= miningTime){
+				target.takeDamage(damage);
+				minerals += damage;
+				miningProgress = 0;
+			}
+			else{
+				miningProgress += delta;
+			}
+		}
+		else if(movePoint != null){
+			moveToPoint(delta);
 		}
 		else{
-			miningProgress += delta;
+			movePoint = new Vector2f(target.getX(), target.getY());
 		}
 	}
 	
-	private void depositMinerals(){
-		MainGame.minerals += minerals;
-		minerals = 0;
+	//Worker goes to deposit minerals
+	private void deposit(int delta){
+		if(movePoint != null){
+			moveToPoint(delta);
+			if(targetDistance(movePoint.getX(), movePoint.getY()) < 2){
+				movePoint = null;
+				MainGame.minerals += minerals;
+				minerals = 0;
+				if(!target.isAlive()){
+					target = null;
+				}
+			}
+		}
+		else{
+			CommandCenter comC = MainGame.nearestCommandCenter(x, y);
+			if(comC != null){
+				GameObject minTarg = target;
+				target = comC;
+				setMoveToBuildingPoint();
+				target = minTarg;
+				//movePoint = new Vector2f(comC.getX(), comC.getY());
+			}
+		}
+		
 	}
 	
 }
