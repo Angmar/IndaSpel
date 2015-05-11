@@ -22,8 +22,8 @@ public class MainGame extends BasicGameState {
 	float cameraX;
 	float cameraY;
 	
-	float mouseX;
-	float mouseY;
+	float mouseX = -1;
+	float mouseY = -1;
 	
 	static ArrayList<Building> buildings;
 	static ArrayList<Character> colonists;
@@ -48,7 +48,7 @@ public class MainGame extends BasicGameState {
 		buildings.add(new CommandCenter(400,400));
 		colonists.add(new Worker(300,300));
 		buildings.add(new MineralOre(700,400));
-		
+
 		
 	}
 	
@@ -76,21 +76,17 @@ public class MainGame extends BasicGameState {
 		}
 		
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
-			mouseX = input.getMouseX(); // Store mouse position when starting rectangle
-			mouseY = input.getMouseY();
+			mouseX = input.getMouseX() - cameraX; // Store mouse position when starting rectangle
+			mouseY = input.getMouseY() - cameraY;
+			selectRect = new Rectangle(mouseX, mouseY, 1, 1);
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
-				selectRect = new Rectangle(Math.min(input.getMouseX(), mouseX), Math.min(input.getMouseY(), mouseY), Math.abs(input.getMouseX() - mouseX), Math.abs(input.getMouseY() - mouseY));
+				selectRect.setBounds(Math.min(input.getMouseX() - cameraX, mouseX), Math.min(input.getMouseY() - cameraY, mouseY), Math.abs(input.getMouseX() - cameraX - mouseX), Math.abs(input.getMouseY() - cameraY - mouseY));
 		} else if (mouseX != -1 && mouseY != -1 && !input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			// Calculate and store higher and lower bounds of rectangle
-			float higherBoundsX = Math.max(input.getMouseX(), mouseX);
-			float lowerBoundsX = Math.min(input.getMouseX(), mouseX); 
-			float higherBoundsY = Math.max(input.getMouseY(), mouseY);
-			float lowerBoundsY = Math.min(input.getMouseY(), mouseY);
 			for(GameObject gob : colonists){
 				gob.deselect();
 				selected.remove(gob);
-				if (gob.getX() - lowerBoundsX < higherBoundsX - lowerBoundsX && gob.getY() - lowerBoundsY < higherBoundsY - lowerBoundsY && lowerBoundsX < gob.getX() && lowerBoundsY < gob.getY()) {
+				if (selectRect.intersects(new Rectangle(gob.getX(), gob.getY(), gob.getWidth(), gob.getHeight()))) {
 					gob.select();
 					selected.add(gob);
 				}
@@ -131,11 +127,12 @@ public class MainGame extends BasicGameState {
 			throws SlickException {
 		g.drawString("Minerals: "+minerals, 850, 50);
 		
-		if (selectRect != null)
-			g.draw(selectRect);
+
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
 
+		if (selectRect != null)
+			g.draw(selectRect);
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
 
 		renderList(buildings, container, g);
@@ -161,7 +158,8 @@ public class MainGame extends BasicGameState {
 		}
 		return null;
 	}
-	
+
+
 	private boolean isPointingAt(GameObject gob, float mouseX, float mouseY){
 		if(mouseX-cameraX > gob.getX()-gob.getWidth()/2 && mouseX-cameraX < gob.getX()+gob.getWidth()/2 &&
 				mouseY-cameraY > gob.getY()-gob.getHeight()/2 && mouseY-cameraY < gob.getY()+gob.getHeight()/2){
