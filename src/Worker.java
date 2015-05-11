@@ -39,7 +39,7 @@ public class Worker extends Character {
 				}
 			}
 			else{
-				setMoveToBuildingPoint();
+				setMoveToGameObjectPoint();
 				miningInterrupt();
 			}
 		}
@@ -86,7 +86,7 @@ public class Worker extends Character {
 	private void deposit(int delta){
 		if(movePoint != null){
 			moveToPoint(delta);
-			if(targetDistance(movePoint.getX(), movePoint.getY()) < 2){
+			if(movePoint == null){
 				movePoint = null;
 				MainGame.minerals += minerals;
 				minerals = 0;
@@ -100,7 +100,7 @@ public class Worker extends Character {
 			if(comC != null){
 				GameObject minTarg = target;
 				target = comC;
-				setMoveToBuildingPoint();
+				setMoveToGameObjectPoint();
 				target = minTarg;
 				//movePoint = new Vector2f(comC.getX(), comC.getY());
 			}

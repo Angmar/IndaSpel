@@ -99,7 +99,6 @@ public class MainGame extends BasicGameState {
 		}
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				
 				GameObject target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
 				if(target == null){
 					target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());

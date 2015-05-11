@@ -30,6 +30,9 @@ public class MainMenu extends BasicGameState {
 		else if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			container.exit();
 		}
+		else if(input.isKeyPressed(Input.KEY_T)){
+			 StartGame.changeFullScreen();
+		}
 
 	}
 	
@@ -38,6 +41,7 @@ public class MainMenu extends BasicGameState {
 			throws SlickException {
 		g.drawString("Press SPACE to continue", 400, 200);
 		g.drawString("Press ESCAPE to quit", 400, 300);
+		g.drawString("Press T to toggle fullscreen", 400, 400);
 	}
 
 	@Override
