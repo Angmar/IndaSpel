@@ -65,13 +65,19 @@ public class Worker extends Character {
 	private void mine(int delta) {
 		if(targetInRange()){
 			movePoint = null;
-			if(miningProgress >= miningTime){
-				target.takeDamage(damage);
-				minerals += damage;
-				miningProgress = 0;
+			if(target.getTarget() == this){
+				if(miningProgress >= miningTime){
+					target.takeDamage(damage);
+					target.clearTarget();
+					minerals += damage;
+					miningProgress = 0;
+				}
+				else{
+					miningProgress += delta;
+				}
 			}
-			else{
-				miningProgress += delta;
+			else if(target.getTarget() == null){
+				target.setTarget(this);
 			}
 		}
 		else if(movePoint != null){

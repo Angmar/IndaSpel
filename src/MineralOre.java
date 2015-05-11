@@ -17,7 +17,7 @@ public class MineralOre extends Building {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		
+		//System.out.println(target);
 	}
 
 	@Override
@@ -25,6 +25,5 @@ public class MineralOre extends Building {
 			throws SlickException {
 		renderPortrait(g);
 	}
-
 	
 }

@@ -80,6 +80,11 @@ public abstract class GameObject {
 		movePoint = null;
 	}
 	
+	public void clearTarget(){
+		movePoint = null;
+		target = null;
+	}
+	
 	protected boolean targetInRange(){
 		if(targetDistance(target.getX(), target.getY()) < range){
 			return true;
