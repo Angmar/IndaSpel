@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -20,6 +21,7 @@ public abstract class GameObject {
 	protected float range;
 	protected boolean alive;
 	protected Image portrait;
+	protected Rectangle posRect;
 	
 	//To be changed
 	protected boolean selected;
@@ -41,6 +43,8 @@ public abstract class GameObject {
 		
 		this.portrait = new Image(image);
 		this.portrait = portrait.getScaledCopy(width, height);
+		
+		this.posRect = new Rectangle(x-width/2, y-height/2, width, height);
 	}
 	
 	public abstract void update(GameContainer container, int delta)
@@ -117,6 +121,10 @@ public abstract class GameObject {
 	
 	public boolean isAlive(){
 		return alive;
+	}
+	
+	public Rectangle getRect(){
+		return posRect;
 	}
 	
 	public void takeDamage(int damage) {

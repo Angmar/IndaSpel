@@ -36,6 +36,7 @@ public abstract class Character extends GameObject {
 		float xPoint = target.getX() - ((xDistance/distance) * (width/2 + target.getHeight()/2));
 		float yPoint = target.getY() - ((yDistance/distance) * (height/2 + target.getHeight()/2));
 		
+		posRect.setLocation(x-width/2, y-height/2);
 		setTarget(new Vector2f(xPoint, yPoint));
 	}
 	
@@ -48,8 +49,8 @@ public abstract class Character extends GameObject {
 		this.x += delta*moveSpeed*(xDistance/distance);
 		this.y += delta*moveSpeed*(yDistance/distance);
 		
-		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));
-		
+		posRect.setLocation(x-width/2, y-height/2);
+		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));	
 		if(distance < 2){
 			movePoint = null;
 		}

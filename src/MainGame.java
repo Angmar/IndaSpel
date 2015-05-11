@@ -126,7 +126,7 @@ public class MainGame extends BasicGameState {
 		for(GameObject gob : list){
 			gob.deselect();
 			selected.remove(gob);
-			if (selectRect.intersects(new Rectangle(gob.getX()-gob.getWidth()/2, gob.getY()-gob.getHeight()/2, gob.getWidth(), gob.getHeight()))) {
+			if (selectRect.intersects(gob.getRect())) {
 				gob.select();
 				selected.add(gob);
 			}
