@@ -46,12 +46,19 @@ public abstract class Character extends GameObject {
 		}
 	}
 	
+	protected void moveToTarget(int delta){
+		moveTo(target.getX(), target.getY(), range, delta);
+	}
+	
 	protected void moveToPoint(int delta){
-		
-		double distance =  targetDistance(movePoint.getX(), movePoint.getY());
-		if(distance > delta*moveSpeed){
-			float xDistance = movePoint.getX() - x;
-			float yDistance = movePoint.getY() - y;
+		moveTo(movePoint.getX(), movePoint.getY(), delta*moveSpeed, delta);
+	}
+	
+	private void moveTo(float xPoint, float yPoint, double moveRange, int delta){
+		double distance =  targetDistance(xPoint, yPoint);
+		if(distance > moveRange){
+			float xDistance = xPoint - x;
+			float yDistance = yPoint - y;
 			
 			this.x += delta*moveSpeed*(xDistance/distance);
 			this.y += delta*moveSpeed*(yDistance/distance);
@@ -66,10 +73,14 @@ public abstract class Character extends GameObject {
 		posRect.setLocation(x-width/2, y-height/2);
 	}
 	
-	protected void attack(int delta){
-		if(target != null && targetInRange() && 
-				attackProgress == 0 && target.isAlive()){
+	protected void assaultTarget(int delta){
+		
+		if(!targetInRange() && target.isAlive()){
+			moveToTarget(delta);
+		}
+		else if(targetInRange() && attackProgress == 0 && target.isAlive()){
 			target.takeDamage(damage);
+			target.setAttacker(this);
 			attackProgress += delta;
 		}
 		else if(attackProgress > 0 &&  attackProgress < attackSpeed){
@@ -77,6 +88,52 @@ public abstract class Character extends GameObject {
 		}
 		else{
 			attackProgress = 0;
+			if(!target.isAlive()){
+				target = null;
+			}
+		}
+	}
+	
+	protected void playerControlledAI(int delta){
+		if(target != null){
+			if(target.getFaction() == 0 || target.getFaction() == faction){
+				setMoveToGameObjectPoint();
+			}
+			else if(!isSameFaction()){
+				assaultTarget(delta);
+			}
+		}
+		else if(attacker != null){
+			target = attacker;
+			attacker = null;
+		}
+		else if(movePoint != null){
+			moveToPoint(delta);
+		}
+	}
+	
+	protected void enemyAI(int delta){
+		if(target != null){
+			if(!isSameFaction()){
+				assaultTarget(delta);
+			}
+			if(target == null){
+				target = MainGame.nearestCommandCenter(x, y);
+			}
+			else if(Building.class.isAssignableFrom(target.getClass())){
+				GameObject tempTarg = target;
+				target = MainGame.nearestColonist(x, y);
+				if(target == null || !targetInRange()){
+					target = tempTarg;
+				}
+			}
+		}
+		else if(attacker != null){
+			target = attacker;
+			attacker = null;
+		}
+		else{
+			target = MainGame.nearestCommandCenter(x, y);
 		}
 	}
 }

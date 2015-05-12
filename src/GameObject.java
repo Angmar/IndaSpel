@@ -27,10 +27,12 @@ public abstract class GameObject {
 	protected Color attackLaser;
 	protected int faction; //0 = Resource, 1 = Friendly, 2 = Enemy
 	
+	
 	//To be changed
 	protected boolean selected;
 	protected Vector2f movePoint;
 	protected GameObject target;
+	protected GameObject attacker;
 	
 	public GameObject(float x, float y, int width, int height, int maxHealth, 
 			int damage, float range, int attackSpeed, int faction, String image) throws SlickException{
@@ -174,6 +176,14 @@ public abstract class GameObject {
 		if(currentHealth <= 0){
 			alive = false;
 		}
+	}
+	
+	public boolean isAttacking(){
+		return attackProgress > 0;
+	}
+	
+	public void setAttacker(GameObject attacker){
+		this.attacker = attacker;
 	}
 	
 	public void select(){ 

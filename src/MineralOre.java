@@ -16,8 +16,10 @@ public class MineralOre extends Building {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		//System.out.println(target);
+		if(target != null && (!target.isAttacking() || target.isAlive())){
+			System.out.println("hello");
+			target = null;
+		}
 	}
 
 	@Override

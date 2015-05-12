@@ -55,9 +55,9 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(300,200));
 		colonists.add(new Worker(300,300));
 		colonists.add(new Worker(300,400));
-		colonists.add(new Fighter(500,400));
+		colonists.add(new Fighter(500,400, 1));
 		
-//		enemies.add(new Pirate(700,400));
+		enemies.add(new Pirate(700,400, 2));
 		
 		resources.add(new MineralOre(710,320));
 		resources.add(new MineralOre(730,350));
@@ -121,8 +121,7 @@ public class MainGame extends BasicGameState {
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
 				
-				GameObject target = mouseTarget(enemies, input.getMouseX(), input.getMouseY());
-				 
+				GameObject target = mouseTarget(enemies, input.getMouseX(), input.getMouseY()); 
 				if(target == null){
 					target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
 					if(target == null){
@@ -131,12 +130,12 @@ public class MainGame extends BasicGameState {
 							target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
 						}
 					}
-					if(target != null){
-						sel.setTarget(target);
-					}
-					else {
-						sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
-					}
+				}
+				if(target != null){
+					sel.setTarget(target);
+				}
+				else{
+					sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
 				}
 			}
 		}
@@ -180,7 +179,7 @@ public class MainGame extends BasicGameState {
 		g.translate(-cameraX,-cameraY);
 		g.drawString("Minerals: "+minerals, 850, 50);
 		
-		drawHud(container, g);
+		//drawHud(container, g);
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {

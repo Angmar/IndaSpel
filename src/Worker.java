@@ -77,6 +77,7 @@ public class Worker extends Character {
 			}
 			else if(target.getTarget() == null){
 				target.setTarget(this);
+				attackProgress += delta;
 			}
 		}
 		else if(movePoint != null){

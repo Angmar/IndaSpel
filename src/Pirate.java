@@ -7,27 +7,22 @@ import org.newdawn.slick.SlickException;
 public class Pirate extends Character {
 	
 	
-	public Pirate(float x, float y) throws SlickException {
+	public Pirate(float x, float y, int faction) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait", moveSpeed
-		super(x, y, 55, 65, 170, 40, 130, 600, 2, "pirate.png", 0.4);
+		super(x, y, 55, 65, 170, 30, 130, 800, faction, "pirate.png", 0.2);
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		attack(delta);
-		if(target != null && target.isAlive()){
-			if(Building.class.isAssignableFrom(target.getClass())){
-				GameObject tempTarg = target;
-				target = MainGame.nearestColonist(x, y);
-				if(!targetInRange()){
-					target = tempTarg;
-				}
-			}
+		
+		if(faction == 1){
+			playerControlledAI(delta);
 		}
 		else{
-			target = MainGame.nearestCommandCenter(x, y);
+			enemyAI(delta);
 		}
+		
 	}
 
 	@Override
