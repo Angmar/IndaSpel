@@ -14,7 +14,7 @@ public abstract class Building extends GameObject {
 			int maxHealth, int damage, float range, String image) throws SlickException {
 		
 		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, width, height, maxHealth, damage, range, 0, image);
+		super(x, y, width, height, maxHealth, damage, range, 0, 0, image);
 	}
 	
 }

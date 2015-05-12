@@ -88,6 +88,14 @@ public class MainGame extends BasicGameState {
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
 			mouseX = input.getMouseX() - cameraX; // Store mouse position when starting rectangle
 			mouseY = input.getMouseY() - cameraY;
+			if ((!(selected.isEmpty())) && selected.get(0) instanceof Builder) {
+				Builder b = (Builder) selected.get(0);
+				for (int i=0;i<b.getBuildOptions().size();i++) {
+					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX,  mouseY))) {
+						b.queueSpawn(i);
+					}
+				}
+			}
 			selectRect = new Rectangle(mouseX, mouseY, 1, 1);
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
@@ -106,14 +114,12 @@ public class MainGame extends BasicGameState {
 		}
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				GameObject target = mouseTarget(resources, input.getMouseX(), input.getMouseY());
+				if(sel.getClass() != MineralOre.class){
+				GameObject target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
 				if(target == null){
-					target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
+					target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
 					if(target == null){
 						target = mouseTarget(enemies, input.getMouseX(), input.getMouseY());
-						if(target == null){
-							target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
-						}
 					}
 				}
 				if(target != null){
@@ -122,10 +128,11 @@ public class MainGame extends BasicGameState {
 				else {
 					sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
 				}
+				}
 			}
 		}
 		
-		updateList(resources, container, delta);
+
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
 		updateList(enemies, container, delta);
@@ -154,7 +161,7 @@ public class MainGame extends BasicGameState {
 		if (selectRect != null)
 			g.draw(selectRect);
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
-		renderList(resources, container, g);
+
 		renderList(buildings, container, g);
 		renderList(colonists, container, g);
 		renderList(enemies, container, g);
@@ -162,16 +169,28 @@ public class MainGame extends BasicGameState {
 		//Translate back so hud will be rendered on top
 		g.translate(-cameraX,-cameraY);
 		g.drawString("Minerals: "+minerals, 850, 50);
-
+		
+		drawHud(container, g);
+	}
+	
+	private void drawHud(GameContainer container, Graphics g) {
 		if (!(selected.isEmpty())) {
 			g.setColor(Color.black);
-			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 300));
+			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-90, 300, 90));
 			g.setColor(Color.white);
-			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 100));
-			g.drawImage(selected.get(0).portrait.getScaledCopy(100, 100), container.getWidth()-300, container.getHeight()-100);
+			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-90, 90, 90));
+			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), container.getWidth()-300, container.getHeight()-90);
+			if (selected.get(0) instanceof Builder) {
+				Builder b = (Builder) selected.get(0);
+				ArrayList<String> buildOptions = b.getBuildOptions();
+				for (int i=0;i<buildOptions.size();i++) {
+					g.draw(new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30));
+					g.drawString(buildOptions.get(i), container.getWidth()-190, container.getHeight()-80+30*i);
+				}
+			}
 		}
-
 	}
+	
 	
 	private void updateList(ArrayList<? extends GameObject> gameList, GameContainer container, int delta) throws SlickException{
 		if(!gameList.isEmpty()){
@@ -216,6 +235,21 @@ public class MainGame extends BasicGameState {
 		return false;
 	}
 	
+	public static Character nearestColonist(float charX, float charY){
+		Character nearestCol = null;	
+		for(Character col : colonists){
+			if(nearestCol != null){
+				if(col.targetDistance(charX, charY) < nearestCol.targetDistance(charX, charY)){
+					nearestCol = col;
+				}
+			}
+			else{
+				nearestCol = col;
+			}
+		}
+		return nearestCol;
+	}
+
 	public static CommandCenter nearestCommandCenter(float charX, float charY){
 		CommandCenter nearestCC = null;
 		
@@ -235,21 +269,6 @@ public class MainGame extends BasicGameState {
 	@Override
 	public int getID() {
 		return 1;
-	}
-
-	public static Character nearestColonist(float charX, float charY){
-		Character nearestCol = null;	
-		for(Character col : colonists){
-			if(nearestCol != null){
-				if(col.targetDistance(charX, charY) < nearestCol.targetDistance(charX, charY)){
-					nearestCol = col;
-				}
-			}
-			else{
-				nearestCol = col;
-			}
-		}
-		return nearestCol;
 	}
 
 }
