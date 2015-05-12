@@ -9,7 +9,7 @@ public class Pirate extends Character {
 	
 	public Pirate(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait", moveSpeed
-		super(x, y, 55, 65, 170, 30, 130, 600, "pirate.png", 0.4);
+		super(x, y, 55, 65, 170, 30, 130, 600, 2, "pirate.png", 0.4);
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class Pirate extends Character {
 			throws SlickException {
 		if(target != null){
 			if(targetInRange()){
-				target.takeDamage(damage);
+				attack(delta);
 			}
 			else{
 				if(target.getClass() == Building.class){
@@ -29,7 +29,6 @@ public class Pirate extends Character {
 				}
 			}
 		}
-
 	}
 
 	@Override
