@@ -57,7 +57,7 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(300,400));
 		colonists.add(new Fighter(500,400));
 		
-		enemies.add(new Pirate(700,400));
+//		enemies.add(new Pirate(700,400));
 		
 		resources.add(new MineralOre(710,320));
 		resources.add(new MineralOre(730,350));
@@ -94,7 +94,7 @@ public class MainGame extends BasicGameState {
 			if ((!(selected.isEmpty())) && selected.get(0) instanceof Builder) {
 				Builder b = (Builder) selected.get(0);
 				for (int i=0;i<b.getBuildOptions().size();i++) {
-					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX,  mouseY))) {
+					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX+cameraX,  mouseY+cameraY))) {
 						b.queueSpawn(i);
 						mouseX = -1;
 						mouseY = -1;
