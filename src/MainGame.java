@@ -102,6 +102,8 @@ public class MainGame extends BasicGameState {
 			mouseX = input.getMouseX();
 			mouseY = input.getMouseY();
 			if (hudbg.contains(mouseX, mouseY)) { //Check if interface was pressed
+				if ((new Rectangle(0, container.getHeight()-hudbg.getHeight(), hudbg.getHeight(), hudbg.getHeight())).contains(mouseX, mouseY))
+					return;
 				if ((!(selected.isEmpty())) && selected.get(0) instanceof Builder) {
 					Builder b = (Builder) selected.get(0);
 					for (int i=0;i<b.getBuildOptions().size();i++) {
@@ -120,8 +122,14 @@ public class MainGame extends BasicGameState {
 			mouseY -= cameraY;
 			selectRect = new Rectangle(mouseX, mouseY, 1, 1);
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
+			if (mouseX != -1 && mouseY != -1 && selectRect != null) // Store rectangle size for drawing
 				selectRect.setBounds(Math.min(input.getMouseX() - cameraX, mouseX), Math.min(input.getMouseY() - cameraY, mouseY), Math.abs(input.getMouseX() - cameraX - mouseX), Math.abs(input.getMouseY() - cameraY - mouseY));
+			else if ((new Rectangle(0, container.getHeight()-hudbg.getHeight(), hudbg.getHeight(), hudbg.getHeight())).contains(mouseX, mouseY)) {
+				cameraX = -(MainGame.FIELDSIZE*mouseX/hudbg.getHeight());
+				cameraY = -((MainGame.FIELDSIZE*(mouseY-container.getHeight()+hudbg.getHeight())/hudbg.getHeight()));
+				mouseX = -1;
+				mouseY = -1;
+			}
 		} else if (mouseX != -1 && mouseY != -1 && !input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			for (GameObject gob : selected) {
 				gob.deselect();
