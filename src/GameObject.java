@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -145,6 +147,14 @@ public abstract class GameObject {
 	
 	public void deselect(){
 		selected = false;
+	}
+	
+	public ArrayList<String> getBuildOptions() {
+		ArrayList<String> list = new ArrayList<String>();
+		return list;
+	}
+	
+	public void queueSpawn(int i) {
 	}
 	
 }

@@ -87,6 +87,13 @@ public class MainGame extends BasicGameState {
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
 			mouseX = input.getMouseX() - cameraX; // Store mouse position when starting rectangle
 			mouseY = input.getMouseY() - cameraY;
+			if (!(selected.isEmpty())) {
+				for (int i=0;i<selected.get(0).getBuildOptions().size();i++) {
+					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX,  mouseY))) {
+						selected.get(0).queueSpawn(i);
+					}
+				}
+			}
 			selectRect = new Rectangle(mouseX, mouseY, 1, 1);
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
@@ -160,13 +167,24 @@ public class MainGame extends BasicGameState {
 		//Translate back so hud will be rendered on top
 		g.translate(-cameraX,-cameraY);
 		g.drawString("Minerals: "+minerals, 850, 50);
-
+		
+		drawHud(container, g);
+	}
+	
+	private void drawHud(GameContainer container, Graphics g) {
 		if (!(selected.isEmpty())) {
 			g.setColor(Color.black);
-			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 300));
+			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-90, 300, 90));
 			g.setColor(Color.white);
-			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-100, 100, 100));
-			g.drawImage(selected.get(0).portrait.getScaledCopy(100, 100), container.getWidth()-300, container.getHeight()-100);
+			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-90, 90, 90));
+			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), container.getWidth()-300, container.getHeight()-90);
+			ArrayList<String> buildOptions = selected.get(0).getBuildOptions();
+			if (!(buildOptions.isEmpty())) {
+				for (int i=0;i<buildOptions.size();i++) {
+					g.draw(new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30));
+					g.drawString(buildOptions.get(i), container.getWidth()-190, container.getHeight()-80+30*i);
+				}
+			}
 		}
 
 	}
