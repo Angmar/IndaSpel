@@ -1,5 +1,6 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -12,6 +13,7 @@ public class OptionsMenu extends BasicGameState {
 	int depth;
 	String[] menuText;
 	String[] resolutionOptions;
+	Image selectArrow;
 
 	public OptionsMenu() {
 		
@@ -24,10 +26,11 @@ public class OptionsMenu extends BasicGameState {
 		depth = 0; 
 		
 		menuText = new String[]{"Resolution", "Difficulty", "Return"};
-		resolutionOptions = new String[]{"800x600", "1024x600", "1600x900","1920x1080", "Fullscreen"};
+		resolutionOptions = new String[]{"800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
+		
+		selectArrow = MainMenu.getSelectImage();
 	}
 	
-
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
@@ -53,8 +56,6 @@ public class OptionsMenu extends BasicGameState {
 				game.enterState(0);
 				break;
 			}
-			
-			
 		}
 		else if(input.isKeyPressed(Input.KEY_UP)){
 			if(depth == 0 && option > 0){
@@ -103,14 +104,11 @@ public class OptionsMenu extends BasicGameState {
 			}
 		}
 		if(depth == 0){
-			g.drawLine(xText-30, yText+(50*option), xText-10, yText+(50*option)+10);
-			g.drawLine(xText-30, yText+(50*option)+20, xText-10, yText+(50*option)+10);
+			g.drawImage(selectArrow, xText-50,  yText-10+(50*option));
 		}
 		else{
-			g.drawLine(xText-30+200, yText+(50*(depth-1)), xText-10+200, yText+(50*(depth-1))+10);
-			g.drawLine(xText-30+200, yText+(50*(depth-1))+20, xText-10+200, yText+(50*(depth-1))+10);
+			g.drawImage(selectArrow, xText+150, yText-10+(50*(depth-1)));
 		}
-		
 	}
 
 
