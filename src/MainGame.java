@@ -95,7 +95,7 @@ public class MainGame extends BasicGameState {
 						b.queueSpawn(i);
 						mouseX = -1;
 						mouseY = -1;
-						return;
+						break;
 					}
 				}
 			}
@@ -138,7 +138,7 @@ public class MainGame extends BasicGameState {
 			}
 		}
 		
-
+		updateList(resources, container, delta);
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
 		updateList(enemies, container, delta);
@@ -183,7 +183,7 @@ public class MainGame extends BasicGameState {
 	private void drawHud(GameContainer container, Graphics g) {
 		if (!(selected.isEmpty())) {
 			g.setColor(Color.black);
-			g.fill(new Rectangle(container.getWidth()-300, container.getHeight()-90, 300, 90));
+			g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-90, 500, 90));
 			g.setColor(Color.white);
 			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-90, 90, 90));
 			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), container.getWidth()-300, container.getHeight()-90);
@@ -192,8 +192,17 @@ public class MainGame extends BasicGameState {
 				ArrayList<String> buildOptions = b.getBuildOptions();
 				for (int i=0;i<buildOptions.size();i++) {
 					g.draw(new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30));
-					g.drawString(buildOptions.get(i), container.getWidth()-190, container.getHeight()-80+30*i);
+					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-190, container.getHeight()-85+30*i);
 				}
+				if (!(b.getBuildQueue().isEmpty())) {
+					g.setColor(Color.red);
+					g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-85, 200*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
+					g.setColor(Color.white);
+				}
+				for (int i=0;i<b.getBuildQueue().size();i++) {
+					g.draw(new Rectangle(container.getWidth()-500, container.getHeight()-90+30*i, 200, 30));
+					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), container.getWidth()-400, container.getHeight()-80+30*i);
+				}	
 			}
 		}
 	}

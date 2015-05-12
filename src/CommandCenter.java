@@ -80,7 +80,27 @@ public class CommandCenter extends Building implements Builder {
 	public ArrayList<String> getBuildOptions() {
 		ArrayList<String> list = new ArrayList<String>();
 		for (int i=0;i<buildOpts.length;i++)
-			list.add(buildOpts[i] + "   cost: " + buildCosts[i]);
+			list.add(buildOpts[i]);
 		return list;
 	}
+
+	@Override
+	public int getProgress() {
+		return buildProgress;
+	}
+	
+	public ArrayList<Integer> getBuildQueue() {
+		return buildQueue;
+	}
+
+	@Override
+	public int[] getBuildTime() {
+		return buildTimes;
+	}
+
+	@Override
+	public int[] getBuildCosts() {
+		return buildCosts;
+	}
+	
 }
