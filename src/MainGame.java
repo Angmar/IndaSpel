@@ -34,6 +34,8 @@ public class MainGame extends BasicGameState {
 	static ArrayList<Character> enemies;
 	static ArrayList<GameObject> selected;
 
+	static final int FIELDSIZE = 10000;
+	
 	public MainGame() {
 		// TODO Auto-generated constructor stub
 	}
@@ -145,6 +147,7 @@ public class MainGame extends BasicGameState {
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
 		updateList(enemies, container, delta);
+	//	System.out.println(mouseX+", "+ mouseY+ ", " + cameraX + ", " + cameraY);
 	}
 	
 	private void selectFromList(ArrayList<? extends GameObject> list) {
@@ -181,30 +184,35 @@ public class MainGame extends BasicGameState {
 		g.drawString("Minerals: "+minerals, 850, 50);
 		
 		drawHud(container, g);
+
+		Rectangle map = new Rectangle(0, container.getHeight()-150, 150, 150);
+		g.draw(map);
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {
 		if (!(selected.isEmpty())) {
+			int width = container.getWidth();
+			int height = container.getHeight();
 			g.setColor(Color.black);
-			g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-90, 500, 90));
+			g.fill(new Rectangle(width-500, height-90, 500, 90));
 			g.setColor(Color.white);
-			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-90, 90, 90));
-			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), container.getWidth()-300, container.getHeight()-90);
+			g.draw(new Rectangle(width-300, height-90, 90, 90));
+			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), width-300, height-90);
 			if (selected.get(0) instanceof Builder) {
 				Builder b = (Builder) selected.get(0);
 				ArrayList<String> buildOptions = b.getBuildOptions();
 				for (int i=0;i<buildOptions.size();i++) {
-					g.draw(new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30));
-					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-190, container.getHeight()-85+30*i);
+					g.draw(new Rectangle(width-210, width-90+30*i, 210, 30));
+					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], width-190, width-85+30*i);
 				}
 				if (!(b.getBuildQueue().isEmpty())) {
 					g.setColor(Color.red);
-					g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-85, 200*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
+					g.fill(new Rectangle(width-500, width-85, 200*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
 					g.setColor(Color.white);
 				}
 				for (int i=0;i<b.getBuildQueue().size();i++) {
-					g.draw(new Rectangle(container.getWidth()-500, container.getHeight()-90+30*i, 200, 30));
-					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), container.getWidth()-400, container.getHeight()-80+30*i);
+					g.draw(new Rectangle(width-500, width-90+30*i, 200, 30));
+					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), width-400, width-80+30*i);
 				}	
 			}
 		}

@@ -33,7 +33,7 @@ public class Pirate extends Character {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		renderPortrait(g);
+		renderPortrait(container, g);
 
 	}
 

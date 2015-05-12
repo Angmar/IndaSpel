@@ -73,7 +73,7 @@ public class CommandCenter extends Building implements Builder {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		renderPortrait(g);
+		renderPortrait(container, g);
 		
 	}
 

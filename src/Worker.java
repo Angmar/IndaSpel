@@ -50,7 +50,7 @@ public class Worker extends Character {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		renderPortrait(g);
+		renderPortrait(container, g);
 	}
 	
 	private void miningInterrupt(){
