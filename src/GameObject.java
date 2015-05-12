@@ -24,15 +24,14 @@ public abstract class GameObject {
 	protected boolean alive;
 	protected Image portrait;
 	protected Rectangle posRect;
-	protected int faction; //0 = Resource, 1 = Friendly, 2 = Enemy
 	
 	//To be changed
 	protected boolean selected;
 	protected Vector2f movePoint;
 	protected GameObject target;
 	
-	public GameObject(float x, float y, int width, int height, int maxHealth, 
-			int damage, float range, int attackSpeed, int faction, String image) throws SlickException{
+	public GameObject(float x, float y, int width, int height, 
+					int maxHealth, int damage, float range, int attackSpeed, String image) throws SlickException{
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -43,7 +42,6 @@ public abstract class GameObject {
 		this.range = range;
 		this.attackSpeed = attackSpeed;
 		this.attackProgress = 0;
-		this.faction = faction;
 		
 		this.alive = true;
 		
@@ -106,14 +104,6 @@ public abstract class GameObject {
 		return (float) Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getY()-y, 2));
 	}
 	
-	protected boolean isSameFaction(int targetFaction){
-		return targetFaction==faction;
-	}
-	
-	protected boolean isSameFaction(){
-		return faction==target.getFaction();
-	}
-	
 	public GameObject getTarget(){
 		return target;
 	}
@@ -163,10 +153,6 @@ public abstract class GameObject {
 	
 	public void deselect(){
 		selected = false;
-	}
-	
-	public int getFaction(){
-		return faction;
 	}
 	
 }

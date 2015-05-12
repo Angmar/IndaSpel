@@ -13,11 +13,11 @@ public class Worker extends Character {
 	
 	public Worker(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait", moveSpeed
-		super(x, y, 60, 60, 100, 20, 60, 1000, 1, "worker.png", 0.2);
+		super(x, y, 60, 60, 100, 20, 60, 1000, "worker.png", 0.2);
 	}
 
 	@Override
-	public void update(GameContainer container, int delta) 
+	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if(target != null){
 			//Check if target is a mineral

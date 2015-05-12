@@ -10,11 +10,11 @@ public abstract class Character extends GameObject {
 	
 	protected double moveSpeed;
 	
-	public Character(float x, float y, int width, int height, int maxHealth, int damage, 
-				float range, int attackSpeed, int faction, String image, double moveSpeed) throws SlickException{
+	public Character(float x, float y, int width, int height, 
+			int maxHealth, int damage, float range, int attackSpeed, String image, double moveSpeed) throws SlickException{
 		
-		//x, y, width, height, maxHealth, damage, range, attackSpeed, faction, "portrait"
-		super(x, y, width, height, maxHealth, damage, range, attackSpeed, faction, image);
+		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait"
+		super(x, y, width, height, maxHealth, damage, range, attackSpeed, image);
 		
 		this.moveSpeed = moveSpeed;
 	}
@@ -64,19 +64,5 @@ public abstract class Character extends GameObject {
 			movePoint = null;
 		}
 		posRect.setLocation(x-width/2, y-height/2);
-	}
-	
-	protected void attack(int delta){
-		
-		if(attackProgress == 0){
-			target.takeDamage(delta);
-			attackProgress += delta;
-		}
-		else if(attackProgress < attackSpeed){
-			attackProgress += delta;
-		}
-		else{
-			attackProgress += delta;
-		}
 	}
 }
