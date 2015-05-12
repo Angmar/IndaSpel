@@ -19,6 +19,8 @@ public abstract class GameObject {
 	protected int currentHealth;
 	protected int damage;
 	protected float range;
+	protected int attackSpeed;
+	protected int attackProgress;
 	protected boolean alive;
 	protected Image portrait;
 	protected Rectangle posRect;
@@ -29,7 +31,7 @@ public abstract class GameObject {
 	protected GameObject target;
 	
 	public GameObject(float x, float y, int width, int height, 
-					int maxHealth, int damage, float range, String image) throws SlickException{
+					int maxHealth, int damage, float range, int attackSpeed, String image) throws SlickException{
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -38,6 +40,8 @@ public abstract class GameObject {
 		this.currentHealth = maxHealth;
 		this.damage = damage;
 		this.range = range;
+		this.attackSpeed = attackSpeed;
+		this.attackProgress = 0;
 		
 		this.alive = true;
 		
@@ -94,6 +98,10 @@ public abstract class GameObject {
 	
 	protected float targetDistance(float targetX, float targetY){
 		return (float) Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
+	}
+	
+	protected float targetDistance(){
+		return (float) Math.sqrt(Math.pow(target.getX()-x, 2) + Math.pow(target.getY()-y, 2));
 	}
 	
 	public GameObject getTarget(){

@@ -11,10 +11,10 @@ public abstract class Character extends GameObject {
 	protected double moveSpeed;
 	
 	public Character(float x, float y, int width, int height, 
-			int maxHealth, int damage, float range, String image, double moveSpeed) throws SlickException{
+			int maxHealth, int damage, float range, int attackSpeed, String image, double moveSpeed) throws SlickException{
 		
-		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, width, height, maxHealth, damage, range, image);
+		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait"
+		super(x, y, width, height, maxHealth, damage, range, attackSpeed, image);
 		
 		this.moveSpeed = moveSpeed;
 	}
@@ -52,6 +52,7 @@ public abstract class Character extends GameObject {
 		if(distance > delta*moveSpeed){
 			float xDistance = movePoint.getX() - x;
 			float yDistance = movePoint.getY() - y;
+			
 			this.x += delta*moveSpeed*(xDistance/distance);
 			this.y += delta*moveSpeed*(yDistance/distance);
 			

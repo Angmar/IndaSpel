@@ -11,16 +11,9 @@ public class Worker extends Character {
 	
 	private int minerals;
 	
-	//Time it takes to mine
-	private int miningTime;
-	private int miningProgress;
-	
 	public Worker(float x, float y) throws SlickException {
-		//x, y, width, height, maxHealth, damage, range, "portrait", moveSpeed
-		super(x, y, 60, 60, 100, 20, 60, "worker.png", 0.2);
-		
-		miningTime = 1000;
-		miningProgress = 0;
+		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait", moveSpeed
+		super(x, y, 60, 60, 100, 20, 60, 1000, "worker.png", 0.2);
 	}
 
 	@Override
@@ -56,8 +49,8 @@ public class Worker extends Character {
 	}
 	
 	private void miningInterrupt(){
-		if(miningProgress != 0){
-			miningProgress = 0;
+		if(attackProgress != 0){
+			attackProgress = 0;
 		}
 	}
 	
@@ -66,15 +59,15 @@ public class Worker extends Character {
 		if(targetInRange()){
 			movePoint = null;
 			if(target.getTarget() == this && target.isAlive()){
-				if(miningProgress >= miningTime){
+				if(attackProgress >= attackSpeed){
 					target.takeDamage(damage);
 					target.clearTarget();
 					
 					minerals += damage;
-					miningProgress = 0;
+					attackProgress = 0;
 				}
 				else{
-					miningProgress += delta;
+					attackProgress += delta;
 				}
 			}
 			else if(target.getTarget() == null){

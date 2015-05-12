@@ -28,6 +28,7 @@ public class MainGame extends BasicGameState {
 	float mouseX = -1;
 	float mouseY = -1;
 	
+	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
 	static ArrayList<Character> colonists;
 	static ArrayList<Character> enemies;
@@ -43,6 +44,8 @@ public class MainGame extends BasicGameState {
 		cameraX = 0;
 		cameraY = 0;
 		minerals = 0;
+		
+		resources = new ArrayList<Building>();
 		buildings = new ArrayList<Building>();
 		colonists = new ArrayList<Character>();
 		enemies = new ArrayList<Character>();
@@ -53,12 +56,10 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(300,300));
 		colonists.add(new Worker(300,400));
 		colonists.add(new Fighter(500,400));
-		buildings.add(new MineralOre(710,320));
-		buildings.add(new MineralOre(730,350));
-		buildings.add(new MineralOre(720,400));
-		buildings.add(new MineralOre(700,450));
-
-		
+		resources.add(new MineralOre(710,320));
+		resources.add(new MineralOre(730,350));
+		resources.add(new MineralOre(720,400));
+		resources.add(new MineralOre(700,450));
 	}
 	
 
@@ -123,7 +124,7 @@ public class MainGame extends BasicGameState {
 			}
 		}
 		
-
+		updateList(resources, container, delta);
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
 		updateList(enemies, container, delta);
@@ -152,7 +153,7 @@ public class MainGame extends BasicGameState {
 		if (selectRect != null)
 			g.draw(selectRect);
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
-
+		renderList(resources, container, g);
 		renderList(buildings, container, g);
 		renderList(colonists, container, g);
 		renderList(enemies, container, g);
@@ -233,6 +234,21 @@ public class MainGame extends BasicGameState {
 	@Override
 	public int getID() {
 		return 1;
+	}
+
+	public static Character nearestColonist(float charX, float charY){
+		Character nearestCol = null;	
+		for(Character col : colonists){
+			if(nearestCol != null){
+				if(col.targetDistance(charX, charY) < nearestCol.targetDistance(charX, charY)){
+					nearestCol = col;
+				}
+			}
+			else{
+				nearestCol = col;
+			}
+		}
+		return nearestCol;
 	}
 
 }

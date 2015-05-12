@@ -9,13 +9,26 @@ public class Pirate extends Character {
 	
 	public Pirate(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait", moveSpeed
-		super(x, y, 55, 65, 170, 30, 130, "pirate.jpg", 0.4);
+		super(x, y, 55, 65, 170, 30, 130, 600, "pirate.png", 0.4);
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		if(target != null){
+			if(targetInRange()){
+				target.takeDamage(damage);
+			}
+			else{
+				if(target.getClass() == Building.class){
+					GameObject tempTarg = target;
+					target = MainGame.nearestColonist(x, y);
+					if(!targetInRange()){
+						target = tempTarg;
+					}
+				}
+			}
+		}
 
 	}
 
