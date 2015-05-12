@@ -93,6 +93,9 @@ public class MainGame extends BasicGameState {
 				for (int i=0;i<b.getBuildOptions().size();i++) {
 					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX,  mouseY))) {
 						b.queueSpawn(i);
+						mouseX = -1;
+						mouseY = -1;
+						return;
 					}
 				}
 			}
