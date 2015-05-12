@@ -91,17 +91,17 @@ public abstract class GameObject {
 		}
 		
 		g.drawImage(portrait, x-width/2, y-height/2);
-		drawOnMap(c, g);
 	}
 	
-	protected void drawOnMap(GameContainer c, Graphics g) {
+	public void drawOnMap(GameContainer c, Graphics g, float cameraX, float cameraY) {
 		if (faction == 1)
 			g.setColor(Color.green);
 		else if (faction == 2)
 			g.setColor(Color.red);
-		float mapX = 150*x/MainGame.FIELDSIZE;
-		float mapY = 150*y/MainGame.FIELDSIZE+c.getHeight()-150;
+		float mapX = 150*x/MainGame.FIELDSIZE-cameraX;
+		float mapY = 150*y/MainGame.FIELDSIZE+c.getHeight()-150-cameraY;
 		g.fill(new Rectangle(mapX, mapY, 3, 3));
+		g.setColor(Color.white);
 	}
 	
 	protected void turnToTarget(float xDistance, float yDistance){

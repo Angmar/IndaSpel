@@ -237,6 +237,7 @@ public class MainGame extends BasicGameState {
 		if(!characterList.isEmpty()){
 			for(GameObject gob : characterList){
 				gob.render(container, g);
+				gob.drawOnMap(container, g, cameraX, cameraY);
 			}
 		}
 	}
