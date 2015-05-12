@@ -18,7 +18,7 @@ public class MainMenu extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		selectedOption = 1;
+		selectedOption = 0;
 		
 		menuText = new String[]{"Begin Game", "Options", "Quit Game"};
 	}
@@ -30,21 +30,21 @@ public class MainMenu extends BasicGameState {
 		
 		if(input.isKeyPressed(Input.KEY_ENTER)){
 			switch(selectedOption){
-			case 1:
+			case 0:
 				game.enterState(1);
 				break;
-			case 2:
+			case 1:
 				game.enterState(2);
 				break;
-			case 3:
+			case 2:
 				container.exit();
 				break;
 			}
 		}
-		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 1){
+		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 0){
 			selectedOption--;
 		}
-		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 3){
+		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 2){
 			selectedOption++;
 		}
 	}
@@ -59,8 +59,8 @@ public class MainMenu extends BasicGameState {
 			g.drawString(menuText[i], xText, yText+(50*i));
 		}
 		
-		g.drawLine(xText-30, yText+(50*(selectedOption-1)), xText-10, yText+(50*(selectedOption-1))+10);
-		g.drawLine(xText-30, yText+(50*(selectedOption-1))+20, xText-10, yText+(50*(selectedOption-1))+10);
+		g.drawLine(xText-30, yText+(50*selectedOption), xText-10, yText+(50*selectedOption)+10);
+		g.drawLine(xText-30, yText+(50*selectedOption)+20, xText-10, yText+(50*selectedOption)+10);
 	}
 
 	@Override

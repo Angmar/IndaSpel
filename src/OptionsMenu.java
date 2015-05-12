@@ -8,9 +8,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class OptionsMenu extends BasicGameState {
 	
-	int selectedOption;
-	int menuDepth;
+	int option;
+	int depth;
 	String[] menuText;
+	String[] resolutionOptions;
 
 	public OptionsMenu() {
 		
@@ -19,10 +20,11 @@ public class OptionsMenu extends BasicGameState {
 	@Override
 	public void init(GameContainer contianer, StateBasedGame arg1)
 			throws SlickException {
-		selectedOption = 1;
-		menuDepth = 1;
+		option = 0;
+		depth = 0; 
 		
 		menuText = new String[]{"Resolution", "Difficulty", "Return"};
+		resolutionOptions = new String[]{"800x600", "1024x600", "1600x900","1920x1080", "Fullscreen"};
 	}
 	
 
@@ -32,24 +34,57 @@ public class OptionsMenu extends BasicGameState {
 		Input input = container.getInput();
 		
 		if(input.isKeyPressed(Input.KEY_ENTER)){
-			if(menuDepth == 1){
-				switch(selectedOption){
-				case 1:
-					menuDepth = 2;
-					break;
-				case 3:
-					game.enterState(0);
-					break;
+			switch(option){
+			case 0:
+				if(depth == 0){
+					depth = 1;
+				}
+				else{
+					String[] res = resolutionOptions[depth-1].split("x");
+					if(res.length==2){
+						StartGame.changeFullScreen(Integer.parseInt(res[0]),Integer.parseInt(res[1]), false);
+					}
+					else{
+						StartGame.changeFullScreen(0,0,true);
+					}
+				}
+				break;
+			case 2:
+				game.enterState(0);
+				break;
+			}
+			
+			
+		}
+		else if(input.isKeyPressed(Input.KEY_UP)){
+			if(depth == 0 && option > 0){
+				option--;
+			}
+			else if(depth > 0){
+				if(option == 0 && depth > 1){
+					depth--;
+				}
+				else if(option == 1){
+					
 				}
 			}
 		}
-		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 1){
-			selectedOption--;
+		else if(input.isKeyPressed(Input.KEY_DOWN)){
+			if(depth == 0 && option < 2){
+				option++;
+			}
+			else if(depth > 0){
+				if(option == 0 && depth < resolutionOptions.length){
+					depth++;
+				}
+				else if(option == 1){
+					
+				}
+			}
 		}
-		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 3){
-			selectedOption++;
+		else if(input.isKeyPressed(Input.KEY_LEFT) && depth > 0){
+			depth = 0;
 		}
-
 	}
 
 	@Override
@@ -61,9 +96,20 @@ public class OptionsMenu extends BasicGameState {
 		for(int i = 0; i < menuText.length; i++){
 			g.drawString(menuText[i], xText, yText+(50*i));
 		}
-		
-		g.drawLine(xText-30, yText+(50*(selectedOption-1)), xText-10, yText+(50*(selectedOption-1))+10);
-		g.drawLine(xText-30, yText+(50*(selectedOption-1))+20, xText-10, yText+(50*(selectedOption-1))+10);
+		if(depth > 0 && option == 0){
+			yText = container.getHeight()/2-25*resolutionOptions.length;
+			for(int i = 0; i < resolutionOptions.length; i++){
+				g.drawString(resolutionOptions[i], xText+200, yText+(50*i));
+			}
+		}
+		if(depth == 0){
+			g.drawLine(xText-30, yText+(50*option), xText-10, yText+(50*option)+10);
+			g.drawLine(xText-30, yText+(50*option)+20, xText-10, yText+(50*option)+10);
+		}
+		else{
+			g.drawLine(xText-30+200, yText+(50*(depth-1)), xText-10+200, yText+(50*(depth-1))+10);
+			g.drawLine(xText-30+200, yText+(50*(depth-1))+20, xText-10+200, yText+(50*(depth-1))+10);
+		}
 		
 	}
 

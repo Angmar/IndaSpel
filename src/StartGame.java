@@ -38,9 +38,9 @@ public class StartGame extends StateBasedGame{
 		
 	}
 	
-	public static void changeFullScreen() throws SlickException{
-		if(container.isFullscreen()){
-			container.setDisplayMode(1000, 600, false);
+	public static void changeFullScreen(int width, int height, boolean full) throws SlickException{
+		if(!full){
+			container.setDisplayMode(width, height, false);
 		}
 		else{
 			container.setDisplayMode(screenWidth, screenHeight, true);
