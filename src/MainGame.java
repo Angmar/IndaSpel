@@ -162,6 +162,7 @@ public class MainGame extends BasicGameState {
 			g.draw(selectRect);
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
 
+		renderList(resources, container, g);
 		renderList(buildings, container, g);
 		renderList(colonists, container, g);
 		renderList(enemies, container, g);
