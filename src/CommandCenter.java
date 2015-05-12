@@ -37,10 +37,10 @@ public class CommandCenter extends Building implements Builder {
 					gob = new Worker(x, y);
 					break;
 				case 1:
-					gob = new Fighter(x, y);
+					gob = new Fighter(x, y, 1);
 					break;
 				default:
-					gob = new Pirate(x, y);
+					gob = new Pirate(x, y, 2);
 			}
 			MainGame.minerals -= buildCosts[opt];
 			MainGame.colonists.add(gob);

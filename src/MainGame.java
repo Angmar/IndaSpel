@@ -34,6 +34,8 @@ public class MainGame extends BasicGameState {
 	static ArrayList<Character> enemies;
 	static ArrayList<GameObject> selected;
 
+	static final int FIELDSIZE = 10000;
+	
 	public MainGame() {
 		// TODO Auto-generated constructor stub
 	}
@@ -179,7 +181,14 @@ public class MainGame extends BasicGameState {
 		g.translate(-cameraX,-cameraY);
 		g.drawString("Minerals: "+minerals, 850, 50);
 		
-		//drawHud(container, g);
+
+		drawHud(container, g);
+
+		Rectangle map = new Rectangle(0, container.getHeight()-150, 150, 150);
+		Rectangle currentPos = new Rectangle(cameraX*-150/MainGame.FIELDSIZE, container.getHeight()-150+cameraY*-150/MainGame.FIELDSIZE, 150*container.getWidth()/MainGame.FIELDSIZE, 150*container.getHeight()/MainGame.FIELDSIZE);
+		g.draw(map);
+		g.draw(currentPos);		
+
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {
@@ -228,6 +237,7 @@ public class MainGame extends BasicGameState {
 		if(!characterList.isEmpty()){
 			for(GameObject gob : characterList){
 				gob.render(container, g);
+				gob.drawOnMap(container, g, cameraX, cameraY);
 			}
 		}
 	}

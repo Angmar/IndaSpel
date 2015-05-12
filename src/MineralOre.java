@@ -17,7 +17,6 @@ public class MineralOre extends Building {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if(target != null && (!target.isAttacking() || target.isAlive())){
-			System.out.println("hello");
 			target = null;
 		}
 	}
