@@ -16,7 +16,7 @@ public class Pirate extends Character {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if(target != null){
-			if(targetInRange()){
+			if(!isSameFaction() && targetInRange()){
 				attack(delta);
 			}
 			else{

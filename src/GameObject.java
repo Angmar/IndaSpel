@@ -73,8 +73,15 @@ public abstract class GameObject {
 			
 			g.drawLine(x-lineDist/2, y-lineDist/2, x-lineDist/3, y-lineDist/2);
 			g.drawLine(x-lineDist/2, y+lineDist/2, x-lineDist/3, y+lineDist/2);
+			g.setColor(Color.red);
+			
+			g.drawLine(x-lineDist/2, y-lineDist/2-10, x-lineDist/2+(lineDist*(currentHealth/maxHealth)), y-lineDist/2-10);
 			g.setColor(Color.white);
 		}
+		if(attackProgress < 100 && attackProgress > 0){
+			g.drawLine(x, y, target.getX(), target.getY());
+		}
+		
 		g.drawImage(portrait, x-width/2, y-height/2);
 		
 	}
