@@ -124,9 +124,9 @@ public class MainGame extends BasicGameState {
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (mouseX != -1 && mouseY != -1 && selectRect != null) // Store rectangle size for drawing
 				selectRect.setBounds(Math.min(input.getMouseX() - cameraX, mouseX), Math.min(input.getMouseY() - cameraY, mouseY), Math.abs(input.getMouseX() - cameraX - mouseX), Math.abs(input.getMouseY() - cameraY - mouseY));
-			else if ((new Rectangle(0, container.getHeight()-hudbg.getHeight(), hudbg.getHeight(), hudbg.getHeight())).contains(mouseX, mouseY)) {
-				cameraX = -(MainGame.FIELDSIZE*mouseX/hudbg.getHeight());
-				cameraY = -((MainGame.FIELDSIZE*(mouseY-container.getHeight()+hudbg.getHeight())/hudbg.getHeight()));
+			else if ((new Rectangle(0, container.getHeight()-hudbg.getHeight(), hudbg.getHeight(), hudbg.getHeight())).contains(input.getMouseX(), input.getMouseY())) {
+				cameraX = -(MainGame.FIELDSIZE*input.getMouseX()/hudbg.getHeight());
+				cameraY = -((MainGame.FIELDSIZE*(input.getMouseY()-container.getHeight()+hudbg.getHeight())/hudbg.getHeight()));
 				mouseX = -1;
 				mouseY = -1;
 			}
@@ -143,6 +143,21 @@ public class MainGame extends BasicGameState {
 			mouseY = -1;
 		}
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
+			float mouseX = input.getMouseX();
+			float mouseY = input.getMouseY();
+			if (hudbg.contains(input.getMouseX(), input.getMouseY())) {
+				if (input.getMouseX() < hudbg.getHeight()) {
+					mouseX = mapToRealCord(mouseX);
+					System.out.println(mouseY-3*container.getHeight()/4);
+					mouseY = mapToRealCord(mouseY-3*container.getHeight()/4);
+					System.out.println(mouseX + ", " + mouseY);
+				}
+				else 
+					return;
+			} else {
+				mouseX -= cameraX;
+				mouseY -= cameraY;
+			}
 			for(GameObject sel : selected){
 				
 				GameObject target = mouseTarget(enemies, input.getMouseX(), input.getMouseY()); 
@@ -159,10 +174,15 @@ public class MainGame extends BasicGameState {
 					sel.setTarget(target);
 				}
 				else{
-					sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
+					sel.setTarget(new Vector2f(mouseX, mouseY));
 				}
 			}
 		}
+	}
+
+	private float mapToRealCord(float cord) {
+		float r = MainGame.FIELDSIZE*cord/hudbg.getHeight();
+		return r;
 	}
 	
 	private void selectFromList(ArrayList<? extends GameObject> list) {
