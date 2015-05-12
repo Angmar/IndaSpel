@@ -102,9 +102,9 @@ public abstract class GameObject {
 			g.setColor(Color.green);
 		else if (faction == 2)
 			g.setColor(Color.red);
-		float mapX = 150*x/MainGame.FIELDSIZE-cameraX;
-		float mapY = 150*y/MainGame.FIELDSIZE+c.getHeight()-150-cameraY;
-		g.fill(new Rectangle(mapX, mapY, 3, 3));
+		float mapX = (c.getHeight()/4)*x/MainGame.FIELDSIZE;
+		float mapY = (c.getHeight()/4)*y/MainGame.FIELDSIZE+3*c.getHeight()/4;
+		g.fill(new Rectangle(mapX, mapY, 2, 2));
 		g.setColor(Color.white);
 	}
 	

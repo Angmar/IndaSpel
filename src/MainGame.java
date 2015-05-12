@@ -201,7 +201,11 @@ public class MainGame extends BasicGameState {
 
 		drawHud(container, g);
 
-
+		renderListOnMap(resources, container, g);
+		renderListOnMap(buildings, container, g);
+		renderListOnMap(colonists, container, g);
+		renderListOnMap(enemies, container, g);
+		
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {
@@ -257,6 +261,13 @@ public class MainGame extends BasicGameState {
 		if(!characterList.isEmpty()){
 			for(GameObject gob : characterList){
 				gob.render(container, g);
+			}
+		}
+	}
+	
+	private void renderListOnMap(ArrayList<? extends GameObject> characterList, GameContainer container, Graphics g) throws SlickException{
+		if(!characterList.isEmpty()){
+			for(GameObject gob : characterList){
 				gob.drawOnMap(container, g, cameraX, cameraY);
 			}
 		}
