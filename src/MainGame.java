@@ -125,8 +125,8 @@ public class MainGame extends BasicGameState {
 			if (mouseX != -1 && mouseY != -1 && selectRect != null) // Store rectangle size for drawing
 				selectRect.setBounds(Math.min(input.getMouseX() - cameraX, mouseX), Math.min(input.getMouseY() - cameraY, mouseY), Math.abs(input.getMouseX() - cameraX - mouseX), Math.abs(input.getMouseY() - cameraY - mouseY));
 			else if ((new Rectangle(0, container.getHeight()-hudbg.getHeight(), hudbg.getHeight(), hudbg.getHeight())).contains(input.getMouseX(), input.getMouseY())) {
-				cameraX = -(MainGame.FIELDSIZE*input.getMouseX()/hudbg.getHeight());
-				cameraY = -((MainGame.FIELDSIZE*(input.getMouseY()-container.getHeight()+hudbg.getHeight())/hudbg.getHeight()));
+				cameraX = -(MainGame.FIELDSIZE*input.getMouseX()/hudbg.getHeight())+container.getWidth()/2;
+				cameraY = -((MainGame.FIELDSIZE*(input.getMouseY()-container.getHeight()+hudbg.getHeight())/hudbg.getHeight()))+container.getHeight()/2;
 				mouseX = -1;
 				mouseY = -1;
 			}
@@ -148,9 +148,7 @@ public class MainGame extends BasicGameState {
 			if (hudbg.contains(input.getMouseX(), input.getMouseY())) {
 				if (input.getMouseX() < hudbg.getHeight()) {
 					mouseX = mapToRealCord(mouseX);
-					System.out.println(mouseY-3*container.getHeight()/4);
 					mouseY = mapToRealCord(mouseY-3*container.getHeight()/4);
-					System.out.println(mouseX + ", " + mouseY);
 				}
 				else 
 					return;
