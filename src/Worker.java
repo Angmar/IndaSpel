@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,6 +17,8 @@ public class Worker extends Character {
 	public Worker(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait", moveSpeed
 		super(x, y, 60, 60, 100, 20, 60, 1000, 1, "worker.png", 0.2);
+		
+		attackLaser = Color.yellow;
 	}
 
 	@Override

@@ -24,6 +24,7 @@ public abstract class GameObject {
 	protected boolean alive;
 	protected Image portrait;
 	protected Rectangle posRect;
+	protected Color attackLaser;
 	protected int faction; //0 = Resource, 1 = Friendly, 2 = Enemy
 	
 	//To be changed
@@ -44,6 +45,7 @@ public abstract class GameObject {
 		this.attackSpeed = attackSpeed;
 		this.attackProgress = 0;
 		this.faction = faction;
+		this.attackLaser = Color.red;
 		
 		this.alive = true;
 		
@@ -75,15 +77,25 @@ public abstract class GameObject {
 			g.drawLine(x-lineDist/2, y+lineDist/2, x-lineDist/3, y+lineDist/2);
 			g.setColor(Color.red);
 			
-			g.drawLine(x-lineDist/2, y-lineDist/2-10, x-lineDist/2+(lineDist*(currentHealth/maxHealth)), y-lineDist/2-10);
+			g.drawLine(x-lineDist/2, y-lineDist/2-10, (x-lineDist/2+(lineDist*((float)currentHealth/maxHealth))), y-lineDist/2-10);
+			
 			g.setColor(Color.white);
 		}
-		if(attackProgress < 100 && attackProgress > 0){
+		if(attackProgress < attackSpeed/2 && attackProgress > 0 && target != null && targetInRange()){
+			turnToTarget(target.getX()-x, target.getY()-y);
+			
+			g.setLineWidth(3);
+			g.setColor(attackLaser);
 			g.drawLine(x, y, target.getX(), target.getY());
+			g.setColor(Color.white);
 		}
 		
 		g.drawImage(portrait, x-width/2, y-height/2);
 		
+	}
+	
+	protected void turnToTarget(float xDistance, float yDistance){
+		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));	
 	}
 	
 	public abstract void setTarget(Vector2f newMovePoint);

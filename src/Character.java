@@ -56,7 +56,7 @@ public abstract class Character extends GameObject {
 			this.x += delta*moveSpeed*(xDistance/distance);
 			this.y += delta*moveSpeed*(yDistance/distance);
 			
-			portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));	
+			turnToTarget(xDistance, yDistance);
 		}
 		else{
 			x = movePoint.getX();
@@ -67,16 +67,16 @@ public abstract class Character extends GameObject {
 	}
 	
 	protected void attack(int delta){
-		
-		if(attackProgress == 0){
-			target.takeDamage(delta);
+		if(target != null && targetInRange() && 
+				attackProgress == 0 && target.isAlive()){
+			target.takeDamage(damage);
 			attackProgress += delta;
 		}
-		else if(attackProgress < attackSpeed){
+		else if(attackProgress > 0 &&  attackProgress < attackSpeed){
 			attackProgress += delta;
 		}
 		else{
-			attackProgress += delta;
+			attackProgress = 0;
 		}
 	}
 }
