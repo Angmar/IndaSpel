@@ -6,22 +6,25 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class MainMenu extends BasicGameState {
-
-	int selectedOption;
-	String[] menuText;
+public class OptionsMenu extends BasicGameState {
 	
-	public MainMenu() {
+	int selectedOption;
+	int menuDepth;
+	String[] menuText;
+
+	public OptionsMenu() {
 		
 	}
 
 	@Override
-	public void init(GameContainer container, StateBasedGame game)
+	public void init(GameContainer contianer, StateBasedGame arg1)
 			throws SlickException {
 		selectedOption = 1;
+		menuDepth = 1;
 		
-		menuText = new String[]{"Begin Game", "Options", "Quit Game"};
+		menuText = new String[]{"Resolution", "Difficulty", "Return"};
 	}
+	
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
@@ -29,16 +32,15 @@ public class MainMenu extends BasicGameState {
 		Input input = container.getInput();
 		
 		if(input.isKeyPressed(Input.KEY_ENTER)){
-			switch(selectedOption){
-			case 1:
-				game.enterState(1);
-				break;
-			case 2:
-				game.enterState(2);
-				break;
-			case 3:
-				container.exit();
-				break;
+			if(menuDepth == 1){
+				switch(selectedOption){
+				case 1:
+					menuDepth = 2;
+					break;
+				case 3:
+					game.enterState(0);
+					break;
+				}
 			}
 		}
 		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 1){
@@ -47,8 +49,9 @@ public class MainMenu extends BasicGameState {
 		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 3){
 			selectedOption++;
 		}
+
 	}
-	
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
@@ -61,11 +64,14 @@ public class MainMenu extends BasicGameState {
 		
 		g.drawLine(xText-30, yText+(50*(selectedOption-1)), xText-10, yText+(50*(selectedOption-1))+10);
 		g.drawLine(xText-30, yText+(50*(selectedOption-1))+20, xText-10, yText+(50*(selectedOption-1))+10);
+		
 	}
+
 
 	@Override
 	public int getID() {
-		return 0;
+		// TODO Auto-generated method stub
+		return 2;
 	}
 
 }
