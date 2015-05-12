@@ -27,7 +27,7 @@ public class Fighter extends Character {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		renderPortrait(g);
+		renderPortrait(container, g);
 
 	}
 

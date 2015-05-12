@@ -25,6 +25,6 @@ public class MineralOre extends Building {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		renderPortrait(g);
+		renderPortrait(container, g);
 	}
 }
