@@ -106,12 +106,14 @@ public class MainGame extends BasicGameState {
 		}
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
 			for(GameObject sel : selected){
-				if(sel.getClass() != MineralOre.class){
-				GameObject target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
+				GameObject target = mouseTarget(resources, input.getMouseX(), input.getMouseY());
 				if(target == null){
-					target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
+					target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
 					if(target == null){
 						target = mouseTarget(enemies, input.getMouseX(), input.getMouseY());
+						if(target == null){
+							target = mouseTarget(colonists, input.getMouseX(), input.getMouseY());
+						}
 					}
 				}
 				if(target != null){
@@ -119,7 +121,6 @@ public class MainGame extends BasicGameState {
 				}
 				else {
 					sel.setTarget(new Vector2f(input.getMouseX()-cameraX, input.getMouseY()-cameraY));
-				}
 				}
 			}
 		}
