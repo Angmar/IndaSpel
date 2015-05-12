@@ -18,6 +18,7 @@ public class MainGame extends BasicGameState {
 	
 	Image background;
 	Rectangle selectRect;
+	Rectangle hudbg;
 
 	boolean test;
 	static int minerals;
@@ -65,6 +66,8 @@ public class MainGame extends BasicGameState {
 		resources.add(new MineralOre(730,350));
 		resources.add(new MineralOre(720,400));
 		resources.add(new MineralOre(700,450));
+		
+		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
 	
 
@@ -72,6 +75,11 @@ public class MainGame extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		Input input = container.getInput();
+		
+		updateList(resources, container, delta);
+		updateList(buildings, container, delta);
+		updateList(colonists, container, delta);
+		updateList(enemies, container, delta);
 		
 		if(input.isKeyDown(Input.KEY_DOWN)){
 			cameraY -= delta*0.5;
@@ -91,19 +99,25 @@ public class MainGame extends BasicGameState {
 		}
 		
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
-			mouseX = input.getMouseX() - cameraX; // Store mouse position when starting rectangle
-			mouseY = input.getMouseY() - cameraY;
-			if ((!(selected.isEmpty())) && selected.get(0) instanceof Builder) {
-				Builder b = (Builder) selected.get(0);
-				for (int i=0;i<b.getBuildOptions().size();i++) {
-					if ((new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30).contains(mouseX+cameraX,  mouseY+cameraY))) {
-						b.queueSpawn(i);
-						mouseX = -1;
-						mouseY = -1;
-						break;
+			mouseX = input.getMouseX();
+			mouseY = input.getMouseY();
+			if (hudbg.contains(mouseX, mouseY)) { //Check if interface was pressed
+				if ((!(selected.isEmpty())) && selected.get(0) instanceof Builder) {
+					Builder b = (Builder) selected.get(0);
+					for (int i=0;i<b.getBuildOptions().size();i++) {
+						if ((new Rectangle(container.getWidth()-container.getWidth()/5-(container.getWidth()/5-hudbg.getHeight()), container.getHeight()-hudbg.getHeight()+i*hudbg.getHeight()/3, hudbg.getHeight()*2, hudbg.getHeight()/3)).contains(mouseX,  mouseY)) {
+							b.queueSpawn(i);
+							mouseX = -1;
+							mouseY = -1;
+						}
 					}
 				}
+				mouseX = -1;
+				mouseY = -1;
+				return;
 			}
+			mouseX -= cameraX; // Store mouse position when starting rectangle
+			mouseY -= cameraY;
 			selectRect = new Rectangle(mouseX, mouseY, 1, 1);
 		} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (mouseX != -1 && mouseY != -1) // Store rectangle size for drawing
@@ -141,11 +155,6 @@ public class MainGame extends BasicGameState {
 				}
 			}
 		}
-		
-		updateList(resources, container, delta);
-		updateList(buildings, container, delta);
-		updateList(colonists, container, delta);
-		updateList(enemies, container, delta);
 	}
 	
 	private void selectFromList(ArrayList<? extends GameObject> list) {
@@ -184,38 +193,41 @@ public class MainGame extends BasicGameState {
 
 		drawHud(container, g);
 
-		Rectangle map = new Rectangle(0, container.getHeight()-150, 150, 150);
-		Rectangle currentPos = new Rectangle(cameraX*-150/MainGame.FIELDSIZE, container.getHeight()-150+cameraY*-150/MainGame.FIELDSIZE, 150*container.getWidth()/MainGame.FIELDSIZE, 150*container.getHeight()/MainGame.FIELDSIZE);
-		g.draw(map);
-		g.draw(currentPos);		
 
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {
+		float hudHeight = hudbg.getHeight();
+		float width = hudbg.getWidth()/5;
+		g.setColor(Color.black);
+		g.fill(hudbg);
+		g.setColor(Color.white);
+		g.draw(hudbg);
 		if (!(selected.isEmpty())) {
-			g.setColor(Color.black);
-			g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-90, 500, 90));
-			g.setColor(Color.white);
-			g.draw(new Rectangle(container.getWidth()-300, container.getHeight()-90, 90, 90));
-			g.drawImage(selected.get(0).portrait.getScaledCopy((float)90.0/selected.get(0).portrait.getHeight()), container.getWidth()-300, container.getHeight()-90);
+			g.draw(new Rectangle(container.getWidth()-width*2, container.getHeight()-hudHeight, hudHeight, hudHeight));
+			g.drawImage(selected.get(0).portrait.getScaledCopy((float)hudHeight/selected.get(0).portrait.getHeight()), container.getWidth()-width*2, container.getHeight()-hudHeight);
 			if (selected.get(0) instanceof Builder) {
 				Builder b = (Builder) selected.get(0);
 				ArrayList<String> buildOptions = b.getBuildOptions();
 				for (int i=0;i<buildOptions.size();i++) {
-					g.draw(new Rectangle(container.getWidth()-210, container.getHeight()-90+30*i, 210, 30));
-					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-190, container.getHeight()-85+30*i);
+					g.draw(new Rectangle(container.getWidth()-width-(width-hudHeight), container.getHeight()-hudHeight+i*hudHeight/3, hudHeight*2, hudHeight/3));
+					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-width, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}
 				if (!(b.getBuildQueue().isEmpty())) {
 					g.setColor(Color.red);
-					g.fill(new Rectangle(container.getWidth()-500, container.getHeight()-85, 200*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
+					g.fill(new Rectangle(hudHeight, container.getHeight()-hudHeight+hudHeight/16, width*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
 					g.setColor(Color.white);
 				}
 				for (int i=0;i<b.getBuildQueue().size();i++) {
-					g.draw(new Rectangle(container.getWidth()-500, container.getHeight()-90+30*i, 200, 30));
-					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), container.getWidth()-400, container.getHeight()-80+30*i);
+					g.draw(new Rectangle(hudHeight, container.getHeight()-hudHeight+i*hudHeight/3, width, hudHeight/3));
+					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), hudHeight+hudHeight/8, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}	
 			}
 		}
+		Rectangle map = new Rectangle(0, container.getHeight()-hudHeight, hudHeight, hudHeight);
+		Rectangle currentPos = new Rectangle(cameraX*-hudHeight/MainGame.FIELDSIZE, container.getHeight()-hudHeight+cameraY*-hudHeight/MainGame.FIELDSIZE, hudHeight*container.getWidth()/MainGame.FIELDSIZE, hudHeight*container.getHeight()/MainGame.FIELDSIZE);
+		g.draw(map);
+		g.draw(currentPos);		
 	}
 	
 	
