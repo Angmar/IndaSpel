@@ -30,6 +30,9 @@ public class MainGame extends BasicGameState {
 	float mouseX = -1;
 	float mouseY = -1;
 	
+	int waveIntervall;
+	int waveTime;
+	
 	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
 	static ArrayList<Character> colonists;
@@ -75,6 +78,9 @@ public class MainGame extends BasicGameState {
 		
 		createMap();
 		
+		waveIntervall = 60000;
+		waveTime = 0;
+		
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
 	
@@ -83,6 +89,15 @@ public class MainGame extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		Input input = container.getInput();
+		
+		if (waveTime >= waveIntervall) {
+			enemies.add(new Pirate(11000,13000, 2));
+			enemies.add(new Pirate(11000,12000, 2));
+			enemies.add(new Fighter(11000,12500, 2));
+			waveTime = 0;
+		} else {
+			waveTime += delta;
+		}
 		
 		updateList(resources, container, delta);
 		updateList(buildings, container, delta);
