@@ -60,7 +60,11 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(300,400));
 		colonists.add(new Fighter(500,400, 1));
 		
-		enemies.add(new Pirate(700,400, 2));
+		enemies.add(new Pirate(11000,12000, 2));
+		enemies.add(new Pirate(11000,11000, 2));
+		enemies.add(new Pirate(11000,10000, 2));
+		enemies.add(new Pirate(11000,11500, 2));
+		enemies.add(new Pirate(11000,13000, 2));
 		
 		resources.add(new MineralOre(710,320));
 		resources.add(new MineralOre(730,350));

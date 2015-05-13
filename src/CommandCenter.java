@@ -18,7 +18,7 @@ public class CommandCenter extends Building implements Builder {
 	
 	public CommandCenter(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, 200, 200, 1000, 10, 60, "commandcenter.png");
+		super(x, y, 200, 200, 1000, 10, 60, 1, "commandcenter.png");
 		buildProgress = 0;
 		int[] buildTimes = {5000, 7000, 7000};
 		this.buildTimes = buildTimes;
@@ -40,9 +40,8 @@ public class CommandCenter extends Building implements Builder {
 					gob = new Fighter(x, y, 1);
 					break;
 				default:
-					gob = new Pirate(x, y, 2);
+					gob = new Pirate(x, y, 1);
 			}
-			MainGame.minerals -= buildCosts[opt];
 			MainGame.colonists.add(gob);
 			buildProgress = 0;
 			buildQueue.remove(0);
@@ -52,8 +51,9 @@ public class CommandCenter extends Building implements Builder {
 	}
 	
 	public void queueSpawn(int opt) {
-		if (MainGame.minerals > buildCosts[opt])
+		if (MainGame.minerals >= buildCosts[opt]) {
 			buildQueue.add(opt);
+		}
 	}
 	
 
@@ -62,11 +62,18 @@ public class CommandCenter extends Building implements Builder {
 			throws SlickException {
 		
 		portrait.rotate((float) (0.005*delta));
-		
 		if (!(buildQueue.isEmpty())) {
-			if (buildProgress == 0)
-				MainGame.minerals -= buildCosts[buildQueue.get(0)];
+			if (buildProgress == 0) {
+				if (MainGame.minerals >= buildCosts[buildQueue.get(0)]) {
+					MainGame.minerals -= buildCosts[buildQueue.get(0)];
+					spawn(delta, buildQueue.get(0));
+
+				} else {	
+					buildQueue.remove(0);
+				}
+		} else {
 			spawn(delta, buildQueue.get(0));
+		}
 		}
 	}
 

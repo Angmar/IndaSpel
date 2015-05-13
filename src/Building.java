@@ -11,10 +11,10 @@ public abstract class Building extends GameObject {
 	}
 
 	public Building(float x, float y, int width, int height, 
-			int maxHealth, int damage, float range, String image) throws SlickException {
+			int maxHealth, int damage, float range, int faction, String image) throws SlickException {
 		
-		//x, y, width, height, maxHealth, damage, range, "portrait"
-		super(x, y, width, height, maxHealth, damage, range, 0, 0, image);
+		//x, y, width, height, maxHealth, damage, range, attackSpeed, faction, "portrait"
+		super(x, y, width, height, maxHealth, damage, range, 0, faction, image);
 	}
 	
 }
