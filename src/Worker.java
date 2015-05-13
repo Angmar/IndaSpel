@@ -26,11 +26,11 @@ public class Worker extends Character implements Builder {
 		attackLaser = Color.yellow;
 	
 		buildProgress = 0;
-		int[] buildTimes = {10000};
+		int[] buildTimes = {10000, 10000};
 		this.buildTimes = buildTimes;
-		int[] buildCosts = {200};
+		int[] buildCosts = {200, 200};
 		this.buildCosts = buildCosts;
-		String[] buildOpts = {"Command Center"};
+		String[] buildOpts = {"Command Center", "Factory"};
 		this.buildOpts = buildOpts;
 		buildQueue = new ArrayList<Integer>();
 	}
@@ -43,9 +43,10 @@ public class Worker extends Character implements Builder {
 			if(target.getClass() == ConstructionSite.class) {
 				buildProgress = target.getCurrentHealth();
 				if (buildProgress >= target.getMaxHealth()) {
-					MainGame.build((Building) target, new CommandCenter(x, y));
+					MainGame.build((Building) target, ((ConstructionSite)target).getBuilding());
 					buildQueue.clear();
 					target = null;
+					buildProgress = 0;
 				} else if (buildProgress < target.getMaxHealth()) {
 					((ConstructionSite) target).construct(delta);
 				}
@@ -71,10 +72,14 @@ public class Worker extends Character implements Builder {
 			moveToPoint(delta);
 			miningInterrupt();
 		} 
-		if (buildProgress == 0 && !buildQueue.isEmpty() && target == null) {
-			ConstructionSite cs = new ConstructionSite(x, y);
+		if (buildProgress == 0 && !buildQueue.isEmpty() && MainGame.minerals >= buildCosts[buildQueue.get(0)] && target == null) {
+			ConstructionSite cs = new ConstructionSite(x, y, buildQueue.get(0));
+			System.out.println(buildQueue.get(0));
 			MainGame.buildings.add(cs);
 			target = cs;
+			MainGame.minerals -= buildCosts[buildQueue.get(0)];
+		} else if (!buildQueue.isEmpty() && MainGame.minerals < buildCosts[buildQueue.get(0)]) {
+			buildQueue.clear();
 		}
 	}
 	
