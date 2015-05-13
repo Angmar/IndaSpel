@@ -11,8 +11,8 @@ public class OptionsMenu extends BasicGameState {
 	
 	int option;
 	int depth;
-	String[] menuText;
-	String[] resolutionOptions;
+	String[][] menuOtions;
+	//String[] resolutionOptions;
 	Image selectArrow;
 
 	public OptionsMenu() {
@@ -23,10 +23,13 @@ public class OptionsMenu extends BasicGameState {
 	public void init(GameContainer contianer, StateBasedGame arg1)
 			throws SlickException {
 		option = 0;
-		depth = 0; 
+		depth = 0;
 		
-		menuText = new String[]{"Resolution", "Difficulty", "Return"};
-		resolutionOptions = new String[]{"800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
+		menuOtions = new String[3][];
+		menuOtions[0] = new String[]{"Resolution", "800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
+		menuOtions[1] = new String[]{"Difficulty", "Easy", "Medium", "Hard", "Developer Skills"};
+		menuOtions[2] = new String[]{"Return"};
+		//resolutionOptions = new String[]{"800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
 		
 		selectArrow = MainMenu.getSelectImage();
 	}
@@ -43,13 +46,21 @@ public class OptionsMenu extends BasicGameState {
 					depth = 1;
 				}
 				else{
-					String[] res = resolutionOptions[depth-1].split("x");
+					String[] res = menuOtions[option][depth].split("x");
 					if(res.length==2){
 						StartGame.changeFullScreen(Integer.parseInt(res[0]),Integer.parseInt(res[1]), false);
 					}
 					else{
 						StartGame.changeFullScreen(0,0,true);
 					}
+				}
+				break;
+			case 1:
+				if(depth == 0){
+					depth = StartGame.getDifficulty();
+				}
+				else{
+					StartGame.setDifficulty(depth);
 				}
 				break;
 			case 2:
@@ -61,26 +72,16 @@ public class OptionsMenu extends BasicGameState {
 			if(depth == 0 && option > 0){
 				option--;
 			}
-			else if(depth > 0){
-				if(option == 0 && depth > 1){
-					depth--;
-				}
-				else if(option == 1){
-					
-				}
+			else if(depth > 0 && depth > 1){
+				depth--;
 			}
 		}
 		else if(input.isKeyPressed(Input.KEY_DOWN)){
 			if(depth == 0 && option < 2){
 				option++;
 			}
-			else if(depth > 0){
-				if(option == 0 && depth < resolutionOptions.length){
-					depth++;
-				}
-				else if(option == 1){
-					
-				}
+			else if(depth > 0 && depth < menuOtions[option].length-1){
+				depth++;
 			}
 		}
 		else if(input.isKeyPressed(Input.KEY_LEFT) && depth > 0){
@@ -92,22 +93,22 @@ public class OptionsMenu extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		float xText = container.getWidth()/2-100;
-		float yText = container.getHeight()/2-25*menuText.length;
+		float yText = container.getHeight()/2-25*menuOtions.length;
 		
-		for(int i = 0; i < menuText.length; i++){
-			g.drawString(menuText[i], xText, yText+(50*i));
+		for(int i = 0; i < menuOtions.length; i++){
+			g.drawString(menuOtions[i][0], xText, yText+(50*i));
 		}
-		if(depth > 0 && option == 0){
-			yText = container.getHeight()/2-25*resolutionOptions.length;
-			for(int i = 0; i < resolutionOptions.length; i++){
-				g.drawString(resolutionOptions[i], xText+200, yText+(50*i));
+		if(depth > 0){
+			yText = container.getHeight()/2-25*(menuOtions[option].length+1);
+			for(int i = 1; i < menuOtions[option].length; i++){
+				g.drawString(menuOtions[option][i], xText+200, yText+(50*i));
 			}
 		}
 		if(depth == 0){
 			g.drawImage(selectArrow, xText-50,  yText-10+(50*option));
 		}
 		else{
-			g.drawImage(selectArrow, xText+150, yText-10+(50*(depth-1)));
+			g.drawImage(selectArrow, xText+150, yText-10+(50*(depth)));
 		}
 	}
 
