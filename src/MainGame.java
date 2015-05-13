@@ -62,7 +62,6 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(4800,5000));
 		colonists.add(new Fighter(5000,4800, 1));
 		colonists.add(new Fighter(4800,4800, 1));
-		colonists.add(new Fighter(4900,4800, 1));
 		
 		resources.add(new MineralOre(5210,4800));
 		resources.add(new MineralOre(5230,4850));
@@ -72,8 +71,6 @@ public class MainGame extends BasicGameState {
 		enemies.add(new Pirate(5000,1000, 2));
 		enemies.add(new Pirate(5100,1000, 2));
 		enemies.add(new Pirate(5200,1000, 2));
-		
-		createMap();
 		
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
@@ -380,42 +377,6 @@ public class MainGame extends BasicGameState {
 			}
 		}
 		return nearestCC;		
-	}
-	
-	private void createMap() throws SlickException{
-		Random rand = new Random();
-		
-		int mineralClusters = 9-StartGame.getDifficulty();
-		int clusterSize = 20-StartGame.getDifficulty();
-		
-		boolean[][] mapGrid = new boolean[10][10];
-		
-		//Randomly flag grid squares for mineral-cluster
-		while(mineralClusters > 0){
-			int xg = rand.nextInt(10);
-			int yg = rand.nextInt(10);
-			
-			if(!mapGrid[xg][yg] && xg != 4 && xg != 5 && yg != 4 && yg != 5){
-				mapGrid[xg][yg] = true;
-				mineralClusters--;
-			}
-		}
-		
-		//Place mineral-clusters on the map
-		for(int i = 0; i < mapGrid.length; i++){
-			for(int j = 0; j < mapGrid[i].length; j++){
-				if(mapGrid[i][j]){
-					float xCenter = 500+(1000*i);
-					float yCenter = 500+(1000*j);
-					
-					for(int c = 0; c < clusterSize; c++){
-						
-						resources.add(new MineralOre(xCenter+rand.nextInt(400), yCenter+rand.nextInt(400)));
-					}
-				}
-			}
-		}
-		
 	}
 
 	@Override
