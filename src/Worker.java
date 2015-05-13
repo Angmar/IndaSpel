@@ -10,15 +10,29 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class Worker extends Character {
+public class Worker extends Character implements Builder {
 	
 	private int minerals;
+	private int buildProgress;
+	private int[] buildTimes;
+	private int[] buildCosts;
+	private String[] buildOpts;
+	private ArrayList<Integer> buildQueue;
 	
 	public Worker(float x, float y) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, "portrait", moveSpeed
 		super(x, y, 60, 60, 100, 20, 60, 1000, 1, "worker.png", 0.2);
 		
 		attackLaser = Color.yellow;
+	
+		buildProgress = 0;
+		int[] buildTimes = {5000};
+		this.buildTimes = buildTimes;
+		int[] buildCosts = {100};
+		this.buildCosts = buildCosts;
+		String[] buildOpts = {"Command Center"};
+		this.buildOpts = buildOpts;
+		buildQueue = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -44,6 +58,15 @@ public class Worker extends Character {
 		else if(movePoint != null){
 			moveToPoint(delta);
 			miningInterrupt();
+		}
+		if (!buildQueue.isEmpty()) {
+			if (buildProgress == 0) {
+				setTarget(new ConstructionSite(x, y));
+				((ConstructionSite) target).construct(delta);
+			} else {
+				((ConstructionSite) target).construct(delta);				
+			}
+			buildProgress = target.getCurrentHealth();
 		}
 	}
 	
@@ -114,6 +137,40 @@ public class Worker extends Character {
 		
 	}
 
-
 	
+	@Override
+	public ArrayList<String> getBuildOptions() {
+		ArrayList<String> list = new ArrayList<String>();
+		for (String s : buildOpts) {
+			list.add(s);
+		}
+		return list;
+	}
+
+	@Override
+	public int getProgress() {
+		return buildProgress;
+	}
+
+	@Override
+	public void queueSpawn(int opt) {
+		if (buildQueue.isEmpty()) {
+			buildQueue.add(opt);
+		}
+	}
+
+	@Override
+	public ArrayList<Integer> getBuildQueue() {
+		return buildQueue;
+	}
+
+	@Override
+	public int[] getBuildTime() {
+		return buildTimes;
+	}
+
+	@Override
+	public int[] getBuildCosts() {
+		return buildCosts;
+	}
 }

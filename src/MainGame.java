@@ -30,6 +30,9 @@ public class MainGame extends BasicGameState {
 	float mouseX = -1;
 	float mouseY = -1;
 	
+	int waveIntervall;
+	int waveTime;
+	
 	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
 	static ArrayList<Character> colonists;
@@ -48,6 +51,8 @@ public class MainGame extends BasicGameState {
 		cameraX = -5000+container.getWidth()/2;
 		cameraY = -5000+container.getHeight()/2;
 		minerals = 0;
+		
+		background = new Image("space.jpg");
 		
 		resources = new ArrayList<Building>();
 		buildings = new ArrayList<Building>();
@@ -73,6 +78,9 @@ public class MainGame extends BasicGameState {
 		enemies.add(new Pirate(5200,1000, 2));
 		
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
+	
+		waveIntervall = 60000;
+		waveTime = 0;
 	}
 	
 
@@ -81,6 +89,15 @@ public class MainGame extends BasicGameState {
 			throws SlickException {
 		Input input = container.getInput();
 		
+		if (waveTime >= waveIntervall) {
+			enemies.add(new Pirate(11000,13000, 2));
+			enemies.add(new Pirate(11000,12000, 2));
+			enemies.add(new Fighter(11000,12500, 2));
+			waveTime = 0;
+		} else {
+			waveTime += delta;
+		}
+	
 		updateList(resources, container, delta);
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
@@ -203,11 +220,13 @@ public class MainGame extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 				
-
+		
 		
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
 
+		g.drawImage(background, 0, 0);
+		
 		if (selectRect != null)
 			g.draw(selectRect);
 		//g.drawString("Press SPACE to go to main menu", 400, 200);
@@ -379,6 +398,11 @@ public class MainGame extends BasicGameState {
 		return nearestCC;		
 	}
 
+	public static void build(Building construction, Building finished) {
+		buildings.remove(construction);
+		buildings.add(finished);
+	}
+	
 	@Override
 	public int getID() {
 		return 1;
