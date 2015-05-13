@@ -16,6 +16,8 @@ public class StartGame extends StateBasedGame{
 	static AppGameContainer container;
 	static int screenWidth;
 	static int screenHeight;
+	
+	static int difficulty = 2; //1=Easy, 2=Medium, 3=Hard, 4=Developer skills
 
 	public static void main(String[] args) throws SlickException {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -45,6 +47,13 @@ public class StartGame extends StateBasedGame{
 		else{
 			container.setDisplayMode(screenWidth, screenHeight, true);
 		}
+	}
+	
+	public static int getDifficulty(){
+		return difficulty;
+	}
+	public static void setDifficulty(int newDifficulty){
+		difficulty = newDifficulty;
 	}
 
 }
