@@ -47,7 +47,6 @@ public class Worker extends Character implements Builder {
 					buildQueue.clear();
 					target = null;
 				} else if (buildProgress < target.getMaxHealth()) {
-					System.out.println(target.getCurrentHealth());
 					((ConstructionSite) target).construct(delta);
 				}
 

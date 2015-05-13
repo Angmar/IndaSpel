@@ -247,16 +247,16 @@ public class MainGame extends BasicGameState {
 			if (selected.get(0) instanceof Builder) {
 				Builder b = (Builder) selected.get(0);
 				ArrayList<String> buildOptions = b.getBuildOptions();
-				for (int i=0;i<buildOptions.size();i++) {
+				for (int i=0;i<buildOptions.size();i++) { //Build options
 					g.draw(new Rectangle(container.getWidth()-width-(width-hudHeight), container.getHeight()-hudHeight+i*hudHeight/3, hudHeight*2, hudHeight/3));
-					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-width, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
+					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-width-(width-hudHeight)+5, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}
-				if (!(b.getBuildQueue().isEmpty())) {
+				if (!(b.getBuildQueue().isEmpty())) { //Build progress
 					g.setColor(Color.red);
 					g.fill(new Rectangle(hudHeight, container.getHeight()-hudHeight+hudHeight/16, width*b.getProgress()/b.getBuildTime()[b.getBuildQueue().get(0)], 3));
 					g.setColor(Color.white);
 				}
-				for (int i=0;i<b.getBuildQueue().size();i++) {
+				for (int i=0;i<b.getBuildQueue().size();i++) { //Build queue
 					g.draw(new Rectangle(hudHeight, container.getHeight()-hudHeight+i*hudHeight/3, width, hudHeight/3));
 					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), hudHeight+hudHeight/8, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}	
