@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
@@ -44,8 +45,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		cameraX = 0;
-		cameraY = 0;
+		cameraX = -5000+container.getWidth()/2;
+		cameraY = -5000+container.getHeight()/2;
 		minerals = 0;
 		
 		resources = new ArrayList<Building>();
@@ -54,22 +55,22 @@ public class MainGame extends BasicGameState {
 		enemies = new ArrayList<Character>();
 		selected = new ArrayList<GameObject>();
 		
-		buildings.add(new CommandCenter(400,400));
-		colonists.add(new Worker(300,200));
-		colonists.add(new Worker(300,300));
-		colonists.add(new Worker(300,400));
-		colonists.add(new Fighter(500,400, 1));
+		buildings.add(new CommandCenter(4900,4900));
+		colonists.add(new Worker(4900,5100));
+		colonists.add(new Worker(4900,5000));
+		colonists.add(new Worker(5000,5000));
+		colonists.add(new Worker(4800,5000));
+		colonists.add(new Fighter(5000,4800, 1));
+		colonists.add(new Fighter(4800,4800, 1));
 		
-		enemies.add(new Pirate(11000,12000, 2));
-		enemies.add(new Pirate(11000,11000, 2));
-		enemies.add(new Pirate(11000,10000, 2));
-		enemies.add(new Pirate(11000,11500, 2));
-		enemies.add(new Pirate(11000,13000, 2));
+		resources.add(new MineralOre(5210,4800));
+		resources.add(new MineralOre(5230,4850));
+		resources.add(new MineralOre(5220,4900));
+		resources.add(new MineralOre(5200,4950));
 		
-		resources.add(new MineralOre(710,320));
-		resources.add(new MineralOre(730,350));
-		resources.add(new MineralOre(720,400));
-		resources.add(new MineralOre(700,450));
+		enemies.add(new Pirate(5000,1000, 2));
+		enemies.add(new Pirate(5100,1000, 2));
+		enemies.add(new Pirate(5200,1000, 2));
 		
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
@@ -271,10 +272,34 @@ public class MainGame extends BasicGameState {
 				GameObject gob = (GameObject) iter.next();
 				if(gob.isAlive()){
 					gob.update(container, delta);
+					
+					if(Character.class.isAssignableFrom(gob.getClass()) && !gob.hasTarget()){
+						collision((ArrayList<Character>) gameList, (Character) gob, delta);
+					}
 				}
 				else{
 					iter.remove();
 				}
+			}
+		}
+	}
+	
+	private void collision(ArrayList<Character> gameList, Character gob,  int delta){
+		for(Character col : gameList){
+			if(col.getRect().intersects(gob.getRect()) && col != gob && !col.hasTarget()){
+				float distance = gob.targetDistance(col.getX(), col.getY());
+				
+				float cos;
+				float sin;
+				if(distance > 1){
+					cos = (gob.getX() - col.getX())/distance;
+					sin = (gob.getY() - col.getY())/distance;
+				}
+				else{
+					cos = new Random().nextFloat();
+					sin = (float) Math.sqrt(1-cos*cos);
+				}
+				gob.push(cos, sin, 0.1, delta);
 			}
 		}
 	}
@@ -316,19 +341,26 @@ public class MainGame extends BasicGameState {
 		return false;
 	}
 	
-	public static Character nearestColonist(float charX, float charY){
-		Character nearestCol = null;	
-		for(Character col : colonists){
-			if(nearestCol != null){
-				if(col.targetDistance(charX, charY) < nearestCol.targetDistance(charX, charY)){
-					nearestCol = col;
+	public static Character nearestEnemy(float charX, float charY, int faction){
+		
+		Character nearestEnemy = null;
+		ArrayList<Character> possibleTargets;
+		if(faction == 1){
+			possibleTargets = enemies;
+		} else{
+			possibleTargets = colonists;
+		}
+		for(Character col : possibleTargets){
+			if(nearestEnemy != null){
+				if(col.targetDistance(charX, charY) < nearestEnemy.targetDistance(charX, charY)){
+					nearestEnemy = col;
 				}
 			}
 			else{
-				nearestCol = col;
+				nearestEnemy = col;
 			}
 		}
-		return nearestCol;
+		return nearestEnemy;
 	}
 
 	public static CommandCenter nearestCommandCenter(float charX, float charY){

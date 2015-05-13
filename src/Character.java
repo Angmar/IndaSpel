@@ -110,6 +110,13 @@ public abstract class Character extends GameObject {
 		else if(movePoint != null){
 			moveToPoint(delta);
 		}
+		else{
+			GameObject possibleTarget = MainGame.nearestEnemy(x, y, faction);
+				
+			if(possibleTarget != null && targetInSpotRange(possibleTarget)){
+				target = possibleTarget;
+			}
+		}
 	}
 	
 	protected void enemyAI(int delta){
@@ -121,10 +128,9 @@ public abstract class Character extends GameObject {
 				target = MainGame.nearestCommandCenter(x, y);
 			}
 			else if(Building.class.isAssignableFrom(target.getClass())){
-				GameObject tempTarg = target;
-				target = MainGame.nearestColonist(x, y);
-				if(target == null || !targetInRange()){
-					target = tempTarg;
+				GameObject possibleTarget = MainGame.nearestEnemy(x, y, faction);
+				if(target != null && targetInSpotRange(possibleTarget)){
+					target = possibleTarget;
 				}
 			}
 		}
@@ -135,5 +141,11 @@ public abstract class Character extends GameObject {
 		else{
 			target = MainGame.nearestCommandCenter(x, y);
 		}
+	}
+	
+	public void push(double cos, double sin, double force, int delta){
+		x += force*cos*delta;
+		y += force*sin*delta;
+		posRect.setLocation(x-width/2, y-height/2);
 	}
 }

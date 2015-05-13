@@ -19,6 +19,7 @@ public abstract class GameObject {
 	protected int currentHealth;
 	protected int damage;
 	protected float range;
+	protected float spotRange;
 	protected int attackSpeed;
 	protected int attackProgress;
 	protected boolean alive;
@@ -44,6 +45,7 @@ public abstract class GameObject {
 		this.currentHealth = maxHealth;
 		this.damage = damage;
 		this.range = range;
+		this.spotRange = range*3;
 		this.attackSpeed = attackSpeed;
 		this.attackProgress = 0;
 		this.faction = faction;
@@ -125,14 +127,25 @@ public abstract class GameObject {
 	}
 	
 	protected boolean targetInRange(){
-		if(targetDistance(target.getX(), target.getY()) < range){
+		if(targetDistance(target.getX(), target.getY()) <= range){
 			return true;
 		}
 		return false;
 	}
 	
-	protected float targetDistance(float targetX, float targetY){
+	protected boolean targetInSpotRange(GameObject possibleTarget){
+		return targetDistance(possibleTarget.getX(), possibleTarget.getY()) <= spotRange;
+	}
+	
+	public float targetDistance(float targetX, float targetY){
 		return (float) Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
+	}
+	
+	public boolean hasTarget(){
+		if(target != null || movePoint != null){
+			return true;
+		}
+		return false;
 	}
 	
 	protected float targetDistance(){
