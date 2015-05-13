@@ -26,9 +26,9 @@ public class Worker extends Character implements Builder {
 		attackLaser = Color.yellow;
 	
 		buildProgress = 0;
-		int[] buildTimes = {5000};
+		int[] buildTimes = {10000};
 		this.buildTimes = buildTimes;
-		int[] buildCosts = {100};
+		int[] buildCosts = {200};
 		this.buildCosts = buildCosts;
 		String[] buildOpts = {"Command Center"};
 		this.buildOpts = buildOpts;
@@ -39,8 +39,21 @@ public class Worker extends Character implements Builder {
 	public void update(GameContainer container, int delta) 
 			throws SlickException {
 		if(target != null){
+			//Check if target is construction site
+			if(target.getClass() == ConstructionSite.class) {
+				buildProgress = target.getCurrentHealth();
+				if (buildProgress >= target.getMaxHealth()) {
+					MainGame.build((Building) target, new CommandCenter(x, y));
+					buildQueue.clear();
+					target = null;
+				} else if (buildProgress < target.getMaxHealth()) {
+					System.out.println(target.getCurrentHealth());
+					((ConstructionSite) target).construct(delta);
+				}
+
+			}
 			//Check if target is a mineral
-			if(target.getClass() == MineralOre.class){
+			else if(target.getClass() == MineralOre.class){
 				//If the worker holds no minerals
 				if(minerals == 0){
 					mine(delta);
@@ -58,15 +71,11 @@ public class Worker extends Character implements Builder {
 		else if(movePoint != null){
 			moveToPoint(delta);
 			miningInterrupt();
-		}
-		if (!buildQueue.isEmpty()) {
-			if (buildProgress == 0) {
-				setTarget(new ConstructionSite(x, y));
-				((ConstructionSite) target).construct(delta);
-			} else {
-				((ConstructionSite) target).construct(delta);				
-			}
-			buildProgress = target.getCurrentHealth();
+		} 
+		if (buildProgress == 0 && !buildQueue.isEmpty() && target == null) {
+			ConstructionSite cs = new ConstructionSite(x, y);
+			MainGame.buildings.add(cs);
+			target = cs;
 		}
 	}
 	

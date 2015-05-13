@@ -26,11 +26,8 @@ public class ConstructionSite extends Building {
 	}
 
 	public void construct(int delta) throws SlickException {
-		if (maxHealth > currentHealth) {
+		if (maxHealth > currentHealth)
 			currentHealth += delta;
-		} else if (maxHealth == currentHealth) {
-			MainGame.build(this, new CommandCenter(x, y));
-		}
 	}
 	
 }

@@ -51,7 +51,7 @@ public class CommandCenter extends Building implements Builder {
 	}
 	
 	public void queueSpawn(int opt) {
-		if (MainGame.minerals >= buildCosts[opt]) {
+		if (MainGame.minerals >= buildCosts[opt] && buildQueue.size() <= 6) {
 			buildQueue.add(opt);
 		}
 	}

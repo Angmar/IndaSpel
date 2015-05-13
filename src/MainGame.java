@@ -418,6 +418,12 @@ public class MainGame extends BasicGameState {
 		
 	}
 
+	public static void build(Building construction, Building finished) {
+		buildings.remove(construction);
+		buildings.add(finished);
+	}
+	
+	
 	@Override
 	public int getID() {
 		return 1;
