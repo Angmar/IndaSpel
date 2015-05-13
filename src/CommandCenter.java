@@ -24,7 +24,7 @@ public class CommandCenter extends Building implements Builder {
 		this.buildTimes = buildTimes;
 		int[] buildCosts = {50, 100, 100};
 		this.buildCosts = buildCosts;
-		String[] buildOpts = {"Worker", "Fighter", "Other"};
+		String[] buildOpts = {"Worker", "Fighter", "Pirate"};
 		this.buildOpts = buildOpts;
 		buildQueue = new ArrayList<Integer>();
 	}
