@@ -28,6 +28,7 @@ public abstract class GameObject {
 	protected Color attackLaser;
 	protected int faction; //0 = Resource, 1 = Friendly, 2 = Enemy
 	
+	private Image movePointFlag;
 	
 	//To be changed
 	protected boolean selected;
@@ -50,6 +51,11 @@ public abstract class GameObject {
 		this.attackProgress = 0;
 		this.faction = faction;
 		this.attackLaser = Color.red;
+		
+		if(faction == 1){
+			movePointFlag  = new Image("movepoint.png");
+			movePointFlag = movePointFlag.getScaledCopy(20, 20);
+		}
 		
 		this.alive = true;
 		
@@ -84,7 +90,16 @@ public abstract class GameObject {
 			g.drawLine(x-lineDist/2, y-lineDist/2-10, (x-lineDist/2+(lineDist*((float)currentHealth/maxHealth))), y-lineDist/2-10);
 			
 			g.setColor(Color.white);
-			g.setLineWidth(1);
+			//g.setLineWidth(1);
+			
+			if(selected && hasTarget() && faction==1){
+				if(movePoint != null && target == null){
+					g.drawImage(movePointFlag, movePoint.getX()-movePointFlag.getWidth()/2, movePoint.getY()-movePointFlag.getHeight()/2);
+				}
+				else{
+					//Find a good way to indicate target
+				}
+			}
 		}
 		if(attackProgress < attackSpeed/2 && attackProgress > 0 && target != null && targetInRange()){
 			turnToTarget(target.getX()-x, target.getY()-y);
@@ -93,10 +108,14 @@ public abstract class GameObject {
 			g.setColor(attackLaser);
 			g.drawLine(x, y, target.getX(), target.getY());
 			g.setColor(Color.white);
-			g.setLineWidth(1);
+			//g.setLineWidth(1);
 		}
 		
 		g.drawImage(portrait, x-width/2, y-height/2);
+	}
+	
+	private void drawSelectBox(Graphics g, float xBox, float yBox, int lineDist){
+		
 	}
 	
 	public void drawOnMap(GameContainer c, Graphics g, float cameraX, float cameraY) {

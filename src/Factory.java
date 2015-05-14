@@ -15,7 +15,7 @@ public class Factory extends Building implements Builder {
 
 	public Factory(float x, float y)
 			throws SlickException {
-		super(x, y, 150, 150, 1000, 10, 60, 1, "commandcenter.png");
+		super(x, y, 150, 150, 1000, 10, 60, 1, "factory.png");
 
 
 		buildProgress = 0;

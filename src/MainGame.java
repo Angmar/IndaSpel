@@ -32,6 +32,7 @@ public class MainGame extends BasicGameState {
 	
 	int waveIntervall;
 	int waveTime;
+	int wave;
 	
 	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
@@ -63,9 +64,10 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Worker(4900,5000));
 		colonists.add(new Worker(5000,5000));
 		colonists.add(new Worker(4800,5000));
+		
 		colonists.add(new Fighter(5000,4800, 1));
 		colonists.add(new Fighter(4800,4800, 1));
-		colonists.add(new Fighter(4900,4800, 1));
+		colonists.add(new Tank(4900,4800, 1));
 		
 		resources.add(new MineralOre(5210,4800));
 		resources.add(new MineralOre(5230,4850));
@@ -80,6 +82,7 @@ public class MainGame extends BasicGameState {
 		
 		waveIntervall = 60000;
 		waveTime = 0;
+		wave = 0;
 		
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
@@ -91,10 +94,19 @@ public class MainGame extends BasicGameState {
 		Input input = container.getInput();
 		
 		if (waveTime >= waveIntervall) {
-			enemies.add(new Pirate(11000,13000, 2));
-			enemies.add(new Pirate(11000,12000, 2));
-			enemies.add(new Fighter(11000,12500, 2));
+			float xDist = randomDistance();
+			float yDist = randomDistance();
+			float dist = (float) Math.sqrt(xDist*xDist + yDist*yDist);
+			
+			float xSpawnPoint = 11000*(xDist/dist);
+			float ySpawnPoint = 11000*(yDist/dist);
+			
+			for(int i = 0; i < 5+StartGame.getDifficulty()*wave; i++){
+				enemies.add(new Pirate(xSpawnPoint+50*i,ySpawnPoint+50*i, 2));
+			}
+			
 			waveTime = 0;
+			wave++;
 		} else {
 			waveTime += delta;
 		}
@@ -179,6 +191,7 @@ public class MainGame extends BasicGameState {
 				mouseX -= cameraX;
 				mouseY -= cameraY;
 			}
+			Vector2f newMovePoint = new Vector2f(mouseX, mouseY);
 			for(GameObject sel : selected){
 				
 				GameObject target = mouseTarget(enemies, input.getMouseX(), input.getMouseY()); 
@@ -195,7 +208,7 @@ public class MainGame extends BasicGameState {
 					sel.setTarget(target);
 				}
 				else{
-					sel.setTarget(new Vector2f(mouseX, mouseY));
+					sel.setTarget(newMovePoint);
 				}
 			}
 		}
@@ -425,17 +438,31 @@ public class MainGame extends BasicGameState {
 					
 					for(int c = 0; c < clusterSize; c++){
 						
-						resources.add(new MineralOre(xCenter+rand.nextInt(400), yCenter+rand.nextInt(400)));
+						float xDist = randomDistance();
+						float yDist = randomDistance();
+						float dist = (float) Math.sqrt(xDist*xDist + yDist*yDist);
+						
+						resources.add(new MineralOre(xCenter+(100+rand.nextInt(400))*xDist/dist, yCenter+(100+rand.nextInt(400))*yDist/dist));
 					}
 				}
 			}
 		}
-		
 	}
 
 	public static void build(Building construction, Building finished) {
 		buildings.remove(construction);
 		buildings.add(finished);
+	}
+	
+	private int randomDistance(){
+		Random rand = new Random();
+		
+		int dist = 1+rand.nextInt(10);
+		
+		if(rand.nextBoolean()){
+			dist = dist*-1;
+		}
+		return dist;
 	}
 	
 	

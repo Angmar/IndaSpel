@@ -1,21 +1,21 @@
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 
-public class Fighter extends Character {
-	
-	
-	public Fighter(float x, float y, int faction) throws SlickException {
+public class Sniper extends Character {
+
+	public Sniper(float x, float y, int faction) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, faction, "portrait"
-		super(x, y, 60, 70, 200, 40, 150, 500, faction, "fighter.png", 0.35);
+		super(x, y, 65, 75, 120, 100, 2000, 2000,
+				faction, "sniper.png", 0.05);
+		
+		spotRange = range;
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		
 		if(faction == 1){
 			playerControlledAI(delta);
 		}
