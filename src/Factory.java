@@ -61,10 +61,10 @@ public class Factory extends Building implements Builder {
 					gob = new Fighter(x, y, 1);
 					break;
 				case 1:
-					gob = new Fighter(x, y, 1);
+					gob = new Tank(x, y, 1);
 					break;
 				default:
-					gob = new Pirate(x, y, 1);
+					gob = new Sniper(x, y, 1);
 			}
 			MainGame.colonists.add(gob);
 			buildProgress = 0;
