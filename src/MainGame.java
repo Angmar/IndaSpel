@@ -67,7 +67,7 @@ public class MainGame extends BasicGameState {
 		
 		colonists.add(new Fighter(5000,4800, 1));
 		colonists.add(new Fighter(4800,4800, 1));
-		colonists.add(new Tank(4900,4800, 1));
+		colonists.add(new Tank(4900,4700, 1));
 		
 		resources.add(new MineralOre(5210,4800));
 		resources.add(new MineralOre(5230,4850));
@@ -97,12 +97,19 @@ public class MainGame extends BasicGameState {
 			float xDist = randomDistance();
 			float yDist = randomDistance();
 			float dist = (float) Math.sqrt(xDist*xDist + yDist*yDist);
+			System.out.println("Cos: " + xDist/dist+ "Sin: "+yDist/dist);
+			float xSpawnPoint = 5000+7000*(xDist/dist);
+			float ySpawnPoint = 5000+7000*(yDist/dist);
 			
-			float xSpawnPoint = 11000*(xDist/dist);
-			float ySpawnPoint = 11000*(yDist/dist);
+			
 			
 			for(int i = 0; i < 5+StartGame.getDifficulty()*wave; i++){
-				enemies.add(new Pirate(xSpawnPoint+50*i,ySpawnPoint+50*i, 2));
+				enemies.add(new Pirate(xSpawnPoint+100*(-yDist/dist)*(i%7),ySpawnPoint+100*(xDist/dist)*(i%7), 2));
+				
+				if(i % 7 == 0 && i != 0){
+					xSpawnPoint += 120*(xDist/dist);
+					ySpawnPoint += 120*(yDist/dist);
+				}
 			}
 			
 			waveTime = 0;
