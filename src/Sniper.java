@@ -7,8 +7,7 @@ public class Sniper extends Character {
 
 	public Sniper(float x, float y, int faction) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, faction, "portrait"
-		super(x, y, 65, 75, 120, 100, 2000, 2000,
-				faction, "sniper.png", 0.05);
+		super(x, y, 65, 75, 120, 100, 2000, 4000, faction, "sniper.png", 0.05);
 		
 		spotRange = range;
 	}

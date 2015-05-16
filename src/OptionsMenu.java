@@ -27,7 +27,7 @@ public class OptionsMenu extends BasicGameState {
 		
 		menuOtions = new String[3][];
 		menuOtions[0] = new String[]{"Resolution", "800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
-		menuOtions[1] = new String[]{"Difficulty", "Easy", "Medium", "Hard", "Developer Skills"};
+		menuOtions[1] = new String[]{"Difficulty", "Easy", "Medium", "Hard", "Ragnarök"};
 		menuOtions[2] = new String[]{"Return"};
 		//resolutionOptions = new String[]{"800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
 		

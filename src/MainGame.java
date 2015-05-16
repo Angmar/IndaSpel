@@ -69,10 +69,21 @@ public class MainGame extends BasicGameState {
 		colonists.add(new Fighter(4800,4800, 1));
 		colonists.add(new Tank(4900,4700, 1));
 		
+		//Initial mineral cluster is set
 		resources.add(new MineralOre(5210,4800));
-		resources.add(new MineralOre(5230,4850));
+		resources.add(new MineralOre(5530,4850));
 		resources.add(new MineralOre(5220,4900));
-		resources.add(new MineralOre(5200,4950));
+		resources.add(new MineralOre(5500,4950));
+		resources.add(new MineralOre(5410,4810));
+		resources.add(new MineralOre(5330,4870));
+		resources.add(new MineralOre(5480,4990));
+		resources.add(new MineralOre(5390,4920));
+		resources.add(new MineralOre(5310,4960));
+		resources.add(new MineralOre(5330,4750));
+		resources.add(new MineralOre(5220,4700));
+		resources.add(new MineralOre(5300,4650));
+		resources.add(new MineralOre(5220,4900));
+		resources.add(new MineralOre(5200,5050));
 		
 		enemies.add(new Pirate(5000,1000, 2));
 		enemies.add(new Pirate(5100,1000, 2));
@@ -80,7 +91,7 @@ public class MainGame extends BasicGameState {
 		
 		createMap();
 		
-		waveIntervall = 60000;
+		waveIntervall = 1000;
 		waveTime = 0;
 		wave = 0;
 		
@@ -97,7 +108,7 @@ public class MainGame extends BasicGameState {
 			float xDist = randomDistance();
 			float yDist = randomDistance();
 			float dist = (float) Math.sqrt(xDist*xDist + yDist*yDist);
-			System.out.println("Cos: " + xDist/dist+ "Sin: "+yDist/dist);
+			//System.out.println("Cos: " + xDist/dist+ " Sin: "+yDist/dist);
 			float xSpawnPoint = 5000+7000*(xDist/dist);
 			float ySpawnPoint = 5000+7000*(yDist/dist);
 			
@@ -124,20 +135,22 @@ public class MainGame extends BasicGameState {
 		updateList(enemies, container, delta);
 		
 		if(input.isKeyDown(Input.KEY_DOWN)){
-			cameraY -= delta*0.5;
+			cameraY = moveCameraY(container, delta, -1);
 		}
 		if(input.isKeyDown(Input.KEY_UP)){
-			cameraY += delta*0.5;
+			cameraY = moveCameraY(container, delta, 1);
 		}
 		if(input.isKeyDown(Input.KEY_LEFT)){
-			cameraX += delta*0.5;
+			cameraX = moveCameraX(container, delta, 1);
 		}
 		if(input.isKeyDown(Input.KEY_RIGHT)){
-			cameraX -= delta*0.5;
+			cameraX = moveCameraX(container, delta, -1);
 		}
-		
-		if(input.isKeyPressed(Input.KEY_SPACE)){
+		if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			game.enterState(0);
+		} 
+		else if(input.isKeyPressed(Input.KEY_ENTER)){
+			//Catch up the enter press, otherwise the menu will react to it.
 		}
 		
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
@@ -200,7 +213,6 @@ public class MainGame extends BasicGameState {
 			}
 			Vector2f newMovePoint = new Vector2f(mouseX, mouseY);
 			for(GameObject sel : selected){
-				
 				GameObject target = mouseTarget(enemies, input.getMouseX(), input.getMouseY()); 
 				if(target == null){
 					target = mouseTarget(buildings, input.getMouseX(), input.getMouseY());
@@ -220,28 +232,10 @@ public class MainGame extends BasicGameState {
 			}
 		}
 	}
-
-	private float mapToRealCord(float cord) {
-		float r = MainGame.FIELDSIZE*cord/hudbg.getHeight();
-		return r;
-	}
-	
-	private void selectFromList(ArrayList<? extends GameObject> list) {
-		for(GameObject gob : list){
-			gob.deselect();
-			selected.remove(gob);
-			if (selectRect.intersects(gob.getRect())) {
-				gob.select();
-				selected.add(gob);
-			}
-		}
-	}
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-				
-
 		
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
@@ -300,9 +294,50 @@ public class MainGame extends BasicGameState {
 		Rectangle map = new Rectangle(0, container.getHeight()-hudHeight, hudHeight, hudHeight);
 		Rectangle currentPos = new Rectangle(cameraX*-hudHeight/MainGame.FIELDSIZE, container.getHeight()-hudHeight+cameraY*-hudHeight/MainGame.FIELDSIZE, hudHeight*container.getWidth()/MainGame.FIELDSIZE, hudHeight*container.getHeight()/MainGame.FIELDSIZE);
 		g.draw(map);
-		g.draw(currentPos);		
+		g.draw(currentPos);	
 	}
 	
+	private float moveCameraX(GameContainer cont, int delta, int direction){
+		float newCX = (float) (cameraX + 0.6*delta*direction);
+		
+		if(newCX < -10000+cont.getWidth()){
+			newCX = -10000+cont.getWidth();
+		}
+		else if(newCX > 0){
+			newCX = 0;
+		}
+		
+		return newCX;
+	}
+	
+	private float moveCameraY(GameContainer cont, int delta, int direction){
+		float newCX = (float) (cameraY + 0.6*delta*direction);
+		
+		if(newCX < -10000+cont.getHeight()){
+			newCX = -10000+cont.getHeight();
+		}
+		else if(newCX > 0){
+			newCX = 0;
+		}
+		
+		return newCX;
+	}
+	
+	private float mapToRealCord(float cord) {
+		float r = MainGame.FIELDSIZE*cord/hudbg.getHeight();
+		return r;
+	}
+	
+	private void selectFromList(ArrayList<? extends GameObject> list) {
+		for(GameObject gob : list){
+			gob.deselect();
+			selected.remove(gob);
+			if (selectRect.intersects(gob.getRect())) {
+				gob.select();
+				selected.add(gob);
+			}
+		}
+	}
 	
 	private void updateList(ArrayList<? extends GameObject> gameList, GameContainer container, int delta) throws SlickException{
 		if(!gameList.isEmpty()){

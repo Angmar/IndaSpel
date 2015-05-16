@@ -41,6 +41,8 @@ public class MainMenu extends BasicGameState {
 			throws SlickException {
 		Input input = container.getInput();
 		
+		
+		
 		if(input.isKeyPressed(Input.KEY_ENTER)){
 			switch(selectedOption){
 			case 0:
@@ -60,6 +62,9 @@ public class MainMenu extends BasicGameState {
 		}
 		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 2){
 			selectedOption++;
+		}
+		else if(input.isKeyPressed(Input.KEY_ESCAPE)){
+			
 		}
 	}
 	

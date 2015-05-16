@@ -115,6 +115,10 @@ public class Worker extends Character implements Builder {
 				target.setTarget(this);
 				attackProgress += delta;
 			}
+			else if(!target.isAlive()){
+				target = null;
+				attackProgress = 0;
+			}
 		}
 		else if(movePoint != null){
 			moveToPoint(delta);

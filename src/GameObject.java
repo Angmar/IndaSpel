@@ -119,13 +119,18 @@ public abstract class GameObject {
 	}
 	
 	public void drawOnMap(GameContainer c, Graphics g, float cameraX, float cameraY) {
-		if (faction == 1)
+		if (faction == 1){
 			g.setColor(Color.green);
-		else if (faction == 2)
+		}
+		else if (faction == 2){
 			g.setColor(Color.red);
+		}
 		float mapX = (c.getHeight()/4)*x/MainGame.FIELDSIZE;
 		float mapY = (c.getHeight()/4)*y/MainGame.FIELDSIZE+3*c.getHeight()/4;
-		g.fill(new Rectangle(mapX, mapY, 2, 2));
+		
+		if(mapX > 0 && mapX < c.getHeight()/4 && mapY > c.getHeight()*3/4 && mapY < c.getHeight()){
+			g.fill(new Rectangle(mapX, mapY, 2, 2));
+		}
 		g.setColor(Color.white);
 	}
 	
