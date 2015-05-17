@@ -110,6 +110,12 @@ public class MainGame extends BasicGameState {
 		colonists.clear();
 		enemies.clear();
 		
+		try{
+			minerals = Integer.parseInt(scan.nextLine());
+		} catch (Exception e){
+			throw new IOException(e);
+		}
+		
 		HashMap<GameObject, String> aimers = new HashMap();
 		
 		HashMap<String, GameObject> targets = new HashMap();
@@ -625,7 +631,9 @@ public class MainGame extends BasicGameState {
 		lists.add(buildings);
 		lists.add(colonists);
 		lists.add(enemies);
-	
+		
+		bw.write(""+minerals);
+		bw.newLine();
 		
 		for(int i = 0; i < 4; i++){
 			for(GameObject gob : lists.get(i)){
