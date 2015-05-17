@@ -1,8 +1,11 @@
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
@@ -43,6 +46,7 @@ public class MainGame extends BasicGameState {
 	static ArrayList<GameObject> selected;
 
 	static final int FIELDSIZE = 10000;
+	static final int ILLEGALCOORDINATE = -1;
 	
 	public MainGame() {
 		// TODO Auto-generated constructor stub
@@ -100,7 +104,114 @@ public class MainGame extends BasicGameState {
 		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
 	}
 	
-
+	public static void initSaveFile(Scanner scan) throws IOException, SlickException{
+		resources.clear();
+		buildings.clear();
+		colonists.clear();
+		enemies.clear();
+		
+		HashMap<GameObject, String> aimers = new HashMap();
+		
+		HashMap<String, GameObject> targets = new HashMap();
+		
+		while(scan.hasNextLine()){
+			//     0       1   2     3         4            5               6            7
+			//Class@numb , x , y , health , faction , target.toString , movePointX , movePointY
+			
+			String[] info = scan.nextLine().split("\\s");
+			
+			if(info.length != 8){
+				throw new IOException();
+			}
+			
+			float x;
+			float y;
+			int health;
+			int faction;
+			String target = info[5];
+			float moveX;
+			float moveY;
+			
+			try{
+				x = Float.parseFloat(info[1]);
+				y = Float.parseFloat(info[2]);
+				health = Integer.parseInt(info[3]);
+				faction = Integer.parseInt(info[4]);
+				moveX = Float.parseFloat(info[6]);
+				moveY = Float.parseFloat(info[7]);
+				
+			} catch(IllegalArgumentException e){
+				throw new IOException(e);
+			}
+			
+			String type = info[0].split("@")[0];
+			
+			GameObject gob;
+			
+			switch(type){
+			case "MineralOre":
+				gob = new MineralOre(x, y);
+				break;
+			case "CommandCenter":
+				gob = new CommandCenter(x, y);
+				break;
+			case "Factory":
+				gob= new Factory(x, y);
+				break;
+			case "Worker":
+				gob = new Worker(x, y);
+				break;
+			case "Fighter":
+				gob = new Fighter(x, y, faction);
+				break;
+			case "Tank":
+				gob = new Tank(x, y, faction);
+				break;
+			case "Sniper":
+				gob = new Sniper(x, y, faction);
+				break;
+			case "Pirate":
+				gob = new Pirate(x, y, faction);
+				break;
+			default:
+				throw new IOException();
+			}
+			
+			gob.takeDamage(gob.getMaxHealth()-health);
+			switch(faction){
+			case 0:
+				resources.add((Building) gob);
+				break;
+			case 1:
+				if(Building.class.isAssignableFrom(gob.getClass())){
+					buildings.add((Building) gob);
+				}
+				else{
+					colonists.add((Character) gob);
+				}
+				break;
+			case 2:
+				enemies.add((Character) gob);
+				break;
+			}
+			targets.put(info[0], gob);
+			
+			if(!target.equals("null")){
+				aimers.put(gob, target);
+			}
+			else if(moveX >= 0 && moveY >= 0){
+				gob.setTarget(new Vector2f(moveX, moveY));
+			}
+		}
+		
+		for(Iterator iter = aimers.keySet().iterator(); iter.hasNext(); ){
+			GameObject gob = (GameObject) iter.next();
+			gob.setTarget(targets.get(aimers.get(gob)));
+		}
+		
+	}
+	
+	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
@@ -514,17 +625,21 @@ public class MainGame extends BasicGameState {
 		lists.add(buildings);
 		lists.add(colonists);
 		lists.add(enemies);
-		
-		String[] title = {"resources", "buildings", "colonists", "enemies"};
+	
 		
 		for(int i = 0; i < 4; i++){
-			bw.write(title[i]);
-			bw.newLine();
 			for(GameObject gob : lists.get(i)){
-				bw.write(""+gob.toString()+" "+gob.getX()+" "+gob.getY()+" "+gob.getCurrentHealth()+" "+gob.getTarget());
+				float moveX = -10;
+				float moveY = -10;
+				if(gob.getMovePoint() != null){
+					moveX = gob.getMovePoint().getX();
+					moveY = gob.getMovePoint().getY();
+				}
+				
+				bw.write(gob.toString()+" "+gob.getX()+" "+gob.getY()+" "+gob.getCurrentHealth()+" "+
+						gob.getFaction()+" "+gob.getTarget()+" "+moveX+" "+moveY);
 				bw.newLine();
 			}
-			bw.newLine();
 		}
 	}
 	

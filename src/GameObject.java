@@ -188,6 +188,10 @@ public abstract class GameObject {
 		return target;
 	}
 	
+	public Vector2f getMovePoint(){
+		return movePoint;
+	}
+	
 	public float getX(){
 		return x;
 	}

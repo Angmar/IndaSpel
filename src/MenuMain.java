@@ -1,4 +1,8 @@
 import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -50,6 +54,13 @@ public class MenuMain extends BasicGameState {
 				break;
 			case 1:
 				input.clearKeyPressedRecord();
+				try(Scanner scan = new Scanner(new File("savefile.txt"))){
+					MainGame.initSaveFile(scan);
+				} catch (IOException e) {
+					//Failed to read file, either because it doesn't exist or is corrupted
+					e.printStackTrace();
+					game.init(container);
+				}
 				game.enterState(1);
 				break;
 			case 2:
