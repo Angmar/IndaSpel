@@ -7,15 +7,15 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class OptionsMenu extends BasicGameState {
+public class MenuOptions extends BasicGameState {
 	
 	int option;
 	int depth;
-	String[][] menuOtions;
+	String[][] menuOptions;
 	//String[] resolutionOptions;
 	Image selectArrow;
 
-	public OptionsMenu() {
+	public MenuOptions() {
 		
 	}
 
@@ -25,13 +25,13 @@ public class OptionsMenu extends BasicGameState {
 		option = 0;
 		depth = 0;
 		
-		menuOtions = new String[3][];
-		menuOtions[0] = new String[]{"Resolution", "800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
-		menuOtions[1] = new String[]{"Difficulty", "Easy", "Medium", "Hard", "Ragnarök"};
-		menuOtions[2] = new String[]{"Return"};
+		menuOptions = new String[3][];
+		menuOptions[0] = new String[]{"Resolution", "800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
+		menuOptions[1] = new String[]{"Difficulty", "Easy", "Medium", "Hard", "Ragnarök"};
+		menuOptions[2] = new String[]{"Return"};
 		//resolutionOptions = new String[]{"800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
 		
-		selectArrow = MainMenu.getSelectImage();
+		selectArrow = MenuMain.getSelectImage();
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public class OptionsMenu extends BasicGameState {
 					depth = 1;
 				}
 				else{
-					String[] res = menuOtions[option][depth].split("x");
+					String[] res = menuOptions[option][depth].split("x");
 					if(res.length==2){
 						StartGame.changeFullScreen(Integer.parseInt(res[0]),Integer.parseInt(res[1]), false);
 					}
@@ -63,7 +63,8 @@ public class OptionsMenu extends BasicGameState {
 					StartGame.setDifficulty(depth);
 				}
 				break;
-			case 2:
+			default:
+				input.clearKeyPressedRecord();
 				game.enterState(0);
 				break;
 			}
@@ -80,7 +81,7 @@ public class OptionsMenu extends BasicGameState {
 			if(depth == 0 && option < 2){
 				option++;
 			}
-			else if(depth > 0 && depth < menuOtions[option].length-1){
+			else if(depth > 0 && depth < menuOptions[option].length-1){
 				depth++;
 			}
 		}
@@ -93,15 +94,15 @@ public class OptionsMenu extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		float xText = container.getWidth()/2-100;
-		float yText = container.getHeight()/2-25*menuOtions.length;
+		float yText = container.getHeight()/2-25*menuOptions.length;
 		
-		for(int i = 0; i < menuOtions.length; i++){
-			g.drawString(menuOtions[i][0], xText, yText+(50*i));
+		for(int i = 0; i < menuOptions.length; i++){
+			g.drawString(menuOptions[i][0], xText, yText+(50*i));
 		}
 		if(depth > 0){
-			yText = container.getHeight()/2-25*(menuOtions[option].length+1);
-			for(int i = 1; i < menuOtions[option].length; i++){
-				g.drawString(menuOtions[option][i], xText+200, yText+(50*i));
+			yText = container.getHeight()/2-25*(menuOptions[option].length+1);
+			for(int i = 1; i < menuOptions[option].length; i++){
+				g.drawString(menuOptions[option][i], xText+200, yText+(50*i));
 			}
 		}
 		if(depth == 0){

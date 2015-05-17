@@ -34,10 +34,10 @@ public class StartGame extends StateBasedGame{
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		this.addState(new MainMenu());//State 0
+		this.addState(new MenuMain());//State 0
 		this.addState(new MainGame());//State 1
-		this.addState(new OptionsMenu());//State 1
-		
+		this.addState(new MenuOptions());//State 2
+		this.addState(new MenuPause());//State 3
 	}
 	
 	public static void changeFullScreen(int width, int height, boolean full) throws SlickException{

@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -91,7 +93,7 @@ public class MainGame extends BasicGameState {
 		
 		createMap();
 		
-		waveIntervall = 1000;
+		waveIntervall = 60000;
 		waveTime = 0;
 		wave = 0;
 		
@@ -108,7 +110,6 @@ public class MainGame extends BasicGameState {
 			float xDist = randomDistance();
 			float yDist = randomDistance();
 			float dist = (float) Math.sqrt(xDist*xDist + yDist*yDist);
-			//System.out.println("Cos: " + xDist/dist+ " Sin: "+yDist/dist);
 			float xSpawnPoint = 5000+7000*(xDist/dist);
 			float ySpawnPoint = 5000+7000*(yDist/dist);
 			
@@ -147,11 +148,9 @@ public class MainGame extends BasicGameState {
 			cameraX = moveCameraX(container, delta, -1);
 		}
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
-			game.enterState(0);
+			input.clearKeyPressedRecord();
+			game.enterState(3);
 		} 
-		else if(input.isKeyPressed(Input.KEY_ENTER)){
-			//Catch up the enter press, otherwise the menu will react to it.
-		}
 		
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {	
 			mouseX = input.getMouseX();
@@ -507,6 +506,27 @@ public class MainGame extends BasicGameState {
 		return dist;
 	}
 	
+	public static void saveGame(BufferedWriter bw) throws IOException{
+		
+		ArrayList<ArrayList<? extends GameObject>> lists = new ArrayList<ArrayList<? extends GameObject>>(4);
+		
+		lists.add(resources);
+		lists.add(buildings);
+		lists.add(colonists);
+		lists.add(enemies);
+		
+		String[] title = {"resources", "buildings", "colonists", "enemies"};
+		
+		for(int i = 0; i < 4; i++){
+			bw.write(title[i]);
+			bw.newLine();
+			for(GameObject gob : lists.get(i)){
+				bw.write(""+gob.toString()+" "+gob.getX()+" "+gob.getY()+" "+gob.getCurrentHealth()+" "+gob.getTarget());
+				bw.newLine();
+			}
+			bw.newLine();
+		}
+	}
 	
 	@Override
 	public int getID() {
