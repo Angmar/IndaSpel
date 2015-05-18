@@ -129,7 +129,7 @@ public abstract class Character extends GameObject {
 			}
 			else if(Building.class.isAssignableFrom(target.getClass())){
 				GameObject possibleTarget = MainGame.nearestEnemy(x, y, faction);
-				if(target != null && targetInSpotRange(possibleTarget)){
+				if(target != null && possibleTarget != null && targetInSpotRange(possibleTarget)){
 					target = possibleTarget;
 				}
 			}

@@ -20,11 +20,11 @@ public class CommandCenter extends Building implements Builder {
 		//x, y, width, height, maxHealth, damage, range, "portrait"
 		super(x, y, 200, 200, 1000, 10, 60, 1, "commandcenter.png");
 		buildProgress = 0;
-		int[] buildTimes = {5000, 7000, 7000};
+		int[] buildTimes = {5000};
 		this.buildTimes = buildTimes;
-		int[] buildCosts = {50, 100, 100};
+		int[] buildCosts = {50};
 		this.buildCosts = buildCosts;
-		String[] buildOpts = {"Worker", "Fighter", "Pirate"};
+		String[] buildOpts = {"Worker"};
 		this.buildOpts = buildOpts;
 		buildQueue = new ArrayList<Integer>();
 	}

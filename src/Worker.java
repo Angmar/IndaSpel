@@ -75,7 +75,6 @@ public class Worker extends Character implements Builder {
 		} 
 		if (buildProgress == 0 && !buildQueue.isEmpty() && MainGame.minerals >= buildCosts[buildQueue.get(0)] && target == null) {
 			ConstructionSite cs = new ConstructionSite(x, y, buildQueue.get(0));
-			System.out.println(buildQueue.get(0));
 			MainGame.buildings.add(cs);
 			target = cs;
 			MainGame.minerals -= buildCosts[buildQueue.get(0)];
