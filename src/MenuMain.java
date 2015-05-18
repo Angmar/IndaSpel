@@ -29,8 +29,7 @@ public class MenuMain extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		selectedOption = 0;
-		menuOptions = new String[]{"Begin New Game", "Continue Saved Game", "Options", "Quit Game"};
-		
+		menuOptions = new String[]{"Begin New Game", "Continue Saved Game", "Options", "Basic Text Tutorial", "Credits", "Quit Game"};
 		selectArrow = new Image("SelectArrow.png");
 		selectArrow = selectArrow.getScaledCopy(40, 40);
 		selectArrow.rotate(90);
@@ -66,6 +65,14 @@ public class MenuMain extends BasicGameState {
 			case 2:
 				input.clearKeyPressedRecord();
 				game.enterState(2);
+				break;
+			case 3:
+				input.clearKeyPressedRecord();
+				game.enterState(4);
+				break;
+			case 4:
+				input.clearKeyPressedRecord();
+				game.enterState(5);
 				break;
 			default:
 				container.exit();

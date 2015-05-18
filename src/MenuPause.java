@@ -23,7 +23,7 @@ public class MenuPause extends BasicGameState {
 	}
 
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		selectedOption = 0;
 		menuOptions = new String[]{"Continue Game", "Save Game", "Return to Main Menu"};

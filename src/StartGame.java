@@ -38,6 +38,8 @@ public class StartGame extends StateBasedGame{
 		this.addState(new MainGame());//State 1
 		this.addState(new MenuOptions());//State 2
 		this.addState(new MenuPause());//State 3
+		this.addState(new MenuTutorial());//State 4
+		this.addState(new Credits());//State 4
 	}
 	
 	public static void changeFullScreen(int width, int height, boolean full) throws SlickException{

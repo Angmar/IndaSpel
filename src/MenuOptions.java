@@ -20,7 +20,7 @@ public class MenuOptions extends BasicGameState {
 	}
 
 	@Override
-	public void init(GameContainer contianer, StateBasedGame arg1)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		option = 0;
 		depth = 0;

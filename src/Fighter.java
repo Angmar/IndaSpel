@@ -9,7 +9,7 @@ public class Fighter extends Character {
 	
 	public Fighter(float x, float y, int faction) throws SlickException {
 		//x, y, width, height, maxHealth, damage, range, attackSpeed, faction, "portrait"
-		super(x, y, 60, 70, 200, 40, 150, 500, faction, "fighter.png", 0.35);
+		super(x, y, 60, 75, 200, 40, 150, 500, faction, "fighter.png", 0.35);
 	}
 
 	@Override
