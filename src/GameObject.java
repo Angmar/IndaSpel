@@ -158,6 +158,9 @@ public abstract class GameObject {
 	}
 	
 	protected boolean targetInSpotRange(GameObject possibleTarget){
+		if (possibleTarget == null) {
+			return false;
+		}
 		return getDistance(possibleTarget.getX(), possibleTarget.getY()) <= spotRange;
 	}
 	
