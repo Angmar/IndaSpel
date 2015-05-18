@@ -29,7 +29,7 @@ public abstract class Character extends GameObject {
 	}
 	
 	protected void setMoveToGameObjectPoint(){
-		float distance = targetDistance(target.getX(), target.getY());
+		float distance = getDistance(target.getX(), target.getY());
 		float xDistance = target.getX() - x;
 		float yDistance = target.getY() - y;
 		
@@ -55,7 +55,7 @@ public abstract class Character extends GameObject {
 	}
 	
 	private void moveTo(float xPoint, float yPoint, double moveRange, int delta){
-		double distance =  targetDistance(xPoint, yPoint);
+		double distance =  getDistance(xPoint, yPoint);
 		if(distance > moveRange){
 			float xDistance = xPoint - x;
 			float yDistance = yPoint - y;

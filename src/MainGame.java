@@ -88,7 +88,7 @@ public class MainGame extends BasicGameState {
 		resources.add(new MineralOre(5330,4750));
 		resources.add(new MineralOre(5220,4700));
 		resources.add(new MineralOre(5300,4650));
-		resources.add(new MineralOre(5220,4900));
+		resources.add(new MineralOre(5320,5000));
 		resources.add(new MineralOre(5200,5050));
 		
 		enemies.add(new Pirate(5000,1000, 2));
@@ -476,7 +476,7 @@ public class MainGame extends BasicGameState {
 	private void collision(ArrayList<Character> gameList, Character gob,  int delta){
 		for(Character col : gameList){
 			if(col.getRect().intersects(gob.getRect()) && col != gob && !col.hasTarget()){
-				float distance = gob.targetDistance(col.getX(), col.getY());
+				float distance = gob.getDistance(col.getX(), col.getY());
 				
 				float cos;
 				float sin;
@@ -530,6 +530,21 @@ public class MainGame extends BasicGameState {
 		return false;
 	}
 	
+	public static Building nearestFreeResource(float charX, float charY){
+		Building nearRes = null;
+		
+		for(Building res : resources){
+			if(nearRes== null && !res.hasTarget()){
+				nearRes = res;
+			}
+			else if(nearRes != null && res.getDistance(charX, charY) < nearRes.getDistance(charX, charY) 
+					&& !res.hasTarget()){
+				nearRes = res;
+			}
+		}
+		return nearRes;	
+	}
+	
 	public static Character nearestEnemy(float charX, float charY, int faction){
 		
 		Character nearestEnemy = null;
@@ -541,7 +556,7 @@ public class MainGame extends BasicGameState {
 		}
 		for(Character col : possibleTargets){
 			if(nearestEnemy != null){
-				if(col.targetDistance(charX, charY) < nearestEnemy.targetDistance(charX, charY)){
+				if(col.getDistance(charX, charY) < nearestEnemy.getDistance(charX, charY)){
 					nearestEnemy = col;
 				}
 			}
@@ -560,7 +575,7 @@ public class MainGame extends BasicGameState {
 				if(nearestCC == null){
 					nearestCC = (CommandCenter) comc;
 				}
-				else if(comc.targetDistance(charX, charY) < nearestCC.targetDistance(charX, charY)){
+				else if(comc.getDistance(charX, charY) < nearestCC.getDistance(charX, charY)){
 					nearestCC = (CommandCenter) comc;
 				}
 			}

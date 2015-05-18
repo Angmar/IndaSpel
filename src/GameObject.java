@@ -151,17 +151,17 @@ public abstract class GameObject {
 	}
 	
 	protected boolean targetInRange(){
-		if(targetDistance(target.getX(), target.getY()) <= range){
+		if(getDistance(target.getX(), target.getY()) <= range){
 			return true;
 		}
 		return false;
 	}
 	
 	protected boolean targetInSpotRange(GameObject possibleTarget){
-		return targetDistance(possibleTarget.getX(), possibleTarget.getY()) <= spotRange;
+		return getDistance(possibleTarget.getX(), possibleTarget.getY()) <= spotRange;
 	}
 	
-	public float targetDistance(float targetX, float targetY){
+	public float getDistance(float targetX, float targetY){
 		return (float) Math.sqrt(Math.pow(targetX-x, 2) + Math.pow(targetY-y, 2));
 	}
 	

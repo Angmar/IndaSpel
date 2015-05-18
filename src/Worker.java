@@ -24,6 +24,7 @@ public class Worker extends Character implements Builder {
 		super(x, y, 60, 60, 100, 20, 60, 1000, 1, "worker.png", 0.2);
 		
 		attackLaser = Color.yellow;
+		spotRange = 500;
 	
 		buildProgress = 0;
 		int[] buildTimes = {10000, 10000};
@@ -99,24 +100,37 @@ public class Worker extends Character implements Builder {
 	private void mine(int delta) {
 		if(targetInRange()){
 			movePoint = null;
-			if(target.getTarget() == this && target.isAlive()){
-				if(attackProgress >= attackSpeed){
-					target.takeDamage(damage);
-					target.clearTarget();
-					
-					minerals += damage;
-					attackProgress = 0;
+			if(target.isAlive()){
+				
+				if(target.getTarget() == this){
+					if(attackProgress >= attackSpeed){
+						target.takeDamage(damage);
+						target.clearTarget();
+						
+						minerals += damage;
+						attackProgress = 0;
+					}
+					else{
+						attackProgress += delta;
+					}
 				}
-				else{
+				else if(target.getTarget() == null){
+					target.setTarget(this);
 					attackProgress += delta;
 				}
+				else{
+					target = MainGame.nearestFreeResource(x, y);
+					if(!targetInSpotRange(target)){
+						target = null;
+					}
+					attackProgress = 0;
+				}
 			}
-			else if(target.getTarget() == null){
-				target.setTarget(this);
-				attackProgress += delta;
-			}
-			else if(!target.isAlive()){
-				target = null;
+			else{
+				target = MainGame.nearestFreeResource(x, y);
+				if(!targetInSpotRange(target)){
+					target = null;
+				}
 				attackProgress = 0;
 			}
 		}
@@ -137,7 +151,10 @@ public class Worker extends Character implements Builder {
 				MainGame.minerals += minerals;
 				minerals = 0;
 				if(!target.isAlive()){
-					target = null;
+					target = MainGame.nearestFreeResource(x, y);
+					if(!targetInSpotRange(target)){
+						target = null;
+					}
 				}
 			}
 		}
