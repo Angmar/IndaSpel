@@ -101,7 +101,7 @@ public class MainGame extends BasicGameState {
 		waveTime = 0;
 		wave = 0;
 		
-		hudbg = new Rectangle(0, container.getHeight()-container.getHeight()/4, container.getWidth(), container.getHeight()/4);
+		hudbg = new Rectangle(-1, container.getHeight()-container.getHeight()/4, container.getWidth()+2, container.getHeight()/4+1);
 	}
 	
 	public static void initSaveFile(Scanner scan) throws IOException, SlickException{

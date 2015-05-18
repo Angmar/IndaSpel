@@ -52,6 +52,7 @@ public class CommandCenter extends Building implements Builder {
 	
 	public void queueSpawn(int opt) {
 		if (MainGame.minerals >= buildCosts[opt] && buildQueue.size() <= 6) {
+			MainGame.minerals -= buildCosts[opt];
 			buildQueue.add(opt);
 		}
 	}
@@ -65,7 +66,6 @@ public class CommandCenter extends Building implements Builder {
 		if (!(buildQueue.isEmpty())) {
 			if (buildProgress == 0) {
 				if (MainGame.minerals >= buildCosts[buildQueue.get(0)]) {
-					MainGame.minerals -= buildCosts[buildQueue.get(0)];
 					spawn(delta, buildQueue.get(0));
 
 				} else {	

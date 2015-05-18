@@ -32,19 +32,8 @@ public class Factory extends Building implements Builder {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if (!(buildQueue.isEmpty())) {
-			if (buildProgress == 0) {
-				if (MainGame.minerals >= buildCosts[buildQueue.get(0)]) {
-					MainGame.minerals -= buildCosts[buildQueue.get(0)];
-					spawn(delta, buildQueue.get(0));
-
-				} else {	
-					buildQueue.remove(0);
-				}
-		} else {
 			spawn(delta, buildQueue.get(0));
 		}
-		}
-
 	}
 
 	@Override
@@ -90,6 +79,7 @@ public class Factory extends Building implements Builder {
 
 	@Override
 	public void queueSpawn(int opt) {
+		MainGame.minerals -= buildCosts[opt];
 		buildQueue.add(opt);
 	}
 

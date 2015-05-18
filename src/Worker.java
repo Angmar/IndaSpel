@@ -73,13 +73,10 @@ public class Worker extends Character implements Builder {
 			moveToPoint(delta);
 			miningInterrupt();
 		} 
-		if (buildProgress == 0 && !buildQueue.isEmpty() && MainGame.minerals >= buildCosts[buildQueue.get(0)] && target == null) {
+		if (buildProgress == 0 && !buildQueue.isEmpty() && target == null) {
 			ConstructionSite cs = new ConstructionSite(x, y, buildQueue.get(0));
 			MainGame.buildings.add(cs);
 			target = cs;
-			MainGame.minerals -= buildCosts[buildQueue.get(0)];
-		} else if (!buildQueue.isEmpty() && MainGame.minerals < buildCosts[buildQueue.get(0)]) {
-			buildQueue.clear();
 		}
 	}
 	
@@ -187,8 +184,10 @@ public class Worker extends Character implements Builder {
 
 	@Override
 	public void queueSpawn(int opt) {
-		if (buildQueue.isEmpty()) {
+		if (buildQueue.isEmpty() && MainGame.minerals > buildCosts[opt]) {
 			buildQueue.add(opt);
+			MainGame.minerals -= buildCosts[opt];
+			
 		}
 	}
 
