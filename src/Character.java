@@ -43,6 +43,8 @@ public abstract class Character extends GameObject {
 			
 			posRect.setLocation(x-width/2, y-height/2);
 			setTarget(new Vector2f(xPoint, yPoint));
+		} else {
+			setTarget(new Vector2f(x, y));
 		}
 	}
 	
