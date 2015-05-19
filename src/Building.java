@@ -6,10 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class Building extends GameObject {
 
-	public void setTarget(Vector2f newMovePoint){
-		//Do nothing
-	}
-
 	public Building(float x, float y, int width, int height, 
 			int maxHealth, int damage, float range, int faction, String image) throws SlickException {
 		

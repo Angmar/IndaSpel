@@ -138,7 +138,10 @@ public abstract class GameObject {
 		portrait.setRotation((float)(90+Math.toDegrees(Math.atan2(yDistance, xDistance))));	
 	}
 	
-	public abstract void setTarget(Vector2f newMovePoint);
+	public void setTarget(Vector2f newMovePoint){
+		movePoint = newMovePoint;
+		target = null;
+	}
 	
 	public void setTarget(GameObject newTarget){
 		target = newTarget;

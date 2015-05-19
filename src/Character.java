@@ -23,10 +23,6 @@ public abstract class Character extends GameObject {
 		
 	}
 	
-	public void setTarget(Vector2f newMovePoint){
-		movePoint = newMovePoint;
-		target = null;
-	}
 	
 	protected void setMoveToGameObjectPoint(){
 		float distance = getDistance(target.getX(), target.getY());
