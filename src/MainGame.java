@@ -77,7 +77,7 @@ public class MainGame extends BasicGameState {
 		enemies = new ArrayList<Character>();
 		selected = new ArrayList<GameObject>();
 		
-		//buildings.add(new CommandCenter(4900,4900));
+		buildings.add(new CommandCenter(4900,4900));
 		colonists.add(new Worker(4900,5100));
 		colonists.add(new Worker(4900,5000));
 		colonists.add(new Worker(5000,5000));
