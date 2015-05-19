@@ -1,9 +1,15 @@
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -57,5 +63,18 @@ public class StartGame extends StateBasedGame{
 	public static void setDifficulty(int newDifficulty){
 		difficulty = newDifficulty;
 	}
-
+	
+	public static TrueTypeFont generateTitleFont(float f, BasicGameState state){
+		TrueTypeFont font = null;
+		try (InputStream is = state.getClass().getResourceAsStream("/Starcraft.otf")) {
+			Font awtfont = Font.createFont(Font.TRUETYPE_FONT, is);
+			Font fontBase = awtfont.deriveFont(f);
+			//Font fontBase = new Font("Calibri", Font.BOLD, 16);
+			font = new TrueTypeFont(fontBase, false);
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return font;
+	}
 }

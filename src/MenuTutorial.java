@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
@@ -5,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,6 +20,7 @@ public class MenuTutorial extends BasicGameState {
 	int selectedOption;
 	int showTutorial;
 	Image selectArrow;
+	TrueTypeFont fontTitle;
 
 	public MenuTutorial() {
 		
@@ -29,6 +32,7 @@ public class MenuTutorial extends BasicGameState {
 		selectedOption = 0;
 		showTutorial = 0;
 		selectArrow = MenuMain.getSelectImage();
+		fontTitle = StartGame.generateTitleFont(20, this);
 
 		tutorialImage = new ArrayList<Image>();
 		tutorialText = new ArrayList<String>();
@@ -141,17 +145,21 @@ public class MenuTutorial extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		
 		float xText = container.getWidth()/4;
 		float yText = container.getHeight()/2-25*tutorialTitle.size();
 		
-		for(int i = 0; i < tutorialTitle.size(); i++){
-			g.drawString(tutorialTitle.get(i), xText, yText+(50*i));
-		}
-		g.drawImage(selectArrow, xText-50, yText-10+(50*selectedOption));
+		g.drawImage(selectArrow, xText-50, yText-6+(50*selectedOption));
 		
 		g.drawImage(tutorialImage.get(showTutorial), container.getWidth()/2, container.getHeight()/2-tutorialImage.get(showTutorial).getHeight()-50);
 		
 		g.drawString(tutorialText.get(showTutorial), container.getWidth()/2, container.getHeight()/2);
+		
+		g.setFont(fontTitle);
+		for(int i = 0; i < tutorialTitle.size(); i++){
+			g.drawString(tutorialTitle.get(i), xText, yText+(50*i));
+		}
+		
 	}
 
 	@Override

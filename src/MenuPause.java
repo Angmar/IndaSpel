@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,6 +18,7 @@ public class MenuPause extends BasicGameState {
 	int selectedOption;
 	String[] menuOptions;
 	Image selectArrow;
+	TrueTypeFont font;
 
 	public MenuPause() {
 		// TODO Auto-generated constructor stub
@@ -29,6 +31,7 @@ public class MenuPause extends BasicGameState {
 		menuOptions = new String[]{"Continue Game", "Save Game", "Return to Main Menu"};
 		
 		selectArrow = MenuMain.getSelectImage();
+		font = StartGame.generateTitleFont(20, this);
 	}
 	
 
@@ -80,6 +83,7 @@ public class MenuPause extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.setFont(font);
 		
 		float xText = container.getWidth()/2-100;
 		float yText = container.getHeight()/2-25*menuOptions.length;
@@ -88,7 +92,7 @@ public class MenuPause extends BasicGameState {
 			g.drawString(menuOptions[i], xText, yText+(50*i));
 		}
 		
-		g.drawImage(selectArrow, xText-50, yText-10+(50*selectedOption));
+		g.drawImage(selectArrow, xText-50, yText-6+(50*selectedOption));
 	}
 
 

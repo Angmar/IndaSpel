@@ -4,14 +4,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 
 public class Credits extends BasicGameState {
 	
-	ArrayList<String> credits;
+	ArrayList<String[]> credits;
 	float timePassed;
+	TrueTypeFont fontTitle;
 
 	public Credits() {
 		
@@ -21,16 +23,16 @@ public class Credits extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		timePassed = 0;
+		fontTitle = StartGame.generateTitleFont(20, this);
+		credits = new ArrayList<String[]>();
 		
-		credits = new ArrayList<String>();
+		credits.add(new String[]{"Director", "Erik Svensson"});
+		credits.add(new String[]{"Co-Director", "Teodor Karlgren"});
 		
-		credits.add("Main Director \n\nErik Svensson");
-		credits.add("Co-Director \n\nTeodor Karlgren");
+		credits.add(new String[]{"Game Design", "Erik Svensson\nTeodor Karlgren"});
+		credits.add(new String[]{"Programming", "Erik Svensson\nTeodor Karlgren"});
 		
-		credits.add("Game Design \n\nErik Svensson\nTeodor Karlgren");
-		credits.add("Programming \n\nErik Svensson\nTeodor Karlgren");
-		
-		credits.add("Sprite Artist \n\nMillionthVenctor");
+		credits.add(new String[]{"Sprite Artist", "MillionthVector"});
 
 	}
 	
@@ -45,7 +47,7 @@ public class Credits extends BasicGameState {
 				game.enterState(0);
 		}
 		
-		timePassed += 0.15*delta;
+		timePassed += 0.03*delta;
 	}
 
 
@@ -57,9 +59,13 @@ public class Credits extends BasicGameState {
 		float yText = container.getHeight()/2-25*credits.size();
 		
 		for(int i = 0; i < credits.size(); i++){
-			g.drawString(credits.get(i), xText, yText+(170*i)-timePassed/4);
+			g.drawString(credits.get(i)[1], xText, yText+30+(170*i)-timePassed);
 		}
-
+		
+		g.setFont(fontTitle);
+		for(int i = 0; i < credits.size(); i++){
+			g.drawString(credits.get(i)[0], xText, yText+(170*i)-timePassed);
+		}
 	}
 
 	@Override

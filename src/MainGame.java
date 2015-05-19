@@ -14,6 +14,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -28,16 +29,17 @@ public class MainGame extends BasicGameState {
 
 	boolean test;
 	static int minerals;
+	TrueTypeFont font;
 	
-	float cameraX;
-	float cameraY;
+	static float cameraX;
+	static float cameraY;
 	
 	float mouseX = -1;
 	float mouseY = -1;
 	
 	int waveIntervall;
-	int waveTime;
-	int wave;
+	static int waveTime;
+	static int wave;
 	
 	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
@@ -55,6 +57,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+		font = StartGame.generateTitleFont(16, this);
+		
 		cameraX = -5000+container.getWidth()/2;
 		cameraY = -5000+container.getHeight()/2;
 		minerals = 0;
@@ -112,6 +116,11 @@ public class MainGame extends BasicGameState {
 		
 		try{
 			minerals = Integer.parseInt(scan.nextLine());
+			wave = Integer.parseInt(scan.nextLine());
+			waveTime = Integer.parseInt(scan.nextLine());
+			String[] camera = scan.nextLine().split("\\s");
+			cameraX = Float.parseFloat(camera[0]);
+			cameraY = Float.parseFloat(camera[1]);
 		} catch (Exception e){
 			throw new IOException(e);
 		}
@@ -352,6 +361,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		
+		g.setFont(font);
 		
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
@@ -648,6 +659,12 @@ public class MainGame extends BasicGameState {
 		lists.add(enemies);
 		
 		bw.write(""+minerals);
+		bw.newLine();
+		bw.write(""+wave);
+		bw.newLine();
+		bw.write(""+waveTime);
+		bw.newLine();
+		bw.write(cameraX+" "+cameraY);
 		bw.newLine();
 		
 		for(int i = 0; i < 4; i++){

@@ -1,7 +1,9 @@
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 import org.newdawn.slick.GameContainer;
@@ -34,9 +36,7 @@ public class MenuMain extends BasicGameState {
 		selectArrow = selectArrow.getScaledCopy(40, 40);
 		selectArrow.rotate(90);
 		
-		
-		//Font awtFont = new Font("Papyrus", Font.PLAIN, 16);
-		//font = new TrueTypeFont(awtFont, false);
+		font = StartGame.generateTitleFont(28, this);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class MenuMain extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		
-		//g.setFont(font);
+		g.setFont(font);
 		
 		float xText = container.getWidth()/2-100;
 		float yText = container.getHeight()/2-25*menuOptions.length;
@@ -100,7 +100,7 @@ public class MenuMain extends BasicGameState {
 			g.drawString(menuOptions[i], xText, yText+(50*i));
 		}
 		
-		g.drawImage(selectArrow, xText-50, yText-10+(50*selectedOption));
+		g.drawImage(selectArrow, xText-50, yText+(50*selectedOption));
 	}
 	
 	public static Image getSelectImage(){

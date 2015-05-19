@@ -1,8 +1,14 @@
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -14,6 +20,7 @@ public class MenuOptions extends BasicGameState {
 	String[][] menuOptions;
 	//String[] resolutionOptions;
 	Image selectArrow;
+	TrueTypeFont font;
 
 	public MenuOptions() {
 		
@@ -24,6 +31,8 @@ public class MenuOptions extends BasicGameState {
 			throws SlickException {
 		option = 0;
 		depth = 0;
+		
+		font = StartGame.generateTitleFont(20, this);
 		
 		menuOptions = new String[3][];
 		menuOptions[0] = new String[]{"Resolution", "800x600", "1024x600", "1600x900", "1680x1050", "1920x1080", "Fullscreen"};
@@ -93,6 +102,8 @@ public class MenuOptions extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.setFont(font);
+		
 		float xText = container.getWidth()/2-100;
 		float yText = container.getHeight()/2-25*menuOptions.length;
 		
@@ -106,10 +117,10 @@ public class MenuOptions extends BasicGameState {
 			}
 		}
 		if(depth == 0){
-			g.drawImage(selectArrow, xText-50,  yText-10+(50*option));
+			g.drawImage(selectArrow, xText-50,  yText-6+(50*option));
 		}
 		else{
-			g.drawImage(selectArrow, xText+150, yText-10+(50*(depth)));
+			g.drawImage(selectArrow, xText+150, yText-6+(50*(depth)));
 		}
 	}
 
