@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
@@ -22,6 +23,7 @@ public class StartGame extends StateBasedGame{
 	static AppGameContainer container;
 	static int screenWidth;
 	static int screenHeight;
+	static Image background;
 	
 	static int difficulty = 2; //1=Easy, 2=Medium, 3=Hard, 4=Developer skills
 
@@ -29,7 +31,6 @@ public class StartGame extends StateBasedGame{
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		screenWidth = gd.getDisplayMode().getWidth();
 		screenHeight = gd.getDisplayMode().getHeight();
-		
 		StartGame game = new StartGame("Foreign Frontier");
 		container = new AppGameContainer(game);
 		container.setTargetFrameRate(60);
@@ -62,6 +63,9 @@ public class StartGame extends StateBasedGame{
 	}
 	public static void setDifficulty(int newDifficulty){
 		difficulty = newDifficulty;
+	}
+	public static Image getBackground(){
+		return background;
 	}
 	
 	public static TrueTypeFont generateTitleFont(float f, BasicGameState state){

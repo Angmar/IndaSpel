@@ -57,6 +57,8 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+		
+		background = new Image("space2.png");
 		font = StartGame.generateTitleFont(16, this);
 		
 		cameraX = -5000+container.getWidth()/2;
@@ -369,6 +371,13 @@ public class MainGame extends BasicGameState {
 		
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
+		
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				g.drawImage(background, background.getWidth()*i, background.getHeight()*j);
+			}
+		}
+		
 
 		if (selectRect != null)
 			g.draw(selectRect);

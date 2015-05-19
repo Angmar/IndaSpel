@@ -146,14 +146,14 @@ public class MenuTutorial extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		
-		float xText = container.getWidth()/4;
+		float xText = container.getWidth()/6;
 		float yText = container.getHeight()/2-25*tutorialTitle.size();
 		
 		g.drawImage(selectArrow, xText-50, yText-6+(50*selectedOption));
 		
-		g.drawImage(tutorialImage.get(showTutorial), container.getWidth()/2, container.getHeight()/2-tutorialImage.get(showTutorial).getHeight()-50);
+		g.drawImage(tutorialImage.get(showTutorial), (float) (xText*2.5), container.getHeight()/2-tutorialImage.get(showTutorial).getHeight()-50);
 		
-		g.drawString(tutorialText.get(showTutorial), container.getWidth()/2, container.getHeight()/2);
+		g.drawString(tutorialText.get(showTutorial), (float) (xText*2.5), container.getHeight()/2);
 		
 		g.setFont(fontTitle);
 		for(int i = 0; i < tutorialTitle.size(); i++){
