@@ -42,16 +42,7 @@ public class Worker extends Character implements Builder {
 		if(target != null){
 			//Check if target is construction site
 			if(target.getClass() == ConstructionSite.class) {
-				buildProgress = target.getCurrentHealth();
-				if (buildProgress >= target.getMaxHealth()) {
-					MainGame.build((Building) target, ((ConstructionSite)target).getBuilding());
-					buildQueue.clear();
-					target = null;
-					buildProgress = 0;
-				} else if (buildProgress < target.getMaxHealth()) {
-					((ConstructionSite) target).construct(delta);
-				}
-
+				spawn(delta);
 			}
 			//Check if target is a mineral
 			else if(target.getClass() == MineralOre.class){
@@ -79,6 +70,23 @@ public class Worker extends Character implements Builder {
 			target = cs;
 		}
 	}
+	private void spawn(int delta) throws SlickException {
+	if (targetInRange()) {
+		buildProgress = target.getCurrentHealth();
+		if (buildProgress >= target.getMaxHealth()) {
+			MainGame.build((Building) target, ((ConstructionSite)target).getBuilding());
+			buildQueue.clear();
+			target = null;
+			buildProgress = 0;
+		} else if (buildProgress < target.getMaxHealth()) {
+			((ConstructionSite) target).construct(delta);
+		}
+	} else if(movePoint != null){
+			moveToPoint(delta);
+	} else{
+		movePoint = new Vector2f(target.getX(), target.getY());
+	}
+	}	
 	
 	@Override
 	public void render(GameContainer container, Graphics g)

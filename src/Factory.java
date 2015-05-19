@@ -55,6 +55,10 @@ public class Factory extends Building implements Builder {
 				default:
 					gob = new Sniper(x, y, 1);
 			}
+			if (target != null)
+				gob.setTarget(target);
+			else if (movePoint != null)
+				gob.setTarget(movePoint);
 			MainGame.colonists.add(gob);
 			buildProgress = 0;
 			buildQueue.remove(0);
@@ -79,8 +83,10 @@ public class Factory extends Building implements Builder {
 
 	@Override
 	public void queueSpawn(int opt) {
-		MainGame.minerals -= buildCosts[opt];
-		buildQueue.add(opt);
+		if (MainGame.minerals > buildCosts[opt]) {
+			MainGame.minerals -= buildCosts[opt];
+			buildQueue.add(opt);
+		}
 	}
 
 	@Override

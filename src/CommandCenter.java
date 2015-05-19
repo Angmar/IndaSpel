@@ -42,6 +42,10 @@ public class CommandCenter extends Building implements Builder {
 				default:
 					gob = new Pirate(x, y, 1);
 			}
+			if (target != null)
+				gob.setTarget(target);
+			else if (movePoint != null)
+				gob.setTarget(movePoint);
 			MainGame.colonists.add(gob);
 			buildProgress = 0;
 			buildQueue.remove(0);
