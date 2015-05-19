@@ -41,6 +41,11 @@ public class MainGame extends BasicGameState {
 	static int waveTime;
 	static int wave;
 	
+	
+	boolean lost;
+	int losing;
+	TrueTypeFont lostTextFont;
+	
 	static ArrayList<Building> resources;
 	static ArrayList<Building> buildings;
 	static ArrayList<Character> colonists;
@@ -60,6 +65,7 @@ public class MainGame extends BasicGameState {
 		
 		background = new Image("space2.png");
 		font = StartGame.generateTitleFont(16, this);
+		lostTextFont = StartGame.generateTitleFont(50, this);
 		
 		cameraX = -5000+container.getWidth()/2;
 		cameraY = -5000+container.getHeight()/2;
@@ -71,7 +77,7 @@ public class MainGame extends BasicGameState {
 		enemies = new ArrayList<Character>();
 		selected = new ArrayList<GameObject>();
 		
-		buildings.add(new CommandCenter(4900,4900));
+		//buildings.add(new CommandCenter(4900,4900));
 		colonists.add(new Worker(4900,5100));
 		colonists.add(new Worker(4900,5000));
 		colonists.add(new Worker(5000,5000));
@@ -234,6 +240,24 @@ public class MainGame extends BasicGameState {
 			throws SlickException {
 		Input input = container.getInput();
 		
+		if(nearestCommandCenter(5000, 5000) == null){
+			losing += delta;
+			
+			if(losing >= 10000){
+				lost = true;
+				losing = 0;
+			}
+		}
+		if(lost){
+			losing+= delta;
+			input.pause();
+			
+			if(losing >= 5000){
+				input.resume();
+				game.enterState(0);
+			}
+		}
+		
 		if (waveTime >= waveIntervall) {
 			float xDist = randomDistance();
 			float yDist = randomDistance();
@@ -265,7 +289,6 @@ public class MainGame extends BasicGameState {
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
 		updateList(enemies, container, delta);
-		
 		if(input.isKeyDown(Input.KEY_DOWN)){
 			cameraY = moveCameraY(container, delta, -1);
 		}
@@ -382,12 +405,7 @@ public class MainGame extends BasicGameState {
 		//Translates the coordinates of view, must be first in render
 		g.translate(cameraX, cameraY);
 		
-		for(int i = 0; i < 10; i++){
-			for(int j = 0; j < 10; j++){
-				g.drawImage(background, background.getWidth()*i, background.getHeight()*j);
-			}
-		}
-		
+		MenuMain.renderBackground(g);
 
 		if (selectRect != null)
 			g.draw(selectRect);
@@ -400,8 +418,7 @@ public class MainGame extends BasicGameState {
 
 		//Translate back so hud will be rendered on top
 		g.translate(-cameraX,-cameraY);
-		g.drawString("Minerals: "+minerals, 850, 50);
-		
+		g.drawString("Minerals: "+minerals, container.getWidth()/6*5, 50);
 
 		drawHud(container, g);
 
@@ -410,6 +427,10 @@ public class MainGame extends BasicGameState {
 		renderListOnMap(colonists, container, g);
 		renderListOnMap(enemies, container, g);
 		
+		if(lost){
+			g.setFont(lostTextFont);
+			g.drawString("You Lost", container.getWidth()/2-130, container.getHeight()/2-50);
+		}
 	}
 	
 	private void drawHud(GameContainer container, Graphics g) {

@@ -145,6 +145,7 @@ public class MenuTutorial extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		MenuMain.renderBackground(g);
 		
 		float xText = container.getWidth()/6;
 		float yText = container.getHeight()/2-25*tutorialTitle.size();

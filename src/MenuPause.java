@@ -83,6 +83,8 @@ public class MenuPause extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		MenuMain.renderBackground(g);
+		
 		g.setFont(font);
 		
 		float xText = container.getWidth()/2-100;

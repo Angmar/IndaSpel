@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -21,7 +22,10 @@ public class MenuMain extends BasicGameState {
 	int selectedOption;
 	String[] menuOptions;
 	static Image selectArrow;
+	static Image background;
+	
 	TrueTypeFont font;
+	TrueTypeFont titleFont;
 	
 	public MenuMain() {
 		
@@ -36,7 +40,10 @@ public class MenuMain extends BasicGameState {
 		selectArrow = selectArrow.getScaledCopy(40, 40);
 		selectArrow.rotate(90);
 		
+		background = new Image("space2.png");
+		
 		font = StartGame.generateTitleFont(28, this);
+		titleFont = StartGame.generateTitleFont(50, this);
 	}
 
 	@Override
@@ -91,9 +98,12 @@ public class MenuMain extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		
+		
+		renderBackground(g);
+		
 		g.setFont(font);
 		
-		float xText = container.getWidth()/2-100;
+		float xText = container.getWidth()/7*2;
 		float yText = container.getHeight()/2-25*menuOptions.length;
 		
 		for(int i = 0; i < menuOptions.length; i++){
@@ -101,6 +111,20 @@ public class MenuMain extends BasicGameState {
 		}
 		
 		g.drawImage(selectArrow, xText-50, yText+(50*selectedOption));
+		
+		g.setFont(titleFont);
+		g.setColor(Color.red);
+		g.drawString("Foreign Frontier", xText, yText-100);
+		g.setColor(Color.white);
+		
+	}
+	
+	public static void renderBackground(Graphics g){
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				g.drawImage(background, background.getWidth()*i, background.getHeight()*j);
+			}
+		}
 	}
 	
 	public static Image getSelectImage(){
