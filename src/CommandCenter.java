@@ -64,16 +64,7 @@ public class CommandCenter extends Building implements Builder {
 		
 		portrait.rotate((float) (0.005*delta));
 		if (!(buildQueue.isEmpty())) {
-			if (buildProgress == 0) {
-				if (MainGame.minerals >= buildCosts[buildQueue.get(0)]) {
-					spawn(delta, buildQueue.get(0));
-
-				} else {	
-					buildQueue.remove(0);
-				}
-		} else {
 			spawn(delta, buildQueue.get(0));
-		}
 		}
 	}
 

@@ -110,7 +110,7 @@ public abstract class GameObject {
 			g.setColor(Color.white);
 			//g.setLineWidth(1);
 		}
-		
+		g.setLineWidth(1);
 		g.drawImage(portrait, x-width/2, y-height/2);
 	}
 	

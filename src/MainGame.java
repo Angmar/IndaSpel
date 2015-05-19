@@ -256,6 +256,9 @@ public class MainGame extends BasicGameState {
 			waveTime += delta;
 		}
 		
+		hudbg = new Rectangle(-1, container.getHeight()-container.getHeight()/4, container.getWidth()+2, container.getHeight()/4+1);
+
+		
 		updateList(resources, container, delta);
 		updateList(buildings, container, delta);
 		updateList(colonists, container, delta);
@@ -398,13 +401,13 @@ public class MainGame extends BasicGameState {
 		g.setColor(Color.white);
 		g.draw(hudbg);
 		if (!(selected.isEmpty())) {
-			g.draw(new Rectangle(container.getWidth()-width*2, container.getHeight()-hudHeight, hudHeight, hudHeight));
+			g.draw(new Rectangle(container.getWidth()-width*2, container.getHeight()-hudHeight+1, hudHeight, hudHeight));
 			g.drawImage(selected.get(0).portrait.getScaledCopy((float)hudHeight/selected.get(0).portrait.getHeight()), container.getWidth()-width*2, container.getHeight()-hudHeight);
 			if (selected.get(0) instanceof Builder) {
 				Builder b = (Builder) selected.get(0);
 				ArrayList<String> buildOptions = b.getBuildOptions();
 				for (int i=0;i<buildOptions.size();i++) { //Build options
-					g.draw(new Rectangle(container.getWidth()-width-(width-hudHeight), container.getHeight()-hudHeight+i*hudHeight/3, hudHeight*2, hudHeight/3));
+					g.draw(new Rectangle(container.getWidth()-width-(width-hudHeight), container.getHeight()-hudHeight+i*hudHeight/3+1, hudHeight*2, hudHeight/3));
 					g.drawString(buildOptions.get(i) + "  cost:" + b.getBuildCosts()[i], container.getWidth()-width-(width-hudHeight)+5, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}
 				if (!(b.getBuildQueue().isEmpty())) { //Build progress
@@ -413,12 +416,12 @@ public class MainGame extends BasicGameState {
 					g.setColor(Color.white);
 				}
 				for (int i=0;i<b.getBuildQueue().size();i++) { //Build queue
-					g.draw(new Rectangle(hudHeight, container.getHeight()-hudHeight+i*hudHeight/3, width, hudHeight/3));
+					g.draw(new Rectangle(hudHeight, container.getHeight()-hudHeight+i*hudHeight/3+1, width, hudHeight/3));
 					g.drawString(b.getBuildOptions().get(b.getBuildQueue().get(i)), hudHeight+hudHeight/8, container.getHeight()-hudHeight+hudHeight/8+i*hudHeight/3);
 				}	
 			}
 		}
-		Rectangle map = new Rectangle(0, container.getHeight()-hudHeight, hudHeight, hudHeight);
+		Rectangle map = new Rectangle(0, container.getHeight()-hudHeight+1, hudHeight, hudHeight);
 		Rectangle currentPos = new Rectangle(cameraX*-hudHeight/MainGame.FIELDSIZE, container.getHeight()-hudHeight+cameraY*-hudHeight/MainGame.FIELDSIZE, hudHeight*container.getWidth()/MainGame.FIELDSIZE, hudHeight*container.getHeight()/MainGame.FIELDSIZE);
 		g.draw(map);
 		g.draw(currentPos);	
@@ -682,6 +685,7 @@ public class MainGame extends BasicGameState {
 			}
 		}
 	}
+	
 	
 	@Override
 	public int getID() {
