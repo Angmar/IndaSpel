@@ -2,12 +2,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-
 public class ConstructionSite extends Building {
 
-	//What building is being constructed
+	// What building is being constructed
 	private Building building;
-	
+
 	// whatBuilding, 0 = CommandCenter, 1 = Factory
 	public ConstructionSite(float x, float y, int whatBuilding)
 			throws SlickException {
@@ -42,9 +41,9 @@ public class ConstructionSite extends Building {
 		if (maxHealth > currentHealth)
 			currentHealth += delta;
 	}
-	
+
 	public Building getBuilding() {
 		return building;
 	}
-	
+
 }

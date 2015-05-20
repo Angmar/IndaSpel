@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-
 public class Factory extends Building implements Builder {
 
 	private String[] buildOpts;
@@ -13,18 +12,17 @@ public class Factory extends Building implements Builder {
 	private int[] buildTimes;
 	private int[] buildCosts;
 
-	public Factory(float x, float y)
-			throws SlickException {
+	public Factory(float x, float y) throws SlickException {
+		// x, y, width, height, maxHealth, damage, range, faction, "portrait"
 		super(x, y, 150, 150, 1000, 10, 60, 1, "factory.png");
-
-
+		
 		buildProgress = 0;
 		buildQueue = new ArrayList<Integer>();
-		String[] buildOpts = {"Fighter", "Tank", "Sniper"};
+		String[] buildOpts = { "Fighter", "Tank", "Sniper" };
 		this.buildOpts = buildOpts;
-		int[] buildCosts = {100, 200, 200};
+		int[] buildCosts = { 100, 200, 200 };
 		this.buildCosts = buildCosts;
-		int[] buildTimes = {3000, 5000, 5000};
+		int[] buildTimes = { 3000, 5000, 5000 };
 		this.buildTimes = buildTimes;
 	}
 
@@ -46,14 +44,14 @@ public class Factory extends Building implements Builder {
 		if (buildProgress >= buildTimes[opt]) {
 			Character gob;
 			switch (opt) {
-				case 0:
-					gob = new Fighter(x, y, 1);
-					break;
-				case 1:
-					gob = new Tank(x, y, 1);
-					break;
-				default:
-					gob = new Sniper(x, y, 1);
+			case 0:
+				gob = new Fighter(x, y, 1);
+				break;
+			case 1:
+				gob = new Tank(x, y, 1);
+				break;
+			default:
+				gob = new Sniper(x, y, 1);
 			}
 			if (target != null)
 				gob.setTarget(target);
@@ -66,11 +64,11 @@ public class Factory extends Building implements Builder {
 			buildProgress += delta;
 		}
 	}
-	
+
 	@Override
 	public ArrayList<String> getBuildOptions() {
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i=0;i<buildOpts.length;i++)
+		for (int i = 0; i < buildOpts.length; i++)
 			list.add(buildOpts[i]);
 		return list;
 	}

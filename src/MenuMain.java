@@ -16,32 +16,32 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class MenuMain extends BasicGameState {
 
 	int selectedOption;
 	String[] menuOptions;
 	static Image selectArrow;
 	static Image background;
-	
+
 	TrueTypeFont font;
 	TrueTypeFont titleFont;
-	
+
 	public MenuMain() {
-		
+
 	}
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		selectedOption = 0;
-		menuOptions = new String[]{"Begin New Game", "Continue Saved Game", "Options", "Basic Text Tutorial", "Credits", "Quit Game"};
+		menuOptions = new String[] { "Begin New Game", "Continue Saved Game",
+				"Options", "Basic Text Tutorial", "Credits", "Quit Game" };
 		selectArrow = new Image("SelectArrow.png");
 		selectArrow = selectArrow.getScaledCopy(40, 40);
 		selectArrow.rotate(90);
-		
+
 		background = new Image("space2.png");
-		
+
 		font = StartGame.generateTitleFont(28, this);
 		titleFont = StartGame.generateTitleFont(50, this);
 	}
@@ -50,9 +50,9 @@ public class MenuMain extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		Input input = container.getInput();
-		
-		if(input.isKeyPressed(Input.KEY_ENTER)){
-			switch(selectedOption){
+
+		if (input.isKeyPressed(Input.KEY_ENTER)) {
+			switch (selectedOption) {
 			case 0:
 				game.init(container);
 				input.clearKeyPressedRecord();
@@ -60,10 +60,11 @@ public class MenuMain extends BasicGameState {
 				break;
 			case 1:
 				input.clearKeyPressedRecord();
-				try(Scanner scan = new Scanner(new File("savefile.txt"))){
+				try (Scanner scan = new Scanner(new File("savefile.txt"))) {
 					MainGame.initSaveFile(scan);
 				} catch (IOException e) {
-					//Failed to read file, either because it doesn't exist or is corrupted
+					// Failed to read file, either because it doesn't exist or
+					// is corrupted
 					e.printStackTrace();
 					game.init(container);
 				}
@@ -85,49 +86,61 @@ public class MenuMain extends BasicGameState {
 				container.exit();
 				break;
 			}
-		}
-		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 0){
+		} else if (input.isKeyPressed(Input.KEY_UP) && selectedOption > 0) {
 			selectedOption--;
-		}
-		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < menuOptions.length){
+		} else if (input.isKeyPressed(Input.KEY_DOWN)
+				&& selectedOption < menuOptions.length) {
 			selectedOption++;
 		}
 	}
-	
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		
-		
+
 		renderBackground(g);
-		
+
 		g.setFont(font);
-		
-		float xText = container.getWidth()/7*2;
-		float yText = container.getHeight()/2-25*menuOptions.length;
-		
-		for(int i = 0; i < menuOptions.length; i++){
-			g.drawString(menuOptions[i], xText, yText+(50*i));
+
+		float xText = container.getWidth() / 7 * 2;
+		float yText = container.getHeight() / 2 - 25 * menuOptions.length;
+
+		for (int i = 0; i < menuOptions.length; i++) {
+			g.drawString(menuOptions[i], xText, yText + (50 * i));
 		}
-		
-		g.drawImage(selectArrow, xText-50, yText+(50*selectedOption));
-		
+
+		g.drawImage(selectArrow, xText - 50, yText + (50 * selectedOption));
+
 		g.setFont(titleFont);
 		g.setColor(Color.red);
-		g.drawString("Foreign Frontier", xText, yText-100);
+		g.drawString("Foreign Frontier", xText, yText - 100);
 		g.setColor(Color.white);
-		
+
 	}
-	
-	public static void renderBackground(Graphics g){
-		for(int i = 0; i < 10; i++){
-			for(int j = 0; j < 10; j++){
-				g.drawImage(background, background.getWidth()*i, background.getHeight()*j);
+
+	/**
+	 * Renders the background space in a 10x10 layout of the space background
+	 * picture.
+	 * 
+	 * @param g
+	 *            The graphics from to the draw the background
+	 */
+	public static void renderBackground(Graphics g) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				g.drawImage(background, background.getWidth() * i,
+						background.getHeight() * j);
 			}
 		}
 	}
-	
-	public static Image getSelectImage(){
+
+	/**
+	 * Used to share with all other menus the select arrow so they don't have
+	 * require loading the image themselves.
+	 * 
+	 * @return the image of the select arrow.
+	 */
+	public static Image getSelectImage() {
 		return selectArrow;
 	}
 

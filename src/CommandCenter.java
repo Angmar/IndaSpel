@@ -7,7 +7,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class CommandCenter extends Building implements Builder {
 
 	private int buildProgress;
@@ -15,32 +14,32 @@ public class CommandCenter extends Building implements Builder {
 	private int[] buildCosts;
 	private String[] buildOpts;
 	private ArrayList<Integer> buildQueue;
-	
+
 	public CommandCenter(float x, float y) throws SlickException {
-		//x, y, width, height, maxHealth, damage, range, "portrait"
+		// x, y, width, height, maxHealth, damage, range, faction, "portrait"
 		super(x, y, 200, 200, 1000, 10, 60, 1, "commandcenter.png");
 		buildProgress = 0;
-		int[] buildTimes = {5000};
+		int[] buildTimes = { 5000 };
 		this.buildTimes = buildTimes;
-		int[] buildCosts = {50};
+		int[] buildCosts = { 50 };
 		this.buildCosts = buildCosts;
-		String[] buildOpts = {"Worker"};
+		String[] buildOpts = { "Worker" };
 		this.buildOpts = buildOpts;
 		buildQueue = new ArrayList<Integer>();
 	}
-	
+
 	public void spawn(int delta, int opt) throws SlickException {
 		if (buildProgress >= buildTimes[opt]) {
 			Character gob;
 			switch (opt) {
-				case 0:
-					gob = new Worker(x, y);
-					break;
-				case 1:
-					gob = new Fighter(x, y, 1);
-					break;
-				default:
-					gob = new Pirate(x, y, 1);
+			case 0:
+				gob = new Worker(x, y);
+				break;
+			case 1:
+				gob = new Fighter(x, y, 1);
+				break;
+			default:
+				gob = new Pirate(x, y, 1);
 			}
 			if (target != null)
 				gob.setTarget(target);
@@ -53,20 +52,19 @@ public class CommandCenter extends Building implements Builder {
 			buildProgress += delta;
 		}
 	}
-	
+
 	public void queueSpawn(int opt) {
 		if (MainGame.minerals >= buildCosts[opt] && buildQueue.size() <= 6) {
 			MainGame.minerals -= buildCosts[opt];
 			buildQueue.add(opt);
 		}
 	}
-	
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		
-		portrait.rotate((float) (0.005*delta));
+
+		portrait.rotate((float) (0.005 * delta));
 		if (!(buildQueue.isEmpty())) {
 			spawn(delta, buildQueue.get(0));
 		}
@@ -76,12 +74,12 @@ public class CommandCenter extends Building implements Builder {
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		renderPortrait(container, g);
-		
+
 	}
 
 	public ArrayList<String> getBuildOptions() {
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i=0;i<buildOpts.length;i++)
+		for (int i = 0; i < buildOpts.length; i++)
 			list.add(buildOpts[i]);
 		return list;
 	}
@@ -90,7 +88,7 @@ public class CommandCenter extends Building implements Builder {
 	public int getProgress() {
 		return buildProgress;
 	}
-	
+
 	public ArrayList<Integer> getBuildQueue() {
 		return buildQueue;
 	}
@@ -104,5 +102,5 @@ public class CommandCenter extends Building implements Builder {
 	public int[] getBuildCosts() {
 		return buildCosts;
 	}
-	
+
 }

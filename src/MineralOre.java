@@ -5,18 +5,17 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class MineralOre extends Building {
 
 	public MineralOre(float x, float y) throws SlickException {
-		//x, y, width, height, maxHealth, damage, range, "portrait"
+		// x, y, width, height, maxHealth, damage, range, "portrait"
 		super(x, y, 50, 60, 1000, 10, 60, 0, "mineral.png");
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		if(target != null && (!target.isAttacking() || !target.isAlive())){
+		if (target != null && (!target.isAttacking() || !target.isAlive())) {
 			target = null;
 		}
 	}

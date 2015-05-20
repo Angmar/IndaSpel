@@ -12,9 +12,8 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class MenuPause extends BasicGameState {
-	
+
 	int selectedOption;
 	String[] menuOptions;
 	Image selectArrow;
@@ -28,20 +27,19 @@ public class MenuPause extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		selectedOption = 0;
-		menuOptions = new String[]{"Continue Game", "Save Game", "Return to Main Menu"};
-		
+		menuOptions = new String[] { "Continue Game", "Save Game", "Return to Main Menu" };
+
 		selectArrow = MenuMain.getSelectImage();
 		font = StartGame.generateTitleFont(20, this);
 	}
-	
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		Input input = container.getInput();
-		
-		if(input.isKeyPressed(Input.KEY_ENTER)){
-			switch(selectedOption){
+
+		if (input.isKeyPressed(Input.KEY_ENTER)) {
+			switch (selectedOption) {
 			case 0:
 				input.clearKeyPressedRecord();
 				game.enterState(1);
@@ -49,17 +47,17 @@ public class MenuPause extends BasicGameState {
 			case 1:
 				try {
 					File file = new File("savefile.txt");
-		 
+
 					// if file doesnt exists, then create it
 					if (!file.exists()) {
 						file.createNewFile();
 					}
-		 
+
 					FileWriter fw = new FileWriter(file.getAbsoluteFile());
 					BufferedWriter bw = new BufferedWriter(fw);
-					
+
 					MainGame.saveGame(bw);
-					
+
 					bw.close();
 				} catch (IOException e) {
 					System.err.println("Could not create savfile.txt");
@@ -70,33 +68,30 @@ public class MenuPause extends BasicGameState {
 				game.enterState(0);
 				break;
 			}
-		}
-		else if(input.isKeyPressed(Input.KEY_UP) && selectedOption > 0){
+		} else if (input.isKeyPressed(Input.KEY_UP) && selectedOption > 0) {
 			selectedOption--;
-		}
-		else if(input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 2){
+		} else if (input.isKeyPressed(Input.KEY_DOWN) && selectedOption < 2) {
 			selectedOption++;
 		}
-		
+
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		MenuMain.renderBackground(g);
-		
-		g.setFont(font);
-		
-		float xText = container.getWidth()/2-100;
-		float yText = container.getHeight()/2-25*menuOptions.length;
-		
-		for(int i = 0; i < menuOptions.length; i++){
-			g.drawString(menuOptions[i], xText, yText+(50*i));
-		}
-		
-		g.drawImage(selectArrow, xText-50, yText-6+(50*selectedOption));
-	}
 
+		g.setFont(font);
+
+		float xText = container.getWidth() / 2 - 100;
+		float yText = container.getHeight() / 2 - 25 * menuOptions.length;
+
+		for (int i = 0; i < menuOptions.length; i++) {
+			g.drawString(menuOptions[i], xText, yText + (50 * i));
+		}
+
+		g.drawImage(selectArrow, xText - 50, yText - 6 + (50 * selectedOption));
+	}
 
 	@Override
 	public int getID() {
