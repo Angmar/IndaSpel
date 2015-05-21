@@ -20,7 +20,7 @@ public class Factory extends Building implements Builder {
 		buildQueue = new ArrayList<Integer>();
 		String[] buildOpts = { "Fighter", "Tank", "Sniper" };
 		this.buildOpts = buildOpts;
-		int[] buildCosts = { 100, 200, 200 };
+		int[] buildCosts = { 100, 300, 500 };
 		this.buildCosts = buildCosts;
 		int[] buildTimes = { 3000, 5000, 5000 };
 		this.buildTimes = buildTimes;

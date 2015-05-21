@@ -28,7 +28,7 @@ public class Worker extends Character implements Builder {
 		buildProgress = 0;
 		int[] buildTimes = { 10000, 10000 };
 		this.buildTimes = buildTimes;
-		int[] buildCosts = { 200, 200 };
+		int[] buildCosts = { 400, 200 };
 		this.buildCosts = buildCosts;
 		String[] buildOpts = { "Command Center", "Factory" };
 		this.buildOpts = buildOpts;
