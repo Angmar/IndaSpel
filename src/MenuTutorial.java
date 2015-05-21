@@ -48,6 +48,16 @@ public class MenuTutorial extends BasicGameState {
 				+ "You control the camera with the arrow keys. \n"
 				+ "But you can also click on the minimap if you want\n"
 				+ "to jump to any area on the map directly.");
+		
+		tutorialImage.add(new Image("movepoint.png").getScaledCopy(200, 200));
+		tutorialTitle.add("Objective");
+		tutorialText.add("Your objective is to gather as much resources\n"
+						+ "as possible before you succumb to the dangers\n"
+						+ "of the galaxy.\n\n"
+						+ "You need to balance your economy between surviving\n"
+						+ "the dangers to come and hoarding the resources you\n"
+						+ "got to make this expidition a successful and fruitful.\n"
+						+ "endevour.");
 
 		tutorialImage.add(new Image("commandcenter.png")
 				.getScaledCopy(200, 200));

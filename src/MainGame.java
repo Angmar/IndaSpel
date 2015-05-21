@@ -35,6 +35,8 @@ public class MainGame extends BasicGameState {
 
 	float mouseX = -1;
 	float mouseY = -1;
+	
+	static int difficulty;
 
 	int waveIntervall;
 	static int waveTime;
@@ -60,7 +62,7 @@ public class MainGame extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-
+		difficulty = StartGame.getDifficulty();
 		background = new Image("space2.png");
 		font = StartGame.generateTitleFont(16, this);
 		lostTextFont = StartGame.generateTitleFont(50, this);
@@ -117,6 +119,7 @@ public class MainGame extends BasicGameState {
 
 	public static void initSaveFile(Scanner scan) throws IOException,
 			SlickException {
+		
 		resources.clear();
 		buildings.clear();
 		colonists.clear();
@@ -126,6 +129,7 @@ public class MainGame extends BasicGameState {
 			minerals = Integer.parseInt(scan.nextLine());
 			wave = Integer.parseInt(scan.nextLine());
 			waveTime = Integer.parseInt(scan.nextLine());
+			difficulty = Integer.parseInt(scan.nextLine());
 			String[] camera = scan.nextLine().split("\\s");
 			cameraX = Float.parseFloat(camera[0]);
 			cameraY = Float.parseFloat(camera[1]);
@@ -263,7 +267,7 @@ public class MainGame extends BasicGameState {
 			float xSpawnPoint = 5000 + 7000 * (xDist / dist);
 			float ySpawnPoint = 5000 + 7000 * (yDist / dist);
 
-			for (int i = 0; i < 5 + StartGame.getDifficulty() * wave; i++) {
+			for (int i = 0; i < 5 + difficulty * wave; i++) {
 				enemies.add(new Pirate(xSpawnPoint + 100 * (-yDist / dist)
 						* (i % 7),
 						ySpawnPoint + 100 * (xDist / dist) * (i % 7), 2));
@@ -282,11 +286,13 @@ public class MainGame extends BasicGameState {
 
 		hudbg = new Rectangle(-1, container.getHeight() - container.getHeight()
 				/ 4, container.getWidth() + 2, container.getHeight() / 4 + 1);
-
-		updateList(resources, container, delta);
-		updateList(buildings, container, delta);
-		updateList(colonists, container, delta);
-		updateList(enemies, container, delta);
+		
+		if(!lost){
+			updateList(resources, container, delta);
+			updateList(buildings, container, delta);
+			updateList(colonists, container, delta);
+			updateList(enemies, container, delta);
+		}
 		if (input.isKeyDown(Input.KEY_DOWN)) {
 			cameraY = moveCameraY(container, delta, -1);
 		}
@@ -449,6 +455,11 @@ public class MainGame extends BasicGameState {
 		// Translate back so hud will be rendered on top
 		g.translate(-cameraX, -cameraY);
 		g.drawString("Minerals: " + minerals, container.getWidth() / 6 * 5, 50);
+		if(waveIntervall-waveTime < 10500){
+			g.setColor(Color.red);
+			g.drawString("Enemies arriving in "+ (int)(waveTime-waveIntervall)/-1000 +" seconds", 50, 50);
+			g.setColor(Color.white);
+		}
 
 		drawHud(container, g);
 
@@ -459,8 +470,12 @@ public class MainGame extends BasicGameState {
 
 		if (lost) {
 			g.setFont(lostTextFont);
+			g.setColor(Color.red);
 			g.drawString("You Lost", container.getWidth() / 2 - 130,
-					container.getHeight() / 2 - 50);
+					container.getHeight() / 2 - 70);
+			g.setColor(Color.white);
+			String score = "Final score: "+(minerals*difficulty+(colonists.size()+buildings.size())*difficulty);
+			g.drawString(score, container.getWidth() / 2 - score.length()*15, container.getHeight() / 2);
 		}
 	}
 
@@ -749,8 +764,8 @@ public class MainGame extends BasicGameState {
 	private void createMap() throws SlickException {
 		Random rand = new Random();
 
-		int mineralClusters = 9 - StartGame.getDifficulty();
-		int clusterSize = 20 - StartGame.getDifficulty();
+		int mineralClusters = 9 - difficulty;
+		int clusterSize = 20 - difficulty;
 
 		boolean[][] mapGrid = new boolean[10][10];
 
@@ -812,6 +827,8 @@ public class MainGame extends BasicGameState {
 		bw.write("" + wave);
 		bw.newLine();
 		bw.write("" + waveTime);
+		bw.newLine();
+		bw.write("" + difficulty);
 		bw.newLine();
 		bw.write(cameraX + " " + cameraY);
 		bw.newLine();
