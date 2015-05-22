@@ -19,7 +19,9 @@ public class MenuOptions extends BasicGameState {
 	String[][] menuOptions;
 	// String[] resolutionOptions;
 	Image selectArrow;
+	Image activeOption;
 	TrueTypeFont font;
+	
 
 	public MenuOptions() {
 
@@ -43,6 +45,8 @@ public class MenuOptions extends BasicGameState {
 		// "1680x1050", "1920x1080", "Fullscreen"};
 
 		selectArrow = MenuMain.getSelectImage();
+		activeOption = new Image("movepoint.png");
+		activeOption = activeOption.getScaledCopy(40, 40);
 	}
 
 	@Override
@@ -113,6 +117,10 @@ public class MenuOptions extends BasicGameState {
 			for (int i = 1; i < menuOptions[option].length; i++) {
 				g.drawString(menuOptions[option][i], xText + 200, yText
 						+ (50 * i));
+			}
+			if(option == 1){
+				g.drawImage(activeOption,xText + 350, yText - 6
+						+ (50 * StartGame.getDifficulty()) );
 			}
 		}
 		if (depth == 0) {
